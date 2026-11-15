@@ -1,0 +1,2045 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#03070c">
+  <meta name="description" content="UBUNTO SPACE — Inteligência geoespacial e IA para prospecção mineral.">
+  <title>UBUNTO SPACE — Inteligência que revela o que está oculto</title>
+
+  <!--
+    ================================================================
+    UBUNTO SPACE — FICHEIROS LOCAIS NECESSÁRIOS
+    ================================================================
+    Após descarregares estes ficheiros, o site funciona 100% offline.
+
+    Estrutura de pastas:
+
+    / (raiz do projecto)
+    ├── index.html                        (este ficheiro)
+    ├── header_petroleo.mp4               (vídeo do hero — já tens)
+    └── assets/
+        ├── spotmine-opening.jpg          (hero — imagem inicial)
+        ├── spotmine-petroleum-final.jpg  (hero — imagem final)
+        ├── video-institucional.mp4       (modal — vídeo institucional)
+        ├── mapa-global.jpg               (section 4 — screenshot do mapa)
+        └── recursos/
+            ├── ouro.jpg
+            ├── diamante.jpg
+            ├── petroleo-gas.jpg
+            ├── cobre.jpg
+            ├── litio.jpg
+            ├── ferro.jpg
+            ├── cobalto-niquel.jpg
+            └── uranio.jpg
+
+    Dicas:
+    - Para as imagens de recursos, podes usar fotos reais de minérios,
+      minas ou paisagens geológicas (Wikimedia Commons, Unsplash, etc.)
+    - Para video-institucional.mp4, podes reutilizar o header_petroleo.mp4
+      ou gravar um vídeo próprio.
+    - Se uma imagem não existir, o card mostra um fundo escuro neutro
+      (não quebra o layout).
+    ================================================================
+  -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       TOKENS
+    ============================================================ */
+    :root {
+      --black: #03070c;
+      --navy: #07111d;
+      --navy-2: #0b1828;
+      --white: #f4f6f8;
+      --muted: #aeb8c4;
+      --muted-2: #7d8896;
+      --gold: #e8aa4b;
+      --gold-bright: #ffc66b;
+      --cyan: #65c9e9;
+      --line: rgba(222, 233, 243, .17);
+      --line-soft: rgba(222, 233, 243, .08);
+      --mono: "DM Mono", monospace;
+      --sans: "Manrope", Arial, sans-serif;
+      --ease: cubic-bezier(.16,.84,.44,1);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--black); }
+    body {
+      margin: 0; min-width: 320px;
+      color: var(--white); background: var(--black);
+      font-family: var(--sans); overflow-x: hidden;
+    }
+    button, a { font: inherit; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    ::selection { color: #07111d; background: var(--gold); }
+
+    /* ============================================================
+       HERO — UBUNTO
+    ============================================================ */
+    .hero {
+      position: relative; isolation: isolate;
+      min-height: 100svh; height: 100svh; overflow: hidden;
+      background: #03070c url("assets/spotmine-opening.jpg") center center / cover no-repeat;
+    }
+    .hero::before {
+      content: ""; position: absolute; inset: 0; z-index: -1;
+      background:
+        linear-gradient(90deg, rgba(2,7,13,.82) 0%, rgba(2,8,15,.58) 34%, rgba(2,8,15,.08) 72%, rgba(2,7,13,.2) 100%),
+        linear-gradient(180deg, rgba(2,6,12,.72) 0%, transparent 22%, transparent 65%, rgba(2,7,13,.8) 100%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: ""; position: absolute; inset: 0; z-index: -1; opacity: .16;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+      mix-blend-mode: soft-light; pointer-events: none;
+    }
+    .cinema, .cinema img, .cinema video { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .cinema { z-index: -2; overflow: hidden; background: #03070c; }
+    .cinema video, .cinema img { object-fit: cover; object-position: center center; }
+    .cinema video { opacity: 0; transition: opacity 1.2s ease; }
+    .cinema video.is-ready { opacity: 1; }
+    .cinema img { opacity: 0; transition: opacity 1.2s ease; }
+    .cinema img.is-visible { opacity: 1; }
+    .cinema .fallback-opening { opacity: 1; }
+    .cinema .fallback-opening.is-hidden { opacity: 0; }
+    .cinema.is-final video { opacity: 0; }
+    .cinema.is-final .fallback-final { opacity: 1; }
+
+    .topbar {
+      position: absolute; z-index: 10; top: 0; left: 0; width: 100%;
+      height: 104px; padding: 0 clamp(24px, 4.7vw, 82px);
+      display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+      border-bottom: 1px solid rgba(228, 238, 247, .15);
+      background: linear-gradient(180deg, rgba(2,6,12,.64), rgba(2,6,12,.08));
+      backdrop-filter: blur(5px);
+    }
+    .brand {
+      display: inline-flex; align-items: center; gap: 15px;
+      width: max-content; letter-spacing: .19em; font-size: 19px; font-weight: 800;
+    }
+    .brand-mark { width: 45px; height: 38px; display: block; overflow: visible; }
+    .brand-mark path { fill: var(--gold); }
+    .brand-divider { width: 1px; height: 44px; margin-left: 16px; background: rgba(235,241,247,.35); }
+    .nav-links {
+      display: flex; align-items: center; gap: clamp(25px, 4vw, 62px);
+      color: rgba(246,248,250,.91); font-size: 13px; font-weight: 600;
+    }
+    .nav-links a { position: relative; padding: 12px 0; transition: color .25s ease; }
+    .nav-links a::after {
+      content: ""; position: absolute; left: 0; bottom: 4px; width: 100%; height: 1px;
+      background: var(--gold); transform: scaleX(0); transform-origin: left;
+      transition: transform .3s ease;
+    }
+    .nav-links a:hover { color: var(--gold-bright); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-action {
+      justify-self: end; min-height: 47px;
+      display: inline-flex; align-items: center; justify-content: center; gap: 15px;
+      padding: 0 24px; border: 1px solid rgba(232,170,75,.92); border-radius: 100px;
+      color: var(--gold-bright); font-size: 11px; font-weight: 800; letter-spacing: .06em;
+      transition: background .3s ease, color .3s ease, transform .3s ease;
+    }
+    .nav-action:hover { color: #101014; background: var(--gold); transform: translateY(-2px); }
+    .arrow { font-size: 18px; line-height: 0; }
+    .menu-toggle {
+      display: none; width: 46px; height: 46px;
+      border: 1px solid var(--line); border-radius: 50%;
+      background: rgba(3,8,14,.45); cursor: pointer;
+    }
+    .menu-toggle span, .menu-toggle::before, .menu-toggle::after {
+      content: ""; display: block; width: 17px; height: 1px; margin: 5px auto;
+      background: white; transition: transform .25s ease;
+    }
+    .menu-toggle[aria-expanded="true"] span { opacity: 0; }
+    .menu-toggle[aria-expanded="true"]::before { transform: translateY(6px) rotate(45deg); }
+    .menu-toggle[aria-expanded="true"]::after { transform: translateY(-6px) rotate(-45deg); }
+
+    .hero-content {
+      position: absolute; z-index: 2;
+      left: clamp(28px, 4.9vw, 88px); top: 50%;
+      width: min(780px, 57vw);
+      transform: translateY(-39%); padding-top: 22px;
+    }
+    .eyebrow {
+      display: flex; align-items: center; gap: 15px; margin-bottom: 31px;
+      color: rgba(234,241,247,.86); font-family: var(--mono);
+      font-size: 10px; letter-spacing: .28em; text-transform: uppercase;
+    }
+    .eyebrow::before {
+      content: ""; width: 37px; height: 2px; background: var(--gold);
+      box-shadow: 0 0 14px rgba(232,170,75,.5);
+    }
+    h1 {
+      max-width: 790px; margin: 0;
+      font-size: clamp(48px, 5.3vw, 86px); line-height: .99; letter-spacing: -.065em;
+      font-weight: 600; text-transform: uppercase; text-wrap: balance;
+    }
+    h1 .gold { color: var(--gold); }
+    .intro {
+      max-width: 540px; margin: 27px 0 0; padding-left: 20px;
+      border-left: 2px solid var(--gold);
+      color: rgba(238,243,248,.88);
+      font-size: clamp(14px, 1.2vw, 18px); line-height: 1.65; font-weight: 400;
+    }
+    .hero-actions { display: flex; align-items: center; gap: 22px; margin-top: 37px; }
+    .button-primary, .button-secondary {
+      min-height: 57px; display: inline-flex; align-items: center; justify-content: center;
+      gap: 19px; padding: 0 29px; border-radius: 100px;
+      font-size: 11px; font-weight: 800; letter-spacing: .07em;
+      transition: transform .3s ease, background .3s ease, border-color .3s ease;
+    }
+    .button-primary {
+      color: #101014; background: linear-gradient(105deg, #f2bd68, #d99738);
+      box-shadow: 0 8px 35px rgba(202,135,43,.14);
+    }
+    .button-primary:hover { transform: translateY(-3px); background: #ffd18a; }
+    .button-secondary {
+      border: 1px solid rgba(235,241,247,.35);
+      background: rgba(3,8,14,.2); color: var(--white);
+    }
+    .button-secondary:hover { transform: translateY(-3px); border-color: var(--gold); }
+    .play-icon {
+      width: 30px; height: 30px; display: grid; place-items: center;
+      border: 1px solid rgba(255,255,255,.75); border-radius: 50%; font-size: 10px;
+    }
+    .coordinates {
+      position: absolute; z-index: 3; top: 19%; right: clamp(28px, 5vw, 88px);
+      display: flex; align-items: center; gap: 16px;
+      color: rgba(238,244,249,.82); font-family: var(--mono);
+      font-size: 10px; letter-spacing: .12em; line-height: 1.9;
+    }
+    .target {
+      width: 28px; height: 28px; border: 1px solid rgba(240,246,251,.8);
+      border-radius: 50%; position: relative;
+    }
+    .target::before, .target::after { content: ""; position: absolute; background: rgba(240,246,251,.8); }
+    .target::before { width: 42px; height: 1px; top: 13px; left: -8px; }
+    .target::after { width: 1px; height: 42px; left: 13px; top: -8px; }
+    .coordinates strong { color: var(--gold); font-weight: 400; }
+    .side-note {
+      position: absolute; z-index: 3; right: clamp(28px, 5vw, 88px); top: 43%;
+      display: flex; align-items: flex-start; gap: 12px;
+      color: rgba(239,244,248,.8); font-family: var(--mono);
+      font-size: 9px; letter-spacing: .13em; line-height: 2.1;
+      text-transform: uppercase; text-align: right;
+    }
+    .side-note::before {
+      content: ""; width: 1px; height: 67px;
+      background: linear-gradient(var(--gold), rgba(232,170,75,0));
+    }
+    .bottom-data {
+      position: absolute; z-index: 3;
+      left: clamp(28px, 4.9vw, 88px); right: clamp(28px, 4.9vw, 88px);
+      bottom: 6.1%; display: flex; align-items: center; gap: 25px;
+    }
+    .data-item {
+      display: flex; align-items: center; gap: 14px; min-width: 155px;
+      color: rgba(239,244,248,.88); font-size: 10px; line-height: 1.55;
+    }
+    .data-icon { width: 34px; height: 34px; color: var(--gold); flex: 0 0 auto; }
+    .data-divider { width: 1px; height: 36px; background: rgba(231,239,247,.25); }
+    .bottom-caption {
+      margin-left: auto; color: var(--gold-bright);
+      font-family: var(--mono); font-size: 10px; letter-spacing: .35em; text-align: right;
+    }
+    .bottom-caption small {
+      display: block; margin-top: 8px; color: rgba(241,245,249,.72);
+      font-size: 8px; letter-spacing: .18em; line-height: 1.7;
+    }
+    .scan-line {
+      position: absolute; z-index: 1; left: 0; top: 0; width: 1px; height: 100%;
+      background: linear-gradient(transparent, rgba(101,201,233,.35), transparent);
+      opacity: .35; pointer-events: none;
+    }
+    .journey-progress {
+      position: absolute; z-index: 5; bottom: 0; left: 0; width: 100%; height: 2px;
+      background: rgba(255,255,255,.13);
+    }
+    .journey-progress span {
+      display: block; width: 0%; height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--cyan));
+      box-shadow: 0 0 12px rgba(101,201,233,.55);
+    }
+    .video-status {
+      position: absolute; z-index: 4; right: clamp(28px, 4.9vw, 88px); bottom: 11.5%;
+      display: flex; align-items: center; gap: 9px;
+      color: rgba(237,243,248,.72); font-family: var(--mono);
+      font-size: 8px; letter-spacing: .18em; text-transform: uppercase;
+    }
+    .status-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--cyan); box-shadow: 0 0 10px var(--cyan);
+    }
+
+    .demo-modal {
+      position: fixed; z-index: 600; inset: 0;
+      display: grid; place-items: center; padding: 22px;
+      background: rgba(0,4,9,.82); backdrop-filter: blur(12px);
+      opacity: 0; visibility: hidden;
+      transition: opacity .3s ease, visibility .3s ease;
+    }
+    .demo-modal.is-open { opacity: 1; visibility: visible; }
+    .modal-panel {
+      position: relative; width: min(510px, 100%); padding: 42px;
+      border: 1px solid rgba(232,170,75,.35);
+      background: linear-gradient(145deg, #101b28, #070c13 72%);
+      box-shadow: 0 30px 100px rgba(0,0,0,.55);
+    }
+    .modal-close {
+      position: absolute; top: 14px; right: 16px;
+      border: 0; background: none; color: #cbd3dc; font-size: 25px; cursor: pointer;
+    }
+    .modal-kicker { color: var(--gold); font: 10px var(--mono); letter-spacing: .22em; text-transform: uppercase; }
+    .modal-panel h2 { margin: 15px 0 10px; font-size: 29px; line-height: 1.1; letter-spacing: -.04em; }
+    .modal-panel p { color: var(--muted); font-size: 13px; line-height: 1.7; }
+    .modal-panel label { display: block; margin: 20px 0 7px; color: #dce3e9; font-size: 11px; }
+    .modal-panel input, .modal-panel textarea {
+      width: 100%; padding: 13px 14px;
+      border: 1px solid rgba(221,233,243,.2); border-radius: 0; outline: none;
+      color: white; background: rgba(255,255,255,.04); font: 13px var(--sans);
+    }
+    .modal-panel input:focus, .modal-panel textarea:focus { border-color: var(--gold); }
+    .modal-panel textarea { min-height: 82px; resize: vertical; }
+    .modal-panel button[type="submit"] {
+      width: 100%; margin-top: 20px; min-height: 48px; border: 0;
+      color: #101014; background: var(--gold);
+      font-size: 11px; font-weight: 800; letter-spacing: .08em; cursor: pointer;
+    }
+    .form-feedback {
+      min-height: 18px; margin-top: 12px;
+      color: var(--gold-bright); font-size: 11px; line-height: 1.5;
+    }
+
+    /* ============================================================
+       BASE DAS SECTIONS
+    ============================================================ */
+    .section { position: relative; padding: clamp(80px, 10vw, 140px) clamp(24px, 6vw, 96px); background: var(--black); }
+    .section--alt { background: var(--navy); }
+    .section-head { max-width: 900px; margin: 0 auto clamp(48px, 6vw, 80px); text-align: center; position: relative; z-index: 1; }
+    .section-kicker {
+      display: inline-block; margin-bottom: 16px;
+      font-family: var(--mono); font-size: 10px; letter-spacing: .28em;
+      text-transform: uppercase; color: var(--gold);
+    }
+    .section-kicker::before {
+      content: ""; display: inline-block; width: 24px; height: 1px;
+      background: var(--gold); vertical-align: middle; margin-right: 12px;
+    }
+    .section-head h2 {
+      margin: 0 0 16px; font-size: clamp(28px, 3.8vw, 48px);
+      line-height: 1.05; letter-spacing: -.045em; font-weight: 600;
+    }
+    .section-head h2 .gold { color: var(--gold); }
+    .section-lead {
+      margin: 0 auto; max-width: 640px;
+      color: var(--muted); font-size: clamp(14px, 1.05vw, 16px); line-height: 1.7;
+    }
+
+    /* ============================================================
+       SECTION 1 — ABOUT + VIDEO MODAL
+    ============================================================ */
+    .about-section { padding-top: clamp(120px, 12vw, 160px); }
+    .about-section__grid {
+      display: grid; grid-template-columns: 1.05fr 0.95fr;
+      gap: 70px; align-items: center; max-width: 1300px; margin: 0 auto;
+    }
+    .about-section__text h2 {
+      font-family: var(--sans); font-weight: 600;
+      font-size: clamp(30px, 3.4vw, 46px);
+      margin: 0 0 26px; letter-spacing: -.03em; line-height: 1.08;
+    }
+    .about-section__text .accent { color: var(--gold); }
+    .about-section__text p {
+      font-size: 16px; line-height: 1.8; color: var(--muted); margin-bottom: 22px;
+    }
+    .about-section__text p strong { color: var(--white); font-weight: 600; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 12px;
+      font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+      padding: 15px 28px; border-radius: 999px; text-decoration: none;
+      transition: transform .3s var(--ease), background .3s ease, color .3s ease;
+      cursor: pointer; border: 0;
+    }
+    .btn:hover { transform: translateY(-3px); }
+    .btn--primary {
+      background: linear-gradient(105deg, #f2bd68, #d99738); color: #101014;
+      box-shadow: 0 8px 30px rgba(202,135,43,.18);
+    }
+    .btn--primary:hover { background: #ffd18a; }
+
+    .about-section__media {
+      position: relative; aspect-ratio: 4/3; border-radius: 6px; overflow: hidden;
+      background: linear-gradient(135deg, #0b1828, #03070c);
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--line);
+    }
+    .about-section__media::before {
+      content: ""; position: absolute; inset: 0;
+      background-image:
+        radial-gradient(circle at 30% 40%, rgba(232,170,75,.22), transparent 55%),
+        radial-gradient(circle at 70% 65%, rgba(101,201,233,.16), transparent 55%);
+    }
+    .about-section__media::after {
+      content: ""; position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpath d='M30 0v60M0 30h60' stroke='rgba(101,201,233,0.06)' stroke-width='1'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .media-coords {
+      position: absolute; z-index: 2; left: 22px; top: 20px;
+      font-family: var(--mono); font-size: 9px; letter-spacing: .2em;
+      color: var(--cyan); text-transform: uppercase;
+    }
+    .play-btn {
+      position: relative; z-index: 2;
+      background: rgba(3,7,12,.55); backdrop-filter: blur(6px);
+      border: 1.5px solid rgba(232,170,75,.6); border-radius: 50%;
+      width: 84px; height: 84px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform .3s var(--ease), border-color .3s ease, background .3s ease;
+      color: var(--gold); font-size: 22px;
+    }
+    .play-btn:hover { transform: scale(1.08); border-color: var(--gold); background: rgba(232,170,75,.15); color: var(--gold-bright); }
+
+    .video-modal {
+      position: fixed; inset: 0; z-index: 500;
+      display: none; align-items: center; justify-content: center;
+    }
+    .video-modal.is-open { display: flex; }
+    .video-modal__backdrop { position: absolute; inset: 0; background: rgba(0,4,9,.9); backdrop-filter: blur(8px); }
+    .video-modal__box { position: relative; width: min(880px, 90vw); z-index: 2; }
+    .video-modal__frame { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; border: 1px solid var(--line); }
+    .video-modal__frame video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #000; }
+    .video-modal__close {
+      position: absolute; top: -46px; right: 0;
+      background: none; border: none; color: #fff; font-size: 22px; cursor: pointer;
+    }
+
+    /* ============================================================
+       SECTION 2 — NEWS TABS + mzaCarousel 3D
+    ============================================================ */
+    .news-section { padding: 100px 6% 130px; background: #0a1220; }
+    .news-tabs { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 60px; position: relative; z-index: 1; }
+    .news-tabs__btn {
+      background: none; border: 1px solid rgba(255,255,255,0.18); color: rgba(255,255,255,0.72);
+      padding: 12px 26px; border-radius: 999px;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      cursor: pointer; transition: all 0.25s ease; font-family: var(--mono);
+    }
+    .news-tabs__btn:hover { border-color: var(--gold); color: #fff; }
+    .news-tabs__btn.is-active { background: var(--gold); border-color: var(--gold); color: #101014; }
+    .news-panel { display: none; max-width: 1300px; margin: 0 auto; position: relative; z-index: 1; }
+    .news-panel.is-active { display: block; }
+
+    .mzaCarousel {
+      --mzaC-fg: #e7ecf2;
+      --mzaC-accent: #e8aa4b;
+      --mzaC-glass: rgba(255,255,255,0.06);
+      --mzaC-glow: rgba(232,170,75,0.55);
+      --mzaC-slideW: min(880px, 90vw);
+      --mzaC-peek: 0.15;
+      --mzaPagH: 64px;
+      --mzaCardH: clamp(320px, 58vh, 560px);
+      position: relative; width: 100%;
+      height: clamp(420px, 72vh, 640px);
+      margin: 0 auto; padding: 0 18px; overflow: hidden;
+      contain: layout paint; touch-action: none; color: var(--mzaC-fg);
+    }
+    .mzaCarousel-viewport { position: relative; outline: none; overflow: hidden; height: 100%; }
+    .mzaCarousel-track {
+      position: relative; height: calc(100% - var(--mzaPagH) - 12px);
+      transform-style: preserve-3d; perspective: 1200px; overflow: hidden;
+    }
+    .mzaCarousel-slide {
+      position: absolute; top: calc(50% + 5px); left: 50%;
+      width: var(--mzaC-slideW);
+      height: min(var(--mzaCardH), calc(100% - 50px));
+      transform-style: preserve-3d; display: grid; place-items: center;
+      border-radius: 14px; overflow: hidden; will-change: transform, filter;
+    }
+    .mzaCard {
+      position: relative; width: 100%; height: 100%;
+      border-radius: inherit; overflow: hidden;
+      background: var(--mzaC-glass);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.45);
+      backdrop-filter: saturate(120%) blur(4px);
+      transform: translateZ(0); cursor: grab;
+    }
+    .mzaCard::before {
+      content: ""; position: absolute; inset: -2%;
+      background-image: var(--mzaCard-bg);
+      background-size: cover; background-position: center;
+      filter: contrast(1.02) saturate(1.08) brightness(0.85);
+      transform: translateZ(-60px) scale(1.18) translate3d(var(--mzaParBgX, 0px), var(--mzaParBgY, 0px), 0);
+      transition: transform 800ms cubic-bezier(.2,.7,0,1), filter 800ms cubic-bezier(.2,.7,0,1);
+    }
+    .mzaCard::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.62) 55%, rgba(0,0,0,0.35) 100%);
+    }
+    .mzaCard-head { position: absolute; inset: 22px auto auto 22px; z-index: 2; right: 22px; }
+    .mzaCard-title {
+      margin: 0; font-family: var(--sans); font-weight: 700; letter-spacing: -0.01em;
+      font-size: clamp(19px, 2.6vw, 30px); text-shadow: 2px 2px 15px rgba(0,0,0,0.6); line-height: 1.15;
+    }
+    .mzaCard-kicker {
+      margin: 10px 0 0; color: var(--mzaC-accent); font-size: clamp(11px, 1.6vw, 13px);
+      font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      font-family: var(--mono); text-shadow: 1px 1px 10px rgba(0,0,0,0.6);
+    }
+    .mzaCard-text {
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+      position: absolute; inset: auto 22px 82px 22px; z-index: 2; max-width: 60ch;
+      background-color: rgba(0,0,0,0.45); padding: 16px 18px;
+      backdrop-filter: blur(6px); border-radius: 8px; color: #ddd;
+      font-size: 14px; line-height: 1.6; border-left: 2px solid var(--gold);
+    }
+    .mzaCard-actions { position: absolute; inset: auto auto 18px 22px; z-index: 2; }
+    .mzaBtn {
+      appearance: none; border: 1px solid var(--mzaC-accent); border-radius: 999px;
+      padding: 13px 26px; font-family: var(--mono); font-weight: 700; font-size: 11px;
+      letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none;
+      color: #101014; background: var(--mzaC-accent);
+      box-shadow: 0 3px 15px var(--mzaC-glow); cursor: pointer;
+      display: inline-block; transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .mzaBtn:hover { transform: translateY(-2px); }
+    .mzaCarousel-controls {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between;
+      pointer-events: none;
+    }
+    .mzaCarousel-prev, .mzaCarousel-next {
+      pointer-events: auto; position: relative; width: 44px; height: 44px; border-radius: 50%;
+      border: 0; background: rgba(255,255,255,0.08); backdrop-filter: blur(6px);
+      color: var(--mzaC-fg); font-size: 22px; display: grid; place-items: center;
+      cursor: pointer; transition: background 0.2s ease;
+    }
+    .mzaCarousel-prev { margin-left: 6px; }
+    .mzaCarousel-next { margin-right: 6px; }
+    .mzaCarousel-prev:hover, .mzaCarousel-next:hover { background: rgba(255,255,255,0.16); }
+    .mzaCarousel-pagination {
+      position: absolute; left: 0; right: 0; bottom: 14px;
+      display: flex; gap: 10px; justify-content: center; align-items: center; pointer-events: auto;
+    }
+    .mzaCarousel-dot {
+      width: 12px; height: 12px; border-radius: 999px;
+      background: rgba(255,255,255,0.25); border: 0; cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+    .mzaCarousel-dot[aria-selected="true"] { background: var(--mzaC-accent); transform: scale(1.35); }
+    .mzaCarousel-progress {
+      position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
+      background: rgba(255,255,255,0.08); overflow: hidden;
+    }
+    .mzaCarousel-progressBar {
+      display: block; height: 100%; width: 100%; transform-origin: left;
+      transform: scaleX(0); will-change: transform; background: var(--mzaC-accent);
+    }
+    .mzaCarousel-slide[data-state="active"] .mzaCard::before { filter: contrast(1.06) saturate(1.12) brightness(1); }
+    .mzaCarousel-slide[data-state="active"] .mzaCard { box-shadow: 0 30px 70px rgba(0,0,0,0.55), 0 0 0 1px rgba(232,170,75,0.25) inset; }
+    .mzaPar-1 { transform: translate3d(calc(var(--mzaParX, 0px) * 0.35), calc(var(--mzaParY, 0px) * 0.35), 0); }
+    .mzaPar-2 { transform: translate3d(calc(var(--mzaParX, 0px) * 0.25), calc(var(--mzaParY, 0px) * 0.25), 0); }
+    .mzaPar-3 { transform: translate3d(calc(var(--mzaParX, 0px) * 0.18), calc(var(--mzaParY, 0px) * 0.18), 0); }
+
+    .news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+    .news-card a { text-decoration: none; color: #fff; display: block; }
+    .news-card__thumb {
+      position: relative; aspect-ratio: 440/260; border-radius: 6px; overflow: hidden;
+      background: linear-gradient(135deg, #0b1828, #07111d);
+      border: 1px solid var(--line); margin-bottom: 18px;
+      display: flex; align-items: flex-end; padding: 18px;
+      transition: transform 0.5s var(--ease), border-color .3s ease;
+    }
+    .news-card__thumb::before {
+      content: ""; position: absolute; inset: 0;
+      background-image:
+        radial-gradient(circle at 30% 40%, rgba(232,170,75,.2), transparent 60%),
+        radial-gradient(circle at 70% 70%, rgba(101,201,233,.15), transparent 60%);
+    }
+    .news-card__thumb::after {
+      content: ""; position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M20 0v40M0 20h40' stroke='rgba(255,255,255,0.04)' stroke-width='1'/%3E%3C/svg%3E");
+    }
+    .news-card:hover .news-card__thumb { transform: scale(1.03); border-color: rgba(232,170,75,.45); }
+    .thumb-tag {
+      position: relative; z-index: 2;
+      font-family: var(--mono); font-size: 10px; letter-spacing: .18em;
+      color: var(--gold-bright); text-transform: uppercase;
+    }
+    .news-card h3 { font-size: 17px; line-height: 1.4; font-weight: 700; margin: 0 0 8px; color: var(--white); }
+    .news-card p { font-size: 13px; color: var(--muted); line-height: 1.6; margin: 0; }
+    .news-card code {
+      display: inline-block; margin-top: 10px;
+      font-family: var(--mono); font-size: 11px;
+      color: var(--cyan); background: rgba(0,0,0,.4); padding: 6px 10px;
+      border-left: 2px solid var(--gold); word-break: break-all;
+    }
+
+    /* ============================================================
+       SECTION 3 — JORNAL RING 3D (imagens locais)
+    ============================================================ */
+    .jornal-section {
+      padding: 120px 6%; background: var(--black); text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .jornal-section__title {
+      font-family: var(--sans); font-weight: 600; color: var(--gold);
+      font-size: clamp(26px, 3vw, 38px); margin: 0 0 60px; letter-spacing: -.03em;
+    }
+    .jornalRing-wrap { position: relative; width: 100%; height: 500px; margin: 0 auto 10px; z-index: 1; }
+    .jornalRing-container {
+      position: absolute; left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      width: 260px; height: 360px; perspective: 2000px; z-index: 2;
+    }
+    .jornalRing { width: 100%; height: 100%; position: absolute; transform-style: preserve-3d; }
+
+    .jornalRing-img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
+      background-color: #111820;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55);
+      backface-visibility: hidden;
+      cursor: pointer;
+      transform-style: preserve-3d;
+      border: 1px solid rgba(232, 170, 75, 0.22);
+      opacity: 1;
+    }
+    .jornalRing-img .img-label {
+      position: absolute;
+      bottom: 18px;
+      left: 18px;
+      right: 18px;
+      color: #fff;
+      text-align: center;
+      padding: 9px 14px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      pointer-events: none;
+    }
+    .jornalRing-img .img-number {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      color: var(--gold);
+      font-family: var(--mono);
+      font-size: 11px;
+      background: rgba(0, 0, 0, 0.55);
+      padding: 4px 10px;
+      border-radius: 20px;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(232, 170, 75, 0.3);
+      pointer-events: none;
+    }
+    .jornalRing-vignette {
+      position: absolute; inset: 0;
+      background: linear-gradient(to left, var(--black) 4%, transparent 22%, transparent 78%, var(--black) 96%);
+      pointer-events: none; z-index: 1;
+    }
+    .jornalRing-dragger {
+      position: absolute; inset: 0; cursor: grab;
+      touch-action: none; z-index: 10; pointer-events: auto; background: transparent;
+    }
+    .jornalRing-dragger:active { cursor: grabbing; }
+    .jornalRing-hint {
+      position: relative; text-align: center; margin: 18px 0 0;
+      font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(255,255,255,0.4); font-family: var(--mono);
+      z-index: 3; pointer-events: none;
+    }
+
+    /* ============================================================
+       SECTION 4 — MARKETS → imagem local
+    ============================================================ */
+    .markets-section {
+      display: grid; grid-template-columns: 2fr 1fr; gap: 40px; align-items: start;
+      padding: 100px 6%; background: var(--navy); position: relative;
+    }
+    .markets-section > * { position: relative; z-index: 1; }
+    .markets-section__media {
+      border-radius: 8px; overflow: hidden; border: 1px solid var(--line);
+      aspect-ratio: 16/10; position: relative;
+      background:
+        radial-gradient(circle at 40% 50%, rgba(232,170,75,.22), transparent 55%),
+        radial-gradient(circle at 70% 40%, rgba(101,201,233,.18), transparent 55%),
+        linear-gradient(135deg, #0b1828, #03070c);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .markets-section__media::after {
+      content: ""; position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpath d='M30 0v60M0 30h60' stroke='rgba(255,255,255,0.05)' stroke-width='1'/%3E%3C/svg%3E");
+    }
+    .markets-section__media-inner {
+      position: relative; z-index: 2; text-align: center;
+      padding: 20px; max-width: 480px;
+    }
+    .markets-section__media-inner .section-kicker { display: inline-block; margin-bottom: 14px; }
+    .markets-section__media-inner h3 {
+      margin: 0 0 12px; font-size: clamp(22px, 2.6vw, 32px); font-weight: 600;
+      line-height: 1.15; letter-spacing: -.02em;
+    }
+    .markets-section__media-inner p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+    .markets-section__widget {
+      background: rgba(3,7,12,.7); border: 1px solid var(--line);
+      padding: 14px; border-radius: 6px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .markets-section__widget-media {
+      position: relative;
+      aspect-ratio: 3/4;
+      border-radius: 4px;
+      overflow: hidden;
+      background: linear-gradient(160deg, #0b1828, #03070c);
+    }
+    .markets-section__widget-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .markets-section__widget-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: rgba(3,7,12,0.55);
+      backdrop-filter: blur(2px);
+      text-align: center;
+      padding: 20px;
+      pointer-events: none;
+    }
+    .markets-section__widget-overlay span {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .markets-section__widget-overlay small {
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      line-height: 1.5;
+    }
+    .markets-section__credit {
+      font-family: var(--mono); font-size: 10px; color: var(--muted);
+      letter-spacing: .06em; margin: 0;
+    }
+    .markets-section__credit a { color: var(--cyan); }
+
+    /* Footer */
+    .site-footer {
+      background: #050a11; color: var(--muted);
+      padding: 34px 6%; border-top: 1px solid var(--line);
+    }
+    .site-footer__inner {
+      max-width: 1300px; margin: 0 auto;
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px;
+    }
+    .site-footer__copy { margin: 0; font-size: 12px; font-weight: 600; font-family: var(--mono); letter-spacing: .04em; }
+    .site-footer__menu { display: flex; gap: 22px; flex-wrap: wrap; }
+    .site-footer__menu a { font-size: 12px; color: var(--muted); }
+    .site-footer__menu a:hover { color: var(--gold); }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 1100px) {
+      .topbar { grid-template-columns: 1fr auto; height: 86px; }
+      .nav-links {
+        position: absolute; top: 86px; left: 0; right: 0;
+        display: none; padding: 22px 28px 28px;
+        flex-direction: column; align-items: flex-start; gap: 10px;
+        background: rgba(3,8,14,.96); border-bottom: 1px solid var(--line);
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-action { display: none; }
+      .menu-toggle { display: block; justify-self: end; }
+      .hero-content { width: min(720px, 75vw); top: 49%; }
+      .side-note { display: none; }
+      .bottom-data { gap: 15px; }
+      .data-item { min-width: 0; font-size: 9px; }
+      .about-section__grid { grid-template-columns: 1fr; gap: 50px; }
+      .news-grid { grid-template-columns: repeat(2, 1fr); }
+      .markets-section { grid-template-columns: 1fr; }
+      .mzaCarousel { --mzaC-slideW: min(92vw, 620px); }
+    }
+    @media (max-width: 700px) {
+      .hero { min-height: 760px; height: 100svh; max-height: 980px; }
+      .hero::before {
+        background:
+          linear-gradient(90deg, rgba(2,7,13,.77), rgba(2,7,13,.28)),
+          linear-gradient(180deg, rgba(2,6,12,.74), rgba(2,7,13,.1) 34%, rgba(2,7,13,.75) 72%, #03070c 100%);
+      }
+      .cinema video, .cinema img { object-position: 57% center; }
+      .topbar { height: 76px; padding: 0 22px; }
+      .brand { gap: 10px; font-size: 15px; letter-spacing: .15em; }
+      .brand-mark { width: 36px; height: 32px; }
+      .brand-divider { height: 32px; margin-left: 4px; }
+      .nav-links { top: 76px; padding-left: 24px; }
+      .hero-content { left: 24px; right: 24px; top: 46%; width: auto; transform: translateY(-27%); padding-top: 0; }
+      .eyebrow { margin-bottom: 22px; font-size: 8px; letter-spacing: .19em; gap: 10px; }
+      .eyebrow::before { width: 23px; }
+      h1 { max-width: 520px; font-size: clamp(42px, 11.3vw, 66px); line-height: 1.02; letter-spacing: -.065em; }
+      .intro { max-width: 420px; margin-top: 20px; padding-left: 14px; font-size: 13px; line-height: 1.6; }
+      .hero-actions { align-items: flex-start; flex-direction: column; gap: 12px; margin-top: 25px; }
+      .button-primary, .button-secondary { min-height: 49px; padding: 0 22px; font-size: 9px; }
+      .button-secondary { min-width: 194px; justify-content: space-between; }
+      .coordinates { top: 13%; right: 24px; gap: 11px; font-size: 8px; }
+      .target { width: 21px; height: 21px; }
+      .target::before { width: 33px; top: 9px; left: -7px; }
+      .target::after { height: 33px; left: 9px; top: -7px; }
+      .bottom-data { left: 24px; right: 24px; bottom: 36px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px 12px; }
+      .data-item { gap: 9px; font-size: 8px; }
+      .data-icon { width: 27px; height: 27px; }
+      .data-divider { display: none; }
+      .bottom-caption { display: none; }
+      .video-status { right: 24px; bottom: 13px; font-size: 7px; }
+      .modal-panel { padding: 34px 24px 27px; }
+      .modal-panel h2 { font-size: 25px; }
+      .news-grid { grid-template-columns: 1fr; }
+      .news-tabs { gap: 8px; }
+      .news-tabs__btn { padding: 10px 18px; font-size: 10px; }
+      .jornalRing-wrap { height: 400px; }
+      .jornalRing-container { width: 200px; height: 280px; }
+      .jornalRing-img .img-label { font-size: 10px; padding: 7px 10px; bottom: 14px; left: 14px; right: 14px; }
+      .mzaCard-head { inset: 16px auto auto 16px; right: 16px; }
+      .mzaCard-text { inset: auto 16px 62px 16px; }
+    }
+    @media (max-width: 500px) {
+      .mzaCarousel { --mzaC-slideW: min(94vw, 560px); }
+      .mzaCard-text, .mzaCard-title, .mzaCard-kicker { max-width: 100%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+
+    .cinema video,
+.cinema img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  filter: none !important;
+  transform: none;
+}
+
+.cinema video {
+  opacity: 1;
+  transition: none;
+  backdrop-filter: none;
+}
+
+.cinema video.is-ready {
+  opacity: 1;
+}
+
+.cinema img {
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+
+.cinema img.is-visible {
+  opacity: 1;
+}
+
+.markets-section__map-link {
+  display: block;
+  width: 100%;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: inherit;
+}
+
+.markets-section__widget-media {
+  position: relative;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.markets-section__widget-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease, filter 0.6s ease;
+}
+
+.markets-section__map-link:hover img {
+  transform: scale(1.04);
+  filter: brightness(0.75);
+}
+
+.markets-section__widget-overlay {
+  transition: background 0.4s ease;
+}
+
+.markets-section__map-link:hover .markets-section__widget-overlay {
+  background: rgba(3, 7, 12, 0.45);
+}
+
+.markets-section__map-link:focus-visible {
+  outline: 2px solid #c9a45c;
+  outline-offset: 5px;
+}
+
+/* ============================================================
+   RESPONSIVIDADE MOBILE — REFINAMENTO
+   (colar no fim do <style>, depois do prefers-reduced-motion)
+   ============================================================ */
+
+/* ---------- TABLETS / MOBILE LANDSCAPE (≤1100px) ---------- */
+@media (max-width: 1100px) {
+  /* Header: dropdown do menu com scroll e sem underline animado */
+  .topbar {
+    padding: 0 clamp(18px, 3vw, 40px);
+    height: 84px;
+  }
+  .nav-links {
+    top: 84px;
+    padding: 18px clamp(18px, 3vw, 40px) 24px;
+    gap: 0;
+    max-height: calc(100vh - 84px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .nav-links a {
+    width: 100%;
+    padding: 14px 0;
+    font-size: 14px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .nav-links a:last-child { border-bottom: none; }
+  .nav-links a::after { display: none; }
+
+  /* Secções: paddings fluidos em vez de fixos */
+  .news-section {
+    padding: clamp(64px, 8vw, 100px) clamp(18px, 5vw, 6%) clamp(80px, 10vw, 130px);
+  }
+  .jornal-section {
+    padding: clamp(72px, 9vw, 120px) clamp(18px, 5vw, 6%);
+  }
+  .markets-section {
+    padding: clamp(64px, 8vw, 100px) clamp(18px, 5vw, 6%);
+  }
+  .about-section {
+    padding-left:  clamp(18px, 5vw, 96px);
+    padding-right: clamp(18px, 5vw, 96px);
+  }
+
+  /* Tabs mais compactas */
+  .news-tabs {
+    gap: 8px;
+    margin-bottom: clamp(32px, 5vw, 50px);
+    padding: 0 8px;
+  }
+  .news-tabs__btn {
+    padding: 11px 20px;
+    font-size: 11px;
+  }
+
+  /* Carrossel: permitir scroll vertical da página */
+  .mzaCarousel { --mzaC-slideW: min(92vw, 680px); touch-action: pan-y; }
+  .mzaCard-text { -webkit-line-clamp: 2; }
+
+  /* Anel 3D: permitir scroll vertical */
+  .jornalRing-dragger { touch-action: pan-y; }
+}
+
+/* ---------- MOBILE PORTRAIT (≤768px) ---------- */
+@media (max-width: 768px) {
+  /* Header compacto */
+  .topbar { height: 76px; padding: 0 18px; }
+  .brand {
+    gap: 10px;
+    font-size: 14px;
+    letter-spacing: .14em;
+  }
+  .brand-mark   { width: 34px; height: 30px; }
+  .brand-divider { display: none; }
+  .nav-links     { top: 76px; }
+
+  /* Hero: evitar overflow horizontal do título */
+  h1 { overflow-wrap: break-word; }
+
+  /* Secções */
+  .section { padding: clamp(60px, 10vw, 100px) clamp(18px, 5vw, 32px); }
+  .news-section   { padding: 56px 18px 80px; }
+  .jornal-section { padding: 64px 18px; }
+  .markets-section{ padding: 56px 18px; gap: 24px; }
+
+  /* Section head */
+  .section-head { margin-bottom: 36px; padding: 0 4px; }
+  .section-head h2 { font-size: clamp(26px, 6.5vw, 36px); }
+  .section-lead    { font-size: 14px; }
+
+  /* Tabs em scroll horizontal (uma só linha) */
+  .news-tabs {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    gap: 6px;
+    margin: 0 0 32px;
+    padding: 0 18px 6px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .news-tabs::-webkit-scrollbar { display: none; }
+  .news-tabs__btn {
+    flex: 0 0 auto;
+    padding: 10px 16px;
+    font-size: 10px;
+    letter-spacing: .04em;
+  }
+
+  /* mzaCarousel */
+  .mzaCarousel {
+    --mzaC-slideW: min(94vw, 560px);
+    height: clamp(340px, 60vh, 480px);
+    padding: 0 10px;
+    touch-action: pan-y;
+  }
+  .mzaCarousel-prev,
+  .mzaCarousel-next {
+    width: 38px;
+    height: 38px;
+    font-size: 18px;
+  }
+  .mzaCarousel-prev { margin-left: 2px; }
+  .mzaCarousel-next { margin-right: 2px; }
+  .mzaCarousel-pagination { bottom: 10px; }
+
+  .mzaCard-head  { inset: 16px auto auto 16px; right: 16px; }
+  .mzaCard-title { font-size: clamp(17px, 4.4vw, 22px); line-height: 1.18; }
+  .mzaCard-kicker{ margin-top: 8px; font-size: 10px; }
+  .mzaCard-text  {
+    inset: auto 14px 62px 14px;
+    padding: 12px 14px;
+    font-size: 12px;
+    line-height: 1.55;
+    -webkit-line-clamp: 3;
+    max-width: none;
+  }
+  .mzaCard-actions { inset: auto auto 14px 14px; }
+  .mzaBtn { padding: 11px 20px; font-size: 10px; }
+
+  /* Cards de notícias (Fontes / APIs / Recursos) */
+  .news-grid {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+  .news-card__thumb {
+    aspect-ratio: 16/9;
+    padding: 14px;
+  }
+  .news-card h3 { font-size: 16px; }
+  .news-card p  { font-size: 13px; }
+  .news-card code {
+    font-size: 10px;
+    padding: 5px 8px;
+    margin-top: 8px;
+  }
+
+  /* Jornal Ring */
+  .jornal-section__title {
+    font-size: clamp(20px, 5.2vw, 30px);
+    padding: 0 12px;
+    margin-bottom: 32px;
+    line-height: 1.15;
+  }
+  .jornalRing-wrap  { height: 420px; }
+  .jornalRing-container {
+    width: 210px;
+    height: 300px;
+    perspective: 1400px;
+  }
+  .jornalRing-img .img-number {
+    font-size: 10px;
+    padding: 3px 8px;
+    top: 10px;
+    right: 10px;
+  }
+  .jornalRing-img .img-label {
+    font-size: 10px;
+    padding: 7px 10px;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+  }
+  .jornalRing-hint {
+    font-size: 10px;
+    padding: 0 16px;
+    margin-top: 12px;
+    line-height: 1.6;
+    letter-spacing: .12em;
+  }
+
+  /* Markets */
+  .markets-section__widget { padding: 12px; }
+  .markets-section__credit { font-size: 9px; }
+
+  /* Modais */
+  .video-modal__box   { width: min(880px, 94vw); }
+  .video-modal__close { top: -38px; right: 0; font-size: 18px; }
+
+  .demo-modal   { padding: 16px; }
+  .modal-panel  { padding: 30px 22px 24px; }
+  .modal-panel h2 { font-size: 23px; }
+}
+
+/* ---------- ECRÃS MUITO PEQUENOS (≤420px) ---------- */
+@media (max-width: 420px) {
+  .topbar { height: 68px; padding: 0 14px; }
+  .brand {
+    font-size: 12px;
+    letter-spacing: .12em;
+    gap: 8px;
+  }
+  .brand-mark { width: 28px; height: 26px; }
+  .nav-links  { top: 68px; padding: 14px 16px 20px; }
+  .nav-links a { padding: 13px 0; font-size: 13px; }
+  .menu-toggle { width: 42px; height: 42px; }
+
+  /* Título hero mais seguro contra overflow */
+  h1 {
+    font-size: clamp(30px, 9.5vw, 42px);
+    line-height: 1.05;
+  }
+
+  /* Tabs */
+  .news-tabs__btn {
+    padding: 9px 13px;
+    font-size: 9px;
+    letter-spacing: .02em;
+  }
+
+  /* Carrossel */
+  .mzaCarousel {
+    --mzaC-slideW: min(96vw, 420px);
+    height: clamp(320px, 56vh, 440px);
+    padding: 0 8px;
+  }
+  .mzaCard-text {
+    -webkit-line-clamp: 2;
+    font-size: 11px;
+    padding: 10px 12px;
+  }
+
+  /* Secções */
+  .news-section    { padding: 44px 12px 64px; }
+  .jornal-section  { padding: 52px 12px; }
+  .markets-section { padding: 44px 12px; }
+
+  /* Jornal Ring */
+  .jornalRing-wrap  { height: 380px; }
+  .jornalRing-container {
+    width: 180px;
+    height: 260px;
+    perspective: 1200px;
+  }
+  .jornalRing-hint { font-size: 9px; padding: 0 12px; }
+
+  /* Modal */
+  .demo-modal  { padding: 12px; }
+  .modal-panel { padding: 26px 18px 22px; }
+  .modal-panel h2 { font-size: 20px; }
+  .modal-panel input,
+  .modal-panel textarea { padding: 11px 12px; font-size: 13px; }
+}
+
+/* ---------- LANDSCAPE CURTO (ex.: telemóvel deitado) ---------- */
+@media (max-width: 900px) and (orientation: landscape) and (max-height: 500px) {
+  .mzaCarousel { height: 320px; }
+  .jornalRing-wrap { height: 340px; }
+}
+  </style>
+</head>
+
+<body>
+  <!-- ============================================================
+       HERO UBUNTO
+  ============================================================ -->
+  <main class="hero" id="inicio" aria-label="Apresentação UBUNTO SPACE">
+    <div class="cinema" id="cinema" aria-hidden="true">
+      <img class="fallback-opening" id="openingFallback" src="assets/spotmine-opening.jpg" alt="">
+      <img class="fallback-final" id="finalFallback" src="assets/spotmine-petroleum-final.jpg" alt="">
+      <video id="journeyVideo" muted playsinline preload="auto" poster="assets/spotmine-opening.jpg">
+        <source src="header_petroleo.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="scan-line" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <a class="brand" href="#inicio" aria-label="UBUNTO SPACE — início">
+        <svg class="brand-mark" viewBox="0 0 58 48" aria-hidden="true">
+          <path d="M1 39 22 12l9 11-13 16H1Zm19 0L43 5l14 18-12 16H20Zm14 0 9-12 10 12H34Z"/>
+        </svg>
+        <span>UBUNTO SPACE</span>
+        <span class="brand-divider" aria-hidden="true"></span>
+      </a>
+
+      <nav class="nav-links" id="mainNav" aria-label="Navegação principal">
+        <a href="/ubuntu_space_project\index.html">Sobre</a>
+        <a href="#fontes">Fontes &amp; APIs</a>
+        <a href="#recursos">Recursos</a>
+        <a href="#mapa">Mapa</a>
+      </nav>
+
+      <a class="nav-action" href="#demonstracao" data-open-demo>
+        SOLICITAR DEMONSTRAÇÃO <span class="arrow">→</span>
+      </a>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu" aria-controls="mainNav" aria-expanded="false">
+        <span></span>
+      </button>
+    </header>
+
+    <div class="coordinates" aria-label="Referência geográfica ilustrativa">
+      <span class="target" aria-hidden="true"></span>
+      <span><strong>OBSERVAÇÃO</strong><br>ANGOLA · COSTA ATLÂNTICA</span>
+    </div>
+<section class="hero-content" aria-labelledby="heroTitle">
+
+  <div class="eyebrow">
+    INTELIGÊNCIA GEOESPACIAL <span>·</span> IA <span>·</span> EXPLORAÇÃO
+  </div>
+
+  <h1 id="heroTitle">
+    MAPEAMENTO DE<br>
+    <span class="gold">RECURSOS MINERAIS</span><br>
+    E PETROLÍFEROS.
+  </h1>
+
+  <p class="intro">
+    Analisamos o território com imagens de satélite e inteligência artificial para identificar áreas com potencial de exploração.
+  </p>
+
+  <div class="hero-actions">
+    <a class="button-primary" href="/ubuntu_space_project\index.html">
+      EXPLORAR A PLATAFORMA <span class="arrow">→</span>
+    </a>
+
+    <a class="button-secondary" href="#fontes">
+      NOSSA TECNOLOGIA <span class="play-icon">▶</span>
+    </a>
+  </div>
+
+</section>
+
+    <aside class="side-note" aria-hidden="true">
+      <span>OBSERVAÇÃO ORBITAL<br>ANÁLISE GEOESPACIAL<br>RECURSOS DO SUBSOLO</span>
+    </aside>
+
+    <div class="bottom-data" aria-label="Capacidades da plataforma">
+      <div class="data-item">
+        <svg class="data-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="m7 13 7-7 5 5-7 7-5-5Zm14 14 7-7 5 5-7 7-5-5ZM16 16l8 8m-4-14 5-5 5 5-5 5m-14 14-5 5-5-5 5-5"/>
+          <path d="m4 27 9-9m9 9 9-9"/>
+        </svg>
+        <span>Observação<br>por Satélite</span>
+      </div>
+      <span class="data-divider"></span>
+      <div class="data-item">
+        <svg class="data-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="m20 4 16 9-16 9L4 13l16-9Zm-16 16 16 9 16-9M4 27l16 9 16-9"/>
+        </svg>
+        <span>Dados Geológicos<br>de Precisão</span>
+      </div>
+      <span class="data-divider"></span>
+      <div class="data-item">
+        <svg class="data-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="8" y="8" width="24" height="24" rx="3"/><path d="M14 14h12v12H14zM14 2v6m6-6v6m6-6v6M14 32v6m6-6v6m6-6v6M2 14h6m-6 6h6m-6 6h6m24-12h6m-6 6h6m-6 6h6"/>
+        </svg>
+        <span>Inteligência Artificial<br>e Aprendizagem Automática</span>
+      </div>
+      <span class="data-divider"></span>
+      <div class="data-item">
+        <svg class="data-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M20 4 36 13 20 36 4 13 20 4Z"/><path d="m4 13 32 0M14 13l6 23 6-23M14 4l-4 9m16-9 4 9"/>
+        </svg>
+        <span>Exploração Mineral<br>e Petrolífera</span>
+      </div>
+      <div class="bottom-caption">UBUNTO SPACE<small>MAPEANDO O FUTURO<br>DA EXPLORAÇÃO</small></div>
+    </div>
+
+    <div class="video-status"><span class="status-dot"></span><span id="videoStatus">JORNADA DE OBSERVAÇÃO</span></div>
+    <div class="journey-progress" aria-label="Progresso da jornada cinematográfica"><span id="progressBar"></span></div>
+  </main>
+
+
+  <!-- ============================================================
+       SECTION 3 — JORNAL RING 3D (imagens locais)
+  ============================================================ -->
+  <section class="jornal-section" id="recursos">
+    <span class="section-kicker">01 · RECURSOS MINERAIS</span>
+    <h2 class="jornal-section__title">DESCUBRA O POTENCIAL MINERAL E PETROLÍFERO DE CADA REGIÃO.</h2>
+
+    <div class="jornalRing-wrap">
+      <div class="jornalRing-container">
+        <div id="jornalRing" class="jornalRing"></div>
+      </div>
+      <div class="jornalRing-vignette"></div>
+      <div id="jornalDragger" class="jornalRing-dragger"></div>
+      <p class="jornalRing-hint">  Analisamos o território com satélites e inteligência artificial para identificar áreas com potencial de exploração. </p>
+    </div>
+  </section>
+
+
+
+  <!-- Modal de vídeo local -->
+  <div class="video-modal" id="video-modal">
+    <div class="video-modal__backdrop" data-close></div>
+    <div class="video-modal__box">
+      <button class="video-modal__close" data-close aria-label="Fechar">✕</button>
+      <div class="video-modal__frame">
+        <video id="video-modal__video" controls playsinline preload="metadata">
+          <source src="assets/video-institucional.mp4" type="video/mp4">
+          O seu navegador não suporta vídeo HTML5.
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SECTION 2 — NEWS TABS + mzaCarousel 3D
+  ============================================================ -->
+  <section class="section news-section" id="fontes">
+    <div class="section-head">
+      <span class="section-kicker">02 · FONTES &amp; APIs</span>
+      <h2>Dados <span class="gold">verificáveis</span>, acesso programático.</h2>
+      <p class="section-lead">
+        A plataforma integra fontes oficiais de observação terrestre e informação geológica,
+        consultadas via APIs públicas documentadas.
+      </p>
+    </div>
+
+    <div class="news-tabs" role="tablist">
+      <button class="news-tabs__btn is-active" data-tab="fontes" role="tab" type="button">Fontes de Dados</button>
+      <button class="news-tabs__btn" data-tab="apis" role="tab" type="button">APIs</button>
+      <button class="news-tabs__btn" data-tab="recursos-list" role="tab" type="button">Recursos Minerais</button>
+    </div>
+
+    <div class="news-panel is-active" data-panel="fontes">
+      <div class="mzaCarousel" id="mzaCarousel" aria-roledescription="carousel" aria-label="Fontes de dados">
+        <div class="mzaCarousel-viewport" tabindex="0">
+          <div class="mzaCarousel-track">
+            <article class="mzaCarousel-slide" role="group" aria-roledescription="slide" aria-label="1 de 4">
+              <div class="mzaCard" style="--mzaCard-bg:url('assets/fontes/nasa-emit.jpg'), linear-gradient(135deg,#0b1f33,#07111d);">
+                <header class="mzaCard-head mzaPar-1">
+                  <h2 class="mzaCard-title">NASA EMIT</h2>
+                  <p class="mzaCard-kicker">HIPERESPECTRAL · NASA</p>
+                </header>
+                <p class="mzaCard-text mzaPar-2">Dados hiperespectrais para identificação de minerais e alterações à superfície.</p>
+                <footer class="mzaCard-actions mzaPar-3">
+                  <a class="mzaBtn" href="https://earth.jpl.nasa.gov/emit/" target="_blank" rel="noopener">Abrir fonte</a>
+                </footer>
+              </div>
+            </article>
+            <article class="mzaCarousel-slide" role="group" aria-roledescription="slide" aria-label="2 de 4">
+              <div class="mzaCard" style="--mzaCard-bg:url('assets/fontes/landsat.jpg'), linear-gradient(135deg,#1a1327,#07111d);">
+                <header class="mzaCard-head mzaPar-1">
+                  <h2 class="mzaCard-title">NASA / USGS Landsat</h2>
+                  <p class="mzaCard-kicker">MULTIESPECTRAL · NASA+USGS</p>
+                </header>
+                <p class="mzaCard-text mzaPar-2">Imagens multiespectrais para análise da superfície, estruturas e alterações ao longo do tempo.</p>
+                <footer class="mzaCard-actions mzaPar-3">
+                  <a class="mzaBtn" href="https://landsat.gsfc.nasa.gov/" target="_blank" rel="noopener">Abrir fonte</a>
+                </footer>
+              </div>
+            </article>
+            <article class="mzaCarousel-slide" role="group" aria-roledescription="slide" aria-label="3 de 4">
+              <div class="mzaCard" style="--mzaCard-bg:url('assets/fontes/usgs.jpg'), linear-gradient(135deg,#0f2520,#07111d);">
+                <header class="mzaCard-head mzaPar-1">
+                  <h2 class="mzaCard-title">USGS</h2>
+                  <p class="mzaCard-kicker">GEOLOGIA · MAPAS</p>
+                </header>
+                <p class="mzaCard-text mzaPar-2">Mapas, registos e informação geológica complementar.</p>
+                <footer class="mzaCard-actions mzaPar-3">
+                  <a class="mzaBtn" href="https://www.usgs.gov/" target="_blank" rel="noopener">Abrir fonte</a>
+                </footer>
+              </div>
+            </article>
+            <article class="mzaCarousel-slide" role="group" aria-roledescription="slide" aria-label="4 de 4">
+              <div class="mzaCard" style="--mzaCard-bg:url('assets/fontes/sentinel-2.jpg'), linear-gradient(135deg,#1a1a10,#07111d);">
+                <header class="mzaCard-head mzaPar-1">
+                  <h2 class="mzaCard-title">Copernicus Sentinel-2</h2>
+                  <p class="mzaCard-kicker">MULTIESPECTRAL · ESA</p>
+                </header>
+                <p class="mzaCard-text mzaPar-2">Imagens multiespectrais para análise da superfície terrestre.</p>
+                <footer class="mzaCard-actions mzaPar-3">
+                  <a class="mzaBtn" href="https://dataspace.copernicus.eu/" target="_blank" rel="noopener">Abrir fonte</a>
+                </footer>
+              </div>
+            </article>
+          </div>
+        </div>
+        <div class="mzaCarousel-controls" aria-label="Controlos">
+          <button class="mzaCarousel-prev" aria-label="Slide anterior" type="button">‹</button>
+          <button class="mzaCarousel-next" aria-label="Slide seguinte" type="button">›</button>
+        </div>
+        <div class="mzaCarousel-pagination" role="tablist" aria-label="Navegação de slides"></div>
+        <div class="mzaCarousel-progress" aria-hidden="true"><span class="mzaCarousel-progressBar"></span></div>
+      </div>
+    </div>
+
+    <div class="news-panel" data-panel="apis">
+      <div class="news-grid">
+        <article class="news-card">
+          <a href="https://earth.jpl.nasa.gov/emit/" target="_blank" rel="noopener">
+            <div class="news-card__thumb"><span class="thumb-tag">HTTP · JSON</span></div>
+            <h3>NASA EMIT</h3>
+            <p>Catálogo de cenas hiperespectrais e metadados por região de interesse.</p>
+            <code>GET earthdata.nasa.gov/api/emit/scenes</code>
+          </a>
+        </article>
+        <article class="news-card">
+          <a href="https://earthexplorer.usgs.gov/" target="_blank" rel="noopener">
+            <div class="news-card__thumb"><span class="thumb-tag">REST · USGS</span></div>
+            <h3>Landsat / USGS</h3>
+            <p>Pesquisa e download de imagens Landsat por coordenadas e data.</p>
+            <code>GET earthexplorer.usgs.gov/inventory/json</code>
+          </a>
+        </article>
+        <article class="news-card">
+          <a href="https://dataspace.copernicus.eu/" target="_blank" rel="noopener">
+            <div class="news-card__thumb"><span class="thumb-tag">STAC · COPERNICUS</span></div>
+            <h3>Sentinel-2</h3>
+            <p>Pesquisa de produtos Sentinel-2 e download via Copernicus Data Space.</p>
+            <code>GET dataspace.copernicus.eu/api/catalog/search</code>
+          </a>
+        </article>
+        <article class="news-card">
+          <a href="https://mrdata.usgs.gov/" target="_blank" rel="noopener">
+            <div class="news-card__thumb"><span class="thumb-tag">OGC · WMS/WFS</span></div>
+            <h3>USGS Map Services</h3>
+            <p>Mapas geológicos e cartografia vectorial via serviços OGC.</p>
+            <code>GET mrdata.usgs.gov/map/wms</code>
+          </a>
+        </article>
+        <article class="news-card">
+          <a href="#" data-open-demo>
+            <div class="news-card__thumb"><span class="thumb-tag">IA · INTERNA</span></div>
+            <h3>Modelo de Potencial Mineral</h3>
+            <p>Inferência sobre as variáveis geológicas recolhidas para um recurso e região.</p>
+            <code>POST /api/v1/inference</code>
+          </a>
+        </article>
+        <article class="news-card">
+          <a href="#" data-open-demo>
+            <div class="news-card__thumb"><span class="thumb-tag">INTERNA · RELATÓRIOS</span></div>
+            <h3>Relatório Técnico</h3>
+            <p>Geração de relatório com mapas, coordenadas, indicadores e metodologia.</p>
+            <code>POST /api/v1/reports</code>
+          </a>
+        </article>
+      </div>
+    </div>
+
+    <div class="news-panel" data-panel="recursos-list">
+      <div class="news-grid">
+        <article class="news-card"><a href="#recursos"><div class="news-card__thumb"><span class="thumb-tag">Au · OURO</span></div><h3>Ouro</h3><p>Alterações hidrotermais, zonas de silicificação e estruturas geológicas.</p></a></article>
+        <article class="news-card"><a href="#recursos"><div class="news-card__thumb"><span class="thumb-tag">C · DIAMANTE</span></div><h3>Diamante</h3><p>Formações associadas a kimberlitos e depósitos aluviais.</p></a></article>
+        <article class="news-card"><a href="#recursos"><div class="news-card__thumb"><span class="thumb-tag">CxHy · PETRÓLEO</span></div><h3>Petróleo &amp; Gás</h3><p>Bacias sedimentares, estruturas tectónicas e indicadores superficiais.</p></a></article>
+        <article class="news-card"><a href="#recursos"><div class="news-card__thumb"><span class="thumb-tag">Cu · COBRE</span></div><h3>Cobre</h3><p>Alterações hidrotermais e assinaturas espectrais de minerais associados.</p></a></article>
+        <article class="news-card"><a href="#recursos"><div class="news-card__thumb"><span class="thumb-tag">Li · LÍTIO</span></div><h3>Lítio</h3><p>Ambientes favoráveis a pegmatitos e salmouras.</p></a></article>
+        <article class="news-card"><a href="#recursos"><div class="news-card__thumb"><span class="thumb-tag">Fe · FERRO</span></div><h3>Ferro</h3><p>Formações ferríferas e assinaturas minerais.</p></a></article>
+        <article class="news-card"><a href="#recursos"><div class="news-card__thumb"><span class="thumb-tag">Co·Ni</span></div><h3>Cobalto &amp; Níquel</h3><p>Depósitos associados e formações ultramáficas.</p></a></article>
+        <article class="news-card"><a href="#recursos"><div class="news-card__thumb"><span class="thumb-tag">U · URÂNIO</span></div><h3>Urânio</h3><p>Contextos geológicos favoráveis a diferentes tipos de depósitos.</p></a></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 1 — ABOUT + VIDEO MODAL (vídeo local)
+  ============================================================ -->
+  <section class="section about-section" id="sobre">
+    <div class="about-section__grid">
+      <div class="about-section__text">
+        <span class="section-kicker">03 · QUEM SOMOS</span>
+        <h2>INTELIGÊNCIA <span class="accent">GEOESPACIAL</span> AO SERVIÇO DA EXPLORAÇÃO.</h2>
+        <p>
+          A <strong>UBUNTO SPACE</strong> é uma plataforma tecnológica que combina imagens de
+          satélite, dados geológicos, sensoriamento remoto e modelos de inteligência artificial
+          para identificar regiões com potencial de ocorrência de recursos minerais.
+        </p>
+        <p>
+          Transformamos grandes volumes de dados científicos em informação estruturada,
+          permitindo que empresas de mineração, investidores, geólogos e especialistas em
+          exploração investiguem regiões de interesse com maior eficiência.
+        </p>
+        <p>
+          A plataforma <strong>não substitui</strong> os métodos tradicionais de prospecção
+          geológica — complementa-os, ajudando a seleccionar áreas prioritárias para
+          investigações posteriores.
+        </p>
+        <button class="btn btn--primary" id="video-trigger" type="button">
+          Ver vídeo institucional <span>▶</span>
+        </button>
+      </div>
+
+      <div class="about-section__media">
+        <span class="media-coords">OBSERVAÇÃO ORBITAL · ANGOLA</span>
+        <button class="play-btn" id="video-trigger-2" aria-label="Reproduzir vídeo institucional" type="button">▶</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 4 — MARKETS → imagem local
+  ============================================================ -->
+<section class="markets-section" id="mapa">
+  <div class="markets-section__media">
+    <div class="markets-section__media-inner">
+      <span class="section-kicker">04 · OBSERVAÇÃO TERRESTRE</span>
+      <h3>O planeta inteiro como área de estudo.</h3>
+      <p>
+        Mapa interactivo para navegar, seleccionar regiões e visualizar imagens
+        de satélite e informação geográfica.
+      </p>
+    </div>
+  </div>
+
+  <div class="markets-section__widget">
+    <a href="/ubuntu_space_project/index.html" class="markets-section__map-link">
+      <div class="markets-section__widget-media">
+        <img src="assets/mapa-global.jpg" alt="Mapa global de observação terrestre" loading="lazy">
+        <div class="markets-section__widget-overlay">
+          <span>ACESSAR DASHBOARD</span>
+          <small>Disponível com ligação à internet</small>
+        </div>
+      </div>
+    </a>
+
+    <p class="markets-section__credit">
+      Observação terrestre via NASA GIBS
+    </p>
+  </div>
+</section>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <p class="site-footer__copy">© 2026 UBUNTO SPACE — GEOSPATIAL INTELLIGENCE</p>
+      <nav class="site-footer__menu">
+        <a href="/ubuntu_space_project\index.html">Sobre</a>
+        <a href="#fontes">Fontes</a>
+        <a href="#recursos">Recursos</a>
+        <a href="#mapa">Dashboard</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- DEMO MODAL -->
+  <div class="demo-modal" id="demoModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-panel">
+      <button class="modal-close" id="modalClose" aria-label="Fechar">×</button>
+      <div class="modal-kicker">UBUNTO SPACE · CONTACTO</div>
+      <h2 id="modalTitle">Descubra o potencial oculto.</h2>
+      <p>Deixe os seus dados para manifestar interesse numa demonstração da plataforma UBUNTO SPACE.</p>
+      <form id="demoForm">
+        <label for="demoName">Nome</label>
+        <input id="demoName" name="name" autocomplete="name" required placeholder="O seu nome">
+        <label for="demoEmail">E-mail profissional</label>
+        <input id="demoEmail" name="email" type="email" autocomplete="email" required placeholder="nome@empresa.com">
+        <label for="demoMessage">Como podemos ajudar?</label>
+        <textarea id="demoMessage" name="message" placeholder="Conte-nos brevemente sobre o seu interesse."></textarea>
+        <button type="submit">REGISTAR INTERESSE <span aria-hidden="true">→</span></button>
+        <div class="form-feedback" id="formFeedback" aria-live="polite"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SCRIPTS
+  ============================================================ -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script>
+  <script>
+    /* =========================================================
+       CONFIG ASSETS + HERO UBUNTO
+    ========================================================= */
+    const SPOTMINE_ASSETS = {
+      video: "header_petroleo.mp4",
+      opening: "assets/spotmine-opening.jpg",
+      final: "assets/spotmine-petroleum-final.jpg"
+    };
+
+    const video = document.getElementById("journeyVideo");
+    const cinema = document.getElementById("cinema");
+    const openingFallback = document.getElementById("openingFallback");
+    const finalFallback = document.getElementById("finalFallback");
+    const progressBar = document.getElementById("progressBar");
+    const videoStatus = document.getElementById("videoStatus");
+    const menuToggle = document.getElementById("menuToggle");
+    const mainNav = document.getElementById("mainNav");
+    const demoModal = document.getElementById("demoModal");
+    const modalClose = document.getElementById("modalClose");
+    const demoForm = document.getElementById("demoForm");
+    const formFeedback = document.getElementById("formFeedback");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    openingFallback.src = SPOTMINE_ASSETS.opening;
+    finalFallback.src = SPOTMINE_ASSETS.final;
+    video.querySelector("source").src = SPOTMINE_ASSETS.video;
+    video.load();
+
+    function setFinalFrame() {
+      cinema.classList.add("is-final");
+      videoStatus.textContent = "DESTINO · INTELIGÊNCIA DO SUBSOLO";
+      progressBar.style.width = "100%";
+    }
+
+    function updateVideoProgress() {
+      if (!Number.isFinite(video.duration) || video.duration <= 0) return;
+      const progress = Math.min(100, (video.currentTime / video.duration) * 100);
+      progressBar.style.width = progress + "%";
+      if (video.currentTime < 1.8) videoStatus.textContent = "OBSERVAÇÃO ORBITAL";
+      else if (video.currentTime < 4.7) videoStatus.textContent = "APROXIMAÇÃO · ANGOLA";
+      else videoStatus.textContent = "ANÁLISE DO SUBSOLO";
+    }
+
+    video.addEventListener("loadeddata", () => {
+      video.classList.add("is-ready");
+      openingFallback.classList.add("is-hidden");
+    });
+    video.addEventListener("timeupdate", updateVideoProgress);
+    video.addEventListener("ended", setFinalFrame);
+    video.addEventListener("error", () => {
+      video.classList.remove("is-ready");
+      videoStatus.textContent = "IMAGEM DE OBSERVAÇÃO";
+    });
+
+    if (!reduceMotion) {
+      const playAttempt = video.play();
+      if (playAttempt && typeof playAttempt.catch === "function") {
+        playAttempt.catch(() => {
+          videoStatus.textContent = "OBSERVAÇÃO · REPRODUÇÃO DISPONÍVEL";
+        });
+      }
+    } else {
+      video.pause();
+      videoStatus.textContent = "OBSERVAÇÃO · MOVIMENTO REDUZIDO";
+    }
+
+    /* Navegação móvel */
+    menuToggle.addEventListener("click", () => {
+      const expanded = menuToggle.getAttribute("aria-expanded") === "true";
+      menuToggle.setAttribute("aria-expanded", String(!expanded));
+      menuToggle.setAttribute("aria-label", expanded ? "Abrir menu" : "Fechar menu");
+      mainNav.classList.toggle("is-open", !expanded);
+    });
+    mainNav.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        mainNav.classList.remove("is-open");
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.setAttribute("aria-label", "Abrir menu");
+      });
+    });
+
+    /* Demo modal */
+    function openDemo(event) {
+      if (event) event.preventDefault();
+      demoModal.classList.add("is-open");
+      document.body.style.overflow = "hidden";
+      setTimeout(() => document.getElementById("demoName").focus(), 80);
+    }
+    function closeDemo() {
+      demoModal.classList.remove("is-open");
+      document.body.style.overflow = "";
+    }
+    document.querySelectorAll("[data-open-demo]").forEach(el => el.addEventListener("click", openDemo));
+    modalClose.addEventListener("click", closeDemo);
+    demoModal.addEventListener("click", event => { if (event.target === demoModal) closeDemo(); });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && demoModal.classList.contains("is-open")) closeDemo();
+    });
+    demoForm.addEventListener("submit", event => {
+      event.preventDefault();
+      formFeedback.textContent = "Interface preparada. Ligue este formulário ao seu serviço de contacto.";
+    });
+
+    /* GSAP entrada do hero */
+    function startSpotmineMotion() {
+      if (reduceMotion || !window.gsap) {
+        document.querySelectorAll(".topbar, .hero-content, .coordinates, .side-note, .bottom-data, .video-status")
+          .forEach(el => { el.style.opacity = "1"; el.style.transform = "none"; });
+        return;
+      }
+      const gsap = window.gsap;
+      gsap.set(".topbar", { y: -18, opacity: 0 });
+      gsap.set(".eyebrow", { y: 14, opacity: 0 });
+      gsap.set("h1", { y: 28, opacity: 0 });
+      gsap.set(".intro", { y: 18, opacity: 0 });
+      gsap.set(".hero-actions", { y: 16, opacity: 0 });
+      gsap.set(".coordinates, .side-note", { opacity: 0 });
+      gsap.set(".bottom-data", { y: 18, opacity: 0 });
+      gsap.set(".video-status", { opacity: 0 });
+
+      const entrance = gsap.timeline({ defaults: { ease: "power3.out" } });
+      entrance
+        .to(".topbar", { y: 0, opacity: 1, duration: 1.05 }, 0.12)
+        .to(".eyebrow", { y: 0, opacity: 1, duration: .7 }, 0.48)
+        .to("h1", { y: 0, opacity: 1, duration: 1.05 }, 0.62)
+        .to(".intro", { y: 0, opacity: 1, duration: .8 }, 1.02)
+        .to(".hero-actions", { y: 0, opacity: 1, duration: .75 }, 1.2)
+        .to(".coordinates, .side-note", { opacity: 1, duration: .8 }, 1.35)
+        .to(".bottom-data", { y: 0, opacity: 1, duration: .9 }, 1.48)
+        .to(".video-status", { opacity: 1, duration: .6 }, 1.65);
+      gsap.fromTo(".scan-line", { x: "-10vw", opacity: 0 }, { x: "100vw", opacity: .35, duration: 4.8, ease: "none", delay: 1.1 });
+    }
+    window.addEventListener("load", startSpotmineMotion, { once: true });
+
+    /* =========================================================
+       VIDEO MODAL (vídeo local)
+    ========================================================= */
+    (function videoModal() {
+      const t1 = document.getElementById("video-trigger");
+      const t2 = document.getElementById("video-trigger-2");
+      const m = document.getElementById("video-modal");
+      const v = document.getElementById("video-modal__video");
+      function open() {
+        if (!v) return;
+        try {
+          v.currentTime = 0;
+          const p = v.play();
+          if (p && typeof p.catch === "function") p.catch(() => {});
+        } catch (e) {}
+        m.classList.add("is-open");
+        document.body.style.overflow = "hidden";
+      }
+      function close() {
+        if (v) { try { v.pause(); } catch (e) {} }
+        m.classList.remove("is-open");
+        document.body.style.overflow = "";
+      }
+      [t1, t2].forEach(t => t && t.addEventListener("click", open));
+      m.querySelectorAll("[data-close]").forEach(el => el.addEventListener("click", close));
+      document.addEventListener("keydown", e => {
+        if (e.key === "Escape" && m.classList.contains("is-open")) close();
+      });
+    })();
+
+    /* =========================================================
+       NEWS TABS
+    ========================================================= */
+    (function tabs() {
+      const buttons = document.querySelectorAll(".news-tabs__btn");
+      const panels = document.querySelectorAll(".news-panel");
+      buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          const target = btn.getAttribute("data-tab");
+          buttons.forEach(b => b.classList.remove("is-active"));
+          panels.forEach(p => p.classList.remove("is-active"));
+          btn.classList.add("is-active");
+          document.querySelector('[data-panel="' + target + '"]').classList.add("is-active");
+        });
+      });
+    })();
+
+    /* =========================================================
+       mzaCarousel — 3D glass cards
+    ========================================================= */
+    (function mzaCarouselInit() {
+      const root = document.getElementById("mzaCarousel");
+      if (!root || typeof ResizeObserver === "undefined") return;
+
+      function MzaCarousel(root, opts) {
+        opts = opts || {};
+        this.root = root;
+        this.viewport = root.querySelector(".mzaCarousel-viewport");
+        this.track = root.querySelector(".mzaCarousel-track");
+        this.slides = Array.from(root.querySelectorAll(".mzaCarousel-slide"));
+        this.prevBtn = root.querySelector(".mzaCarousel-prev");
+        this.nextBtn = root.querySelector(".mzaCarousel-next");
+        this.pagination = root.querySelector(".mzaCarousel-pagination");
+        this.progressBar = root.querySelector(".mzaCarousel-progressBar");
+        this.n = this.slides.length;
+        this.state = { index: 0, pos: 0, width: 0, gap: 28, dragging: false, pointerId: null, x0: 0, v: 0, t0: 0, animating: false, hovering: false, startTime: 0, pausedAt: 0 };
+        this.opts = Object.assign({ gap: 28, peek: 0.15, rotateY: 34, zDepth: 150, scaleDrop: 0.09, blurMax: 2.0, activeLeftBias: 0.12, interval: 6000, transitionMs: 900 }, opts);
+        this._init();
+      }
+      MzaCarousel.prototype._init = function () { this._setupDots(); this._bind(); this._measure(); this.goTo(0, false); this._startCycle(); this._loop(); };
+      MzaCarousel.prototype._setupDots = function () {
+        const self = this; this.pagination.innerHTML = "";
+        this.dots = this.slides.map((_, i) => {
+          const b = document.createElement("button");
+          b.type = "button"; b.className = "mzaCarousel-dot"; b.setAttribute("role", "tab");
+          b.setAttribute("aria-label", "Ir para o slide " + (i + 1));
+          b.addEventListener("click", () => self.goTo(i));
+          self.pagination.appendChild(b); return b;
+        });
+      };
+      MzaCarousel.prototype._bind = function () {
+        const self = this;
+        this.prevBtn.addEventListener("click", () => self.prev());
+        this.nextBtn.addEventListener("click", () => self.next());
+        this.root.addEventListener("keydown", e => { if (e.key === "ArrowLeft") self.prev(); if (e.key === "ArrowRight") self.next(); });
+        const pe = this.viewport;
+        pe.addEventListener("pointerdown", e => self._onDragStart(e));
+        pe.addEventListener("pointermove", e => self._onDragMove(e));
+        pe.addEventListener("pointerup", e => self._onDragEnd(e));
+        pe.addEventListener("pointercancel", e => self._onDragEnd(e));
+        this.root.addEventListener("mouseenter", () => { self.state.hovering = true; self.state.pausedAt = performance.now(); });
+        this.root.addEventListener("mouseleave", () => { if (self.state.pausedAt) { self.state.startTime += performance.now() - self.state.pausedAt; self.state.pausedAt = 0; } self.state.hovering = false; });
+        this.ro = new ResizeObserver(() => self._measure());
+        this.ro.observe(this.viewport);
+      };
+      MzaCarousel.prototype._measure = function () {
+        const viewRect = this.viewport.getBoundingClientRect();
+        const rootRect = this.root.getBoundingClientRect();
+        const pagRect = this.pagination.getBoundingClientRect();
+        const bottomGap = Math.max(12, Math.round(rootRect.bottom - pagRect.bottom));
+        const pagSpace = pagRect.height + bottomGap;
+        const availH = viewRect.height - pagSpace;
+        const cardH = Math.max(280, Math.min(560, Math.round(availH)));
+        this.state.width = viewRect.width; this.state.height = viewRect.height; this.state.gap = this.opts.gap;
+        this.slideW = Math.min(880, this.state.width * (1 - this.opts.peek * 2));
+        this.root.style.setProperty("--mzaPagH", pagSpace + "px");
+        this.root.style.setProperty("--mzaCardH", cardH + "px");
+      };
+      MzaCarousel.prototype._onDragStart = function (e) {
+        if (e.pointerType === "mouse" && e.button !== 0) return;
+        this.state.dragging = true; this.state.pointerId = e.pointerId;
+        this.viewport.setPointerCapture(e.pointerId);
+        this.state.x0 = e.clientX; this.state.t0 = performance.now(); this.state.v = 0;
+        this.state.pausedAt = performance.now();
+      };
+      MzaCarousel.prototype._onDragMove = function (e) {
+        if (!this.state.dragging || e.pointerId !== this.state.pointerId) return;
+        const dx = e.clientX - this.state.x0;
+        const dt = Math.max(16, performance.now() - this.state.t0);
+        this.state.v = dx / dt;
+        const span = this.slideW + this.state.gap;
+        this.state.pos = this._mod(this.state.index - dx / span, this.n);
+        this._render();
+      };
+      MzaCarousel.prototype._onDragEnd = function (e) {
+        if (!this.state.dragging || (e && e.pointerId !== this.state.pointerId)) return;
+        this.state.dragging = false;
+        try { if (this.state.pointerId != null) this.viewport.releasePointerCapture(this.state.pointerId); } catch (err) {}
+        this.state.pointerId = null;
+        if (this.state.pausedAt) { this.state.startTime += performance.now() - this.state.pausedAt; this.state.pausedAt = 0; }
+        const v = this.state.v, threshold = 0.18;
+        const target = Math.round(this.state.pos - Math.sign(v) * (Math.abs(v) > threshold ? 0.5 : 0));
+        this.goTo(this._mod(target, this.n));
+      };
+      MzaCarousel.prototype._startCycle = function () { this.state.startTime = performance.now(); this._renderProgress(0); };
+      MzaCarousel.prototype._loop = function () {
+        const self = this;
+        function step(t) {
+          if (!self.state.dragging && !self.state.hovering && !self.state.animating) {
+            const elapsed = t - self.state.startTime;
+            const p = Math.min(1, elapsed / self.opts.interval);
+            self._renderProgress(p);
+            if (elapsed >= self.opts.interval) self.next();
+          }
+          requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      };
+      MzaCarousel.prototype._renderProgress = function (p) { this.progressBar.style.transform = "scaleX(" + p + ")"; };
+      MzaCarousel.prototype.prev = function () { this.goTo(this._mod(this.state.index - 1, this.n)); };
+      MzaCarousel.prototype.next = function () { this.goTo(this._mod(this.state.index + 1, this.n)); };
+      MzaCarousel.prototype.goTo = function (i, animate) {
+        animate = animate !== false;
+        const self = this;
+        const start = this.state.pos || this.state.index;
+        const end = this._nearest(start, i);
+        const dur = animate ? this.opts.transitionMs : 0;
+        const t0 = performance.now();
+        const ease = x => 1 - Math.pow(1 - x, 4);
+        this.state.animating = true;
+        function step(now) {
+          const t = Math.min(1, (now - t0) / dur);
+          const p = dur ? ease(t) : 1;
+          self.state.pos = start + (end - start) * p;
+          self._render();
+          if (t < 1) requestAnimationFrame(step); else self._afterSnap(i);
+        }
+        requestAnimationFrame(step);
+      };
+      MzaCarousel.prototype._afterSnap = function (i) {
+        this.state.index = this._mod(Math.round(this.state.pos), this.n);
+        this.state.pos = this.state.index;
+        this.state.animating = false;
+        this._render(true); this._startCycle();
+      };
+      MzaCarousel.prototype._nearest = function (from, target) {
+        let d = target - Math.round(from);
+        if (d > this.n / 2) d -= this.n;
+        if (d < -this.n / 2) d += this.n;
+        return Math.round(from) + d;
+      };
+      MzaCarousel.prototype._mod = function (i, n) { return ((i % n) + n) % n; };
+      MzaCarousel.prototype._render = function (markActive) {
+        const span = this.slideW + this.state.gap;
+        for (let i = 0; i < this.n; i++) {
+          let d = i - this.state.pos;
+          if (d > this.n / 2) d -= this.n;
+          if (d < -this.n / 2) d += this.n;
+          const weight = Math.max(0, 1 - Math.abs(d) * 2);
+          const biasActive = -this.slideW * this.opts.activeLeftBias * weight;
+          const tx = d * span + biasActive;
+          const depth = -Math.abs(d) * this.opts.zDepth;
+          const rot = -d * this.opts.rotateY;
+          const scale = 1 - Math.min(Math.abs(d) * this.opts.scaleDrop, 0.42);
+          const blur = Math.min(Math.abs(d) * this.opts.blurMax, this.opts.blurMax);
+          const z = Math.round(1000 - Math.abs(d) * 10);
+          const s = this.slides[i];
+          s.style.transform = "translate3d(" + tx + "px,-50%," + depth + "px) rotateY(" + rot + "deg) scale(" + scale + ")";
+          s.style.filter = "blur(" + blur + "px)";
+          s.style.zIndex = z;
+          if (markActive) s.dataset.state = Math.round(this.state.index) === i ? "active" : "rest";
+          const card = s.querySelector(".mzaCard");
+          const parBase = Math.max(-1, Math.min(1, -d));
+          card.style.setProperty("--mzaParX", (parBase * 48).toFixed(2) + "px");
+          card.style.setProperty("--mzaParBgX", (parBase * -64).toFixed(2) + "px");
+        }
+        const active = this._mod(Math.round(this.state.pos), this.n);
+        this.dots.forEach((d, i) => d.setAttribute("aria-selected", i === active ? "true" : "false"));
+      };
+      new MzaCarousel(root, { transitionMs: 900 });
+    })();
+
+    /* =========================================================
+       JORNAL RING — 8 recursos minerais (imagens locais)
+    ========================================================= */
+    (function jornalRing() {
+      var ring = document.getElementById("jornalRing");
+      var dragger = document.getElementById("jornalDragger");
+      if (!ring || !dragger || typeof gsap === "undefined" || typeof Draggable === "undefined") return;
+
+      var recursos = [
+        { nome: "Ouro",             img: "assets/recursos/ouro.jpg" },
+        { nome: "Diamante",         img: "assets/recursos/diamante.jpg" },
+        { nome: "Petróleo & Gás",   img: "assets/recursos/petroleo-gas.jpg" },
+        { nome: "Cobre",            img: "assets/recursos/cobre.jpg" },
+        { nome: "Lítio",            img: "assets/recursos/litio.jpg" },
+        { nome: "Ferro",            img: "assets/recursos/ferro.jpg" },
+        { nome: "Cobalto & Níquel", img: "assets/recursos/cobalto-niquel.jpg" },
+        { nome: "Urânio",           img: "assets/recursos/uranio.jpg" }
+      ];
+
+      var n = recursos.length;
+      var step = 360 / n;
+      var depth = 500;
+      var xPos = 0;
+      var dragDistance = 0;
+
+      ring.innerHTML = "";
+
+      recursos.forEach(function (rec, index) {
+        var card = document.createElement("div");
+        card.className = "jornalRing-img";
+        card.setAttribute("data-index", index);
+        card.setAttribute("data-titulo", rec.nome);
+        card.style.backgroundImage = "url('" + rec.img + "')";
+
+        var numero = document.createElement("div");
+        numero.className = "img-number";
+        numero.textContent = String(index + 1).padStart(2, "0");
+        card.appendChild(numero);
+
+        var label = document.createElement("div");
+        label.className = "img-label";
+        label.textContent = rec.nome;
+        card.appendChild(label);
+
+        ring.appendChild(card);
+      });
+
+      var imgs = Array.prototype.slice.call(ring.querySelectorAll(".jornalRing-img"));
+
+      function openFrontImage() {
+        try {
+          var rot = gsap.getProperty(ring, "rotationY");
+          var bestIdx = 0;
+          var bestDelta = Infinity;
+          imgs.forEach(function (img, i) {
+            var angle = ((i * -step + rot) % 360 + 360) % 360;
+            var delta = Math.min(angle, 360 - angle);
+            if (delta < bestDelta) { bestDelta = delta; bestIdx = i; }
+          });
+          var titulo = imgs[bestIdx].getAttribute("data-titulo");
+          console.log("Recurso seleccionado: " + titulo);
+        } catch (e) { console.error(e); }
+      }
+
+      gsap.set(ring, { rotationY: 180 });
+
+      imgs.forEach(function (img, i) {
+        gsap.set(img, {
+          rotateY: i * -step,
+          transformOrigin: "50% 50% " + depth + "px",
+          z: -depth,
+          backfaceVisibility: "hidden",
+          opacity: 0
+        });
+      });
+
+      gsap.to(imgs, {
+        duration: 1.5,
+        opacity: 1,
+        stagger: 0.1,
+        ease: "expo",
+        onComplete: function () {
+          imgs.forEach(function (img) { img.style.opacity = "1"; });
+        }
+      });
+
+      Draggable.create(dragger, {
+        type: "x",
+        edgeResistance: 0.85,
+        onDragStart: function (e) {
+          if (e.touches) e.clientX = e.touches[0].clientX;
+          xPos = Math.round(e.clientX);
+          dragDistance = 0;
+        },
+        onDrag: function (e) {
+          if (e.touches) e.clientX = e.touches[0].clientX;
+          var delta = Math.round(e.clientX) - xPos;
+          dragDistance += Math.abs(delta);
+          gsap.to(ring, {
+            rotationY: "-=" + (delta % 360),
+            duration: 0.3,
+            ease: "power1.out"
+          });
+          xPos = Math.round(e.clientX);
+        },
+        onDragEnd: function () {
+          gsap.set(dragger, { x: 0, y: 0 });
+          if (dragDistance < 10) openFrontImage();
+          dragDistance = 0;
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+ "id": "benguela",
+ "name": "Benguela",
+ "country": "Angola",
+ "administrative_level": "province",
+ "capital": "Benguela",
+ "capital_note": null,
+ "geometry_id": "province-benguela",
+ "municipalities": [],
+ "geology_status": "Dados geológicos não carregados",
+ "last_updated": null,
+ "mineral_resources": [
+  "petroleo"
+ ],
+ "known_occurrences": [
+  "occ-pet-bg"
+ ],
+ "geological_formations": [],
+ "tectonic_structures": [],
+ "prospectivity_areas": [],
+ "sources": [
+  "SRC-GERAL"
+ ]
+}

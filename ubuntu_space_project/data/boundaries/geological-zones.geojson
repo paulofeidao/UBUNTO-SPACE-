@@ -1,0 +1,464 @@
+{
+ "type": "FeatureCollection",
+ "metadata": {
+  "status": "SIMULAÇÃO DEMONSTRATIVA — geometria esquemática, não é cartografia geológica oficial",
+  "nota": "Dados fictícios/esquemáticos só para demonstração. Não usar para decisões."
+ },
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "GEO-SIM-01",
+    "name": "Bacia do Congo (Cabinda–Zaire)",
+    "grupo": "sed",
+    "litologia": "Sedimentares marinhas e continentais",
+    "idade": "Cretácico–Cenozóico (indicativa)",
+    "minerals_context": [
+     "petroleo",
+     "gas-natural"
+    ],
+    "provinces": [
+     "cabinda",
+     "zaire"
+    ],
+    "description": "Bacia costeira; contexto conceptual para hidrocarbonetos.",
+    "status": "SIMULAÇÃO DEMONSTRATIVA — geometria esquemática, não é cartografia geológica oficial",
+    "confidence": "Não aplicável",
+    "source": "Síntese conceptual a partir de conhecimento geológico geral; sem fonte cartográfica"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       11.8,
+       -4.5
+      ],
+      [
+       13.2,
+       -4.5
+      ],
+      [
+       13.5,
+       -6.8
+      ],
+      [
+       12.2,
+       -6.8
+      ],
+      [
+       11.8,
+       -4.5
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "GEO-SIM-02",
+    "name": "Bacia do Kwanza",
+    "grupo": "sed",
+    "litologia": "Sedimentares (carbonatos, arenitos, evaporitos)",
+    "idade": "Cretácico–Cenozóico (indicativa)",
+    "minerals_context": [
+     "petroleo",
+     "gas-natural"
+    ],
+    "provinces": [
+     "luanda",
+     "bengo",
+     "icolo-e-bengo",
+     "kwanza-norte",
+     "kwanza-sul"
+    ],
+    "description": "Bacia costeira; contexto conceptual para hidrocarbonetos.",
+    "status": "SIMULAÇÃO DEMONSTRATIVA — geometria esquemática, não é cartografia geológica oficial",
+    "confidence": "Não aplicável",
+    "source": "Síntese conceptual a partir de conhecimento geológico geral; sem fonte cartográfica"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       13.0,
+       -8.0
+      ],
+      [
+       14.3,
+       -8.0
+      ],
+      [
+       14.2,
+       -11.2
+      ],
+      [
+       12.6,
+       -11.0
+      ],
+      [
+       13.0,
+       -8.0
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "GEO-SIM-03",
+    "name": "Bacia de Benguela",
+    "grupo": "sed",
+    "litologia": "Sedimentares",
+    "idade": "Cretácico–Cenozóico (indicativa)",
+    "minerals_context": [
+     "petroleo",
+     "gas-natural"
+    ],
+    "provinces": [
+     "benguela"
+    ],
+    "description": "Bacia costeira.",
+    "status": "SIMULAÇÃO DEMONSTRATIVA — geometria esquemática, não é cartografia geológica oficial",
+    "confidence": "Não aplicável",
+    "source": "Síntese conceptual a partir de conhecimento geológico geral; sem fonte cartográfica"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       12.6,
+       -11.0
+      ],
+      [
+       13.9,
+       -11.2
+      ],
+      [
+       13.6,
+       -13.8
+      ],
+      [
+       12.3,
+       -13.6
+      ],
+      [
+       12.6,
+       -11.0
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "GEO-SIM-04",
+    "name": "Bacia do Namibe",
+    "grupo": "sed",
+    "litologia": "Sedimentares",
+    "idade": "Cretácico–Cenozóico (indicativa)",
+    "minerals_context": [
+     "petroleo",
+     "gas-natural"
+    ],
+    "provinces": [
+     "namibe"
+    ],
+    "description": "Bacia costeira meridional.",
+    "status": "SIMULAÇÃO DEMONSTRATIVA — geometria esquemática, não é cartografia geológica oficial",
+    "confidence": "Não aplicável",
+    "source": "Síntese conceptual a partir de conhecimento geológico geral; sem fonte cartográfica"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       11.8,
+       -13.8
+      ],
+      [
+       13.5,
+       -13.8
+      ],
+      [
+       13.2,
+       -17.2
+      ],
+      [
+       11.8,
+       -17.2
+      ],
+      [
+       11.8,
+       -13.8
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "GEO-SIM-05",
+    "name": "Cobertura sedimentar da Lunda",
+    "grupo": "cover",
+    "litologia": "Sedimentos continentais, kimberlitos e aluviões associados",
+    "idade": "Cretácico–Cenozóico (indicativa)",
+    "minerals_context": [
+     "diamante"
+    ],
+    "provinces": [
+     "lunda-norte",
+     "lunda-sul",
+     "malanje"
+    ],
+    "description": "Contexto conceptual para diamante (kimberlitos e aluviões).",
+    "status": "SIMULAÇÃO DEMONSTRATIVA — geometria esquemática, não é cartografia geológica oficial",
+    "confidence": "Não aplicável",
+    "source": "Síntese conceptual a partir de conhecimento geológico geral; sem fonte cartográfica"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       19.0,
+       -6.5
+      ],
+      [
+       23.5,
+       -6.5
+      ],
+      [
+       23.5,
+       -10.8
+      ],
+      [
+       19.0,
+       -10.8
+      ],
+      [
+       19.0,
+       -6.5
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "GEO-SIM-06",
+    "name": "Domínio cratónico do Congo",
+    "grupo": "crat",
+    "litologia": "Gnaisses, granitóides e xistos",
+    "idade": "Arcaico–Paleoproterozóico (indicativa)",
+    "minerals_context": [
+     "ouro",
+     "cobre",
+     "ferro"
+    ],
+    "provinces": [
+     "malanje",
+     "kwanza-norte",
+     "kwanza-sul",
+     "uige"
+    ],
+    "description": "Embasamento antigo; contexto conceptual para metais.",
+    "status": "SIMULAÇÃO DEMONSTRATIVA — geometria esquemática, não é cartografia geológica oficial",
+    "confidence": "Não aplicável",
+    "source": "Síntese conceptual a partir de conhecimento geológico geral; sem fonte cartográfica"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       14.0,
+       -8.0
+      ],
+      [
+       19.0,
+       -8.0
+      ],
+      [
+       19.0,
+       -10.8
+      ],
+      [
+       15.5,
+       -10.8
+      ],
+      [
+       14.0,
+       -9.5
+      ],
+      [
+       14.0,
+       -8.0
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "GEO-SIM-07",
+    "name": "Planalto Central (complexo ígneo-metamórfico)",
+    "grupo": "meta",
+    "litologia": "Rochas ígneas e metamórficas, pegmatitos",
+    "idade": "Paleoproterozóico–Mesoproterozóico (indicativa)",
+    "minerals_context": [
+     "ouro",
+     "litio",
+     "cobre",
+     "ferro",
+     "uranio"
+    ],
+    "provinces": [
+     "huambo",
+     "bie",
+     "huila",
+     "moxico",
+     "moxico-leste"
+    ],
+    "description": "Embasamento; contexto conceptual para pegmatitos e metais.",
+    "status": "SIMULAÇÃO DEMONSTRATIVA — geometria esquemática, não é cartografia geológica oficial",
+    "confidence": "Não aplicável",
+    "source": "Síntese conceptual a partir de conhecimento geológico geral; sem fonte cartográfica"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       14.0,
+       -11.0
+      ],
+      [
+       19.0,
+       -11.0
+      ],
+      [
+       19.0,
+       -14.5
+      ],
+      [
+       14.0,
+       -14.5
+      ],
+      [
+       14.0,
+       -11.0
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "GEO-SIM-08",
+    "name": "Complexo do Cunene (máfico-ultramáfico)",
+    "grupo": "mafic",
+    "litologia": "Anortositos e rochas máficas-ultramáficas",
+    "idade": "Mesoproterozóico (indicativa)",
+    "minerals_context": [
+     "niquel",
+     "cobalto",
+     "cobre"
+    ],
+    "provinces": [
+     "huila",
+     "cunene",
+     "namibe"
+    ],
+    "description": "Contexto conceptual para Ni, Co e Cu.",
+    "status": "SIMULAÇÃO DEMONSTRATIVA — geometria esquemática, não é cartografia geológica oficial",
+    "confidence": "Não aplicável",
+    "source": "Síntese conceptual a partir de conhecimento geológico geral; sem fonte cartográfica"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       13.5,
+       -15.0
+      ],
+      [
+       17.5,
+       -15.0
+      ],
+      [
+       17.5,
+       -17.9
+      ],
+      [
+       13.5,
+       -17.9
+      ],
+      [
+       13.5,
+       -15.0
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "GEO-SIM-09",
+    "name": "Cobertura do Kalahari",
+    "grupo": "cover",
+    "litologia": "Areias e sedimentos continentais",
+    "idade": "Cenozóico (indicativa)",
+    "minerals_context": [],
+    "provinces": [
+     "cubango",
+     "cuando",
+     "cunene"
+    ],
+    "description": "Cobertura recente; pode ocultar o embasamento.",
+    "status": "SIMULAÇÃO DEMONSTRATIVA — geometria esquemática, não é cartografia geológica oficial",
+    "confidence": "Não aplicável",
+    "source": "Síntese conceptual a partir de conhecimento geológico geral; sem fonte cartográfica"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       17.5,
+       -14.5
+      ],
+      [
+       23.9,
+       -14.5
+      ],
+      [
+       23.9,
+       -17.9
+      ],
+      [
+       17.5,
+       -17.9
+      ],
+      [
+       17.5,
+       -14.5
+      ]
+     ]
+    ]
+   }
+  }
+ ]
+}

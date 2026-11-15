@@ -1,0 +1,142 @@
+[
+ {
+  "id": "occ-dia-ln",
+  "mineral": "diamante",
+  "province": "lunda-norte",
+  "municipality": null,
+  "level": "province",
+  "status": "Registado em fonte histórica",
+  "validation": "Por validar — referência bibliográfica a anexar",
+  "coordinates": null,
+  "note": "Província com mineração diamantífera registada; sem coordenadas verificadas.",
+  "sources": [
+   "SRC-GERAL"
+  ]
+ },
+ {
+  "id": "occ-dia-ls",
+  "mineral": "diamante",
+  "province": "lunda-sul",
+  "municipality": null,
+  "level": "province",
+  "status": "Registado em fonte histórica",
+  "validation": "Por validar — referência bibliográfica a anexar",
+  "coordinates": null,
+  "note": "Província com mineração diamantífera registada (inclui a mina de Catoca, município de Saurimo); sem coordenadas verificadas.",
+  "sources": [
+   "SRC-GERAL"
+  ]
+ },
+ {
+  "id": "occ-pet-cab",
+  "mineral": "petroleo",
+  "province": "cabinda",
+  "municipality": null,
+  "level": "province",
+  "status": "Registado em fonte histórica",
+  "validation": "Por validar — referência bibliográfica a anexar",
+  "coordinates": null,
+  "note": "Bacia sedimentar costeira (Congo) com produção registada.",
+  "sources": [
+   "SRC-GERAL"
+  ]
+ },
+ {
+  "id": "occ-pet-zai",
+  "mineral": "petroleo",
+  "province": "zaire",
+  "municipality": null,
+  "level": "province",
+  "status": "Registado em fonte histórica",
+  "validation": "Por validar — referência bibliográfica a anexar",
+  "coordinates": null,
+  "note": "Bacia sedimentar (Congo) com actividade petrolífera registada.",
+  "sources": [
+   "SRC-GERAL"
+  ]
+ },
+ {
+  "id": "occ-pet-lua",
+  "mineral": "petroleo",
+  "province": "luanda",
+  "municipality": null,
+  "level": "province",
+  "status": "Registado em fonte histórica",
+  "validation": "Por validar — referência bibliográfica a anexar",
+  "coordinates": null,
+  "note": "Bacia do Kwanza.",
+  "sources": [
+   "SRC-GERAL"
+  ]
+ },
+ {
+  "id": "occ-pet-ben",
+  "mineral": "petroleo",
+  "province": "bengo",
+  "municipality": null,
+  "level": "province",
+  "status": "Registado em fonte histórica",
+  "validation": "Por validar — referência bibliográfica a anexar",
+  "coordinates": null,
+  "note": "Bacia do Kwanza.",
+  "sources": [
+   "SRC-GERAL"
+  ]
+ },
+ {
+  "id": "occ-pet-kn",
+  "mineral": "petroleo",
+  "province": "kwanza-norte",
+  "municipality": null,
+  "level": "province",
+  "status": "Registado em fonte histórica",
+  "validation": "Por validar — referência bibliográfica a anexar",
+  "coordinates": null,
+  "note": "Bacia do Kwanza.",
+  "sources": [
+   "SRC-GERAL"
+  ]
+ },
+ {
+  "id": "occ-pet-ks",
+  "mineral": "petroleo",
+  "province": "kwanza-sul",
+  "municipality": null,
+  "level": "province",
+  "status": "Registado em fonte histórica",
+  "validation": "Por validar — referência bibliográfica a anexar",
+  "coordinates": null,
+  "note": "Bacia do Kwanza.",
+  "sources": [
+   "SRC-GERAL"
+  ]
+ },
+ {
+  "id": "occ-pet-bg",
+  "mineral": "petroleo",
+  "province": "benguela",
+  "municipality": null,
+  "level": "province",
+  "status": "Registado em fonte histórica",
+  "validation": "Por validar — referência bibliográfica a anexar",
+  "coordinates": null,
+  "note": "Bacia de Benguela.",
+  "sources": [
+   "SRC-GERAL"
+  ]
+ },
+ {
+  "id": "occ-pet-nam",
+  "mineral": "petroleo",
+  "province": "namibe",
+  "municipality": null,
+  "level": "province",
+  "status": "Registado em fonte histórica",
+  "validation": "Por validar — referência bibliográfica a anexar",
+  "coordinates": null,
+  "note": "Bacia do Namibe.",
+  "sources": [
+   "SRC-GERAL"
+  ]
+ }
+]

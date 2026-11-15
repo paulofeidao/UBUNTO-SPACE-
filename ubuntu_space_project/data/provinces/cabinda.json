@@ -1,0 +1,24 @@
+{
+ "id": "cabinda",
+ "name": "Cabinda",
+ "country": "Angola",
+ "administrative_level": "province",
+ "capital": "Cabinda",
+ "capital_note": null,
+ "geometry_id": "province-cabinda",
+ "municipalities": [],
+ "geology_status": "Dados geológicos não carregados",
+ "last_updated": null,
+ "mineral_resources": [
+  "petroleo"
+ ],
+ "known_occurrences": [
+  "occ-pet-cab"
+ ],
+ "geological_formations": [],
+ "tectonic_structures": [],
+ "prospectivity_areas": [],
+ "sources": [
+  "SRC-GERAL"
+ ]
+}

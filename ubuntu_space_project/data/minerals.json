@@ -1,0 +1,246 @@
+[
+ {
+  "id": "ouro",
+  "name": "Ouro",
+  "alt_name": "Au",
+  "category": "Metal precioso",
+  "description": "Metal associado a sistemas hidrotermais e depósitos aluviais.",
+  "geological_indicators": [
+   "Alterações hidrotermais",
+   "Silicificação",
+   "Estruturas geológicas (falhas, zonas de cisalhamento)"
+  ],
+  "spectral_signatures": [
+   "Argilas/sericite e óxidos de ferro (indicadores indirectos)"
+  ],
+  "favourable_contexts": [
+   "Contextos de mineralização aurífera"
+  ],
+  "identification_limits": "A confirmação exige estudos geológicos/geofísicos e trabalho de campo; imagens de satélite não confirmam jazidas.",
+  "sources": [
+   "SRC-GERAL",
+   "SRC-EMIT",
+   "SRC-USGS"
+  ],
+  "validation": "Interpretação preliminar"
+ },
+ {
+  "id": "diamante",
+  "name": "Diamante",
+  "alt_name": "—",
+  "category": "Gema / industrial",
+  "description": "Associado a kimberlitos e a depósitos aluviais derivados.",
+  "geological_indicators": [
+   "Formações associadas a kimberlitos",
+   "Depósitos aluviais",
+   "Registos de ocorrências conhecidas"
+  ],
+  "spectral_signatures": [
+   "Sem assinatura directa; só indicadores geológicos"
+  ],
+  "favourable_contexts": [
+   "Contextos geológicos favoráveis a kimberlitos"
+  ],
+  "identification_limits": "Diamantes não são identificados directamente por satélite. A confirmação exige estudos geológicos/geofísicos e trabalho de campo; imagens de satélite não confirmam jazidas.",
+  "sources": [
+   "SRC-GERAL",
+   "SRC-EMIT",
+   "SRC-USGS"
+  ],
+  "validation": "Interpretação preliminar"
+ },
+ {
+  "id": "petroleo",
+  "name": "Petróleo",
+  "alt_name": "Hidrocarbonetos líquidos",
+  "category": "Hidrocarboneto",
+  "description": "Acumulações em bacias sedimentares.",
+  "geological_indicators": [
+   "Bacias sedimentares",
+   "Estruturas tectónicas",
+   "Indicadores superficiais de hidrocarbonetos"
+  ],
+  "spectral_signatures": [
+   "Indicadores superficiais indirectos"
+  ],
+  "favourable_contexts": [
+   "Bacias sedimentares com rochas-mãe e reservatório"
+  ],
+  "identification_limits": "Confirmação exige geofísica e exploração no terreno.",
+  "sources": [
+   "SRC-GERAL",
+   "SRC-EMIT",
+   "SRC-USGS"
+  ],
+  "validation": "Interpretação preliminar"
+ },
+ {
+  "id": "gas-natural",
+  "name": "Gás natural",
+  "alt_name": "—",
+  "category": "Hidrocarboneto",
+  "description": "Associado a bacias sedimentares, isolado ou com petróleo.",
+  "geological_indicators": [
+   "Bacias sedimentares",
+   "Estruturas tectónicas"
+  ],
+  "spectral_signatures": [
+   "Indicadores superficiais indirectos"
+  ],
+  "favourable_contexts": [
+   "Bacias sedimentares"
+  ],
+  "identification_limits": "Confirmação exige geofísica e exploração no terreno.",
+  "sources": [
+   "SRC-GERAL",
+   "SRC-EMIT",
+   "SRC-USGS"
+  ],
+  "validation": "Interpretação preliminar"
+ },
+ {
+  "id": "cobre",
+  "name": "Cobre",
+  "alt_name": "Cu",
+  "category": "Metal base",
+  "description": "Associado a sistemas hidrotermais.",
+  "geological_indicators": [
+   "Alterações hidrotermais",
+   "Minerais associados"
+  ],
+  "spectral_signatures": [
+   "Assinaturas espectrais de minerais associados"
+  ],
+  "favourable_contexts": [
+   "Contextos geológicos mineralizados"
+  ],
+  "identification_limits": "A confirmação exige estudos geológicos/geofísicos e trabalho de campo; imagens de satélite não confirmam jazidas.",
+  "sources": [
+   "SRC-GERAL",
+   "SRC-EMIT",
+   "SRC-USGS"
+  ],
+  "validation": "Interpretação preliminar"
+ },
+ {
+  "id": "litio",
+  "name": "Lítio",
+  "alt_name": "Li",
+  "category": "Metal / energia",
+  "description": "Associado a pegmatitos e, noutros contextos, salmouras.",
+  "geological_indicators": [
+   "Pegmatitos",
+   "Indicadores mineralógicos"
+  ],
+  "spectral_signatures": [
+   "Minerais de pegmatito (limitado)"
+  ],
+  "favourable_contexts": [
+   "Ambientes favoráveis a pegmatitos; salmouras quando aplicável"
+  ],
+  "identification_limits": "A confirmação exige estudos geológicos/geofísicos e trabalho de campo; imagens de satélite não confirmam jazidas.",
+  "sources": [
+   "SRC-GERAL",
+   "SRC-EMIT",
+   "SRC-USGS"
+  ],
+  "validation": "Interpretação preliminar"
+ },
+ {
+  "id": "ferro",
+  "name": "Ferro",
+  "alt_name": "Fe",
+  "category": "Metal base",
+  "description": "Associado a formações ferríferas.",
+  "geological_indicators": [
+   "Formações ferríferas",
+   "Estruturas geológicas"
+  ],
+  "spectral_signatures": [
+   "Óxidos/hidróxidos de ferro"
+  ],
+  "favourable_contexts": [
+   "Formações ferríferas"
+  ],
+  "identification_limits": "A confirmação exige estudos geológicos/geofísicos e trabalho de campo; imagens de satélite não confirmam jazidas.",
+  "sources": [
+   "SRC-GERAL",
+   "SRC-EMIT",
+   "SRC-USGS"
+  ],
+  "validation": "Interpretação preliminar"
+ },
+ {
+  "id": "cobalto",
+  "name": "Cobalto",
+  "alt_name": "Co",
+  "category": "Metal crítico",
+  "description": "Associado a contextos ultramáficos e cuprífero-cobaltíferos.",
+  "geological_indicators": [
+   "Formações ultramáficas",
+   "Indicadores mineralógicos"
+  ],
+  "spectral_signatures": [
+   "Limitadas"
+  ],
+  "favourable_contexts": [
+   "Contextos ultramáficos"
+  ],
+  "identification_limits": "A confirmação exige estudos geológicos/geofísicos e trabalho de campo; imagens de satélite não confirmam jazidas.",
+  "sources": [
+   "SRC-GERAL",
+   "SRC-EMIT",
+   "SRC-USGS"
+  ],
+  "validation": "Interpretação preliminar"
+ },
+ {
+  "id": "niquel",
+  "name": "Níquel",
+  "alt_name": "Ni",
+  "category": "Metal crítico",
+  "description": "Associado a formações ultramáficas.",
+  "geological_indicators": [
+   "Formações ultramáficas",
+   "Indicadores mineralógicos"
+  ],
+  "spectral_signatures": [
+   "Limitadas"
+  ],
+  "favourable_contexts": [
+   "Contextos ultramáficos"
+  ],
+  "identification_limits": "A confirmação exige estudos geológicos/geofísicos e trabalho de campo; imagens de satélite não confirmam jazidas.",
+  "sources": [
+   "SRC-GERAL",
+   "SRC-EMIT",
+   "SRC-USGS"
+  ],
+  "validation": "Interpretação preliminar"
+ },
+ {
+  "id": "uranio",
+  "name": "Urânio",
+  "alt_name": "U",
+  "category": "Metal energético",
+  "description": "Vários tipos de depósito.",
+  "geological_indicators": [
+   "Contextos favoráveis",
+   "Indicadores de mineralização",
+   "Registos documentados"
+  ],
+  "spectral_signatures": [
+   "Limitadas"
+  ],
+  "favourable_contexts": [
+   "Contextos geológicos favoráveis"
+  ],
+  "identification_limits": "A confirmação exige estudos geológicos/geofísicos e trabalho de campo; imagens de satélite não confirmam jazidas.",
+  "sources": [
+   "SRC-GERAL",
+   "SRC-EMIT",
+   "SRC-USGS"
+  ],
+  "validation": "Interpretação preliminar"
+ }
+]

@@ -1,0 +1,47 @@
+[
+ {
+  "id": "SRC-EMIT",
+  "name": "NASA EMIT",
+  "institution": "NASA/JPL",
+  "url": "https://earth.jpl.nasa.gov/emit/",
+  "use": "Dados hiperespectrais (indicados no relatório de conceptualização)",
+  "consulted": null,
+  "validation": "Fonte indicada; dados não carregados"
+ },
+ {
+  "id": "SRC-LANDSAT",
+  "name": "Landsat",
+  "institution": "NASA/USGS",
+  "url": "https://landsat.gsfc.nasa.gov/",
+  "use": "Imagens multiespectrais",
+  "consulted": null,
+  "validation": "Fonte indicada; dados não carregados"
+ },
+ {
+  "id": "SRC-USGS",
+  "name": "USGS",
+  "institution": "USGS",
+  "url": "https://www.usgs.gov/",
+  "use": "Mapas e registos geológicos",
+  "consulted": null,
+  "validation": "Fonte indicada; dados não carregados"
+ },
+ {
+  "id": "SRC-CDSE",
+  "name": "Copernicus Data Space (Sentinel-2)",
+  "institution": "ESA/Copernicus",
+  "url": "https://dataspace.copernicus.eu/",
+  "use": "Imagens multiespectrais",
+  "consulted": null,
+  "validation": "Fonte indicada; dados não carregados"
+ },
+ {
+  "id": "SRC-GERAL",
+  "name": "Conhecimento geológico geral (modelos conceptuais)",
+  "institution": "—",
+  "url": null,
+  "use": "Critérios de análise por mineral",
+  "consulted": null,
+  "validation": "Interpretação preliminar — referência bibliográfica específica a anexar"
+ }
+]

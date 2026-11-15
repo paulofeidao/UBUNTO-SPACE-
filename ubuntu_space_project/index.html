@@ -1,0 +1,1094 @@
+<!doctype html>
+<html lang="pt-AO">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>UBUNTO SPACE — Onde encontrar minerais em Angola</title>
+<link rel="stylesheet" href="https://cesium.com/downloads/cesiumjs/releases/1.133/Build/Cesium/Widgets/widgets.css">
+<script>
+window.CESIUM_BASE_URL="https://cesium.com/downloads/cesiumjs/releases/1.133/Build/Cesium/";
+</script>
+<script src="https://cesium.com/downloads/cesiumjs/releases/1.133/Build/Cesium/Cesium.js"></script>
+
+<style>
+/* ========== RESET E TOKENS FLUIDOS ========== */
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;display:flex;flex-direction:column;background:#06111b;color:#eef6fb;font-family:Inter,system-ui,Arial,sans-serif;font-size:clamp(12px, 0.9vw, 14px);overflow:hidden}
+
+/* Tokens de espaçamento e tamanhos fluidos */
+:root{
+  --header-h: clamp(56px, 8vh, 68px);
+  --sidebar-w: clamp(280px, 24vw, 340px);
+  --gap: clamp(6px, 1vw, 14px);
+  --radius: clamp(8px, 1vw, 12px);
+  --search-w: clamp(180px, 22vw, 340px);
+  --res-w: clamp(280px, 30vw, 420px);
+  --card-w: clamp(260px, 28vw, 300px);
+  --cell-min: clamp(72px, 8vw, 90px);
+}
+
+/* ========== HEADER ========== */
+header{
+  height:var(--header-h);
+  flex:none;
+  display:flex;
+  align-items:center;
+  gap:clamp(8px, 2vw, 18px);
+  padding:0 clamp(12px, 2vw, 22px);
+  border-bottom:1px solid #183246;
+  background:#040d15f2;
+  position:relative;
+  z-index:10;
+}
+.brand{display:flex;align-items:center;gap:clamp(6px, 1vw, 12px);min-width:0}
+.brand svg{width:clamp(32px, 5vw, 44px);height:clamp(32px, 5vw, 44px);color:#08bce9;filter:drop-shadow(0 0 10px #00bce855);flex:none}
+.brand b{font-size:clamp(16px, 2vw, 21px);font-weight:850;letter-spacing:.035em;color:#eef6fb;white-space:nowrap}
+.brand small{font-size:clamp(9px, 1vw, 11px);color:#9ab0c1;border-left:1px solid #466174;padding-left:clamp(8px, 1.5vw, 14px);line-height:1.45;white-space:nowrap}
+
+/* ========== BARRA DE PESQUISA ========== */
+.sw-wrap{position:relative;margin-left:auto;flex:none}
+.search{
+  height:clamp(32px, 4vh, 40px);
+  width:var(--search-w);
+  display:flex;align-items:center;gap:8px;
+  border:1px solid #25465d;
+  border-radius:22px;
+  padding:0 clamp(8px, 1.5vw, 14px);
+  background:#081a28;
+}
+.search:focus-within{border-color:#08bce9}
+.search input{width:100%;border:0;outline:0;background:transparent;color:#fff;font-size:clamp(11px, 1.1vw, 13px);min-width:0}
+#res{
+  position:absolute;top:calc(100% + 6px);right:0;
+  width:var(--res-w);
+  max-height:min(420px, 60vh);
+  overflow:auto;
+  background:#081b29;
+  border:1px solid #2b536b;
+  border-radius:10px;
+  box-shadow:0 18px 50px #000a;
+  display:none;
+  z-index:40;
+}
+#res button{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid #163042;color:#dceaf2;padding:clamp(8px, 1.5vw, 10px) clamp(10px, 2vw, 12px);font-size:clamp(11px, 1.1vw, 12px);cursor:pointer}
+#res button:hover,#res button.f{background:#12364c}
+#res small{display:block;color:#7f98aa;margin-top:2px}
+#res h4{margin:0;padding:8px 12px;font-size:10px;letter-spacing:.08em;color:#77d9f2;background:#06131e}
+
+/* ========== STRIP DE MINERAIS ========== */
+.strip{
+  flex:none;
+  margin:var(--gap) clamp(8px, 1.5vw, 14px) 0;
+  border:1px solid #1b3b51;
+  border-radius:var(--radius);
+  background:linear-gradient(100deg,#081927f7,#071420ed);
+  display:flex;align-items:center;gap:clamp(8px, 1.5vw, 14px);
+  padding:clamp(6px, 1vh, 9px) clamp(8px, 1.5vw, 13px);
+  overflow:hidden;
+}
+.strip .lab{
+  width:clamp(100px, 12vw, 130px);
+  flex:none;
+  font-size:clamp(10px, 1vw, 12px);
+  line-height:1.45;
+  font-weight:800;
+  letter-spacing:.06em;
+  color:#dceaf3;
+}
+.strip .lab small{display:block;color:#718da2;font-size:clamp(8px, 0.8vw, 10px);font-weight:500;letter-spacing:0}
+#mins{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(var(--cell-min), 1fr));
+  gap:var(--gap);
+  width:100%;
+  overflow-x:auto;
+  scrollbar-width:thin;
+  padding-bottom:4px;
+}
+button.resource{
+  position:relative;
+  height:clamp(64px, 9vh, 78px);
+  border:1px solid #2a4b61;
+  border-radius:var(--radius);
+  overflow:hidden;
+  background:#102536;
+  color:#fff;
+  padding:0;
+  isolation:isolate;
+  cursor:pointer;
+  transition:.18s;
+  flex:none;
+}
+button.resource.nopic{background:linear-gradient(135deg,#0b3a58,#08202f)}
+button.resource img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;filter:saturate(.85) brightness(.65)}
+button.resource:after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,#020a11ed,transparent 75%);z-index:-1}
+button.resource .sym{position:absolute;top:8px;left:0;right:0;text-align:center;font-size:clamp(16px, 2vw, 20px);font-weight:800;color:#6fd3ee99}
+button.resource span.n{position:absolute;bottom:7px;left:3px;right:3px;font-size:clamp(10px, 1vw, 12px);font-weight:800;text-align:center;text-shadow:0 2px 4px #000}
+button.resource.on{border:2px solid #08bce9;box-shadow:0 0 0 2px #08bce933,0 0 22px #00b9ed44}
+button.resource.on:before{content:'✓';position:absolute;right:6px;top:5px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:#08bce9;color:#002131;font-weight:900;font-size:12px;z-index:2}
+
+/* ========== LAYOUT PRINCIPAL (GRID) ========== */
+.wrap{
+  display:flex;
+  flex:1;
+  min-height:0;
+  margin-top:var(--gap);
+  position:relative;
+}
+aside{
+  width:var(--sidebar-w);
+  flex:none;
+  overflow:auto;
+  padding:var(--gap);
+  background:#071724;
+  border-right:1px solid #21445b;
+  transition:transform .3s ease;
+}
+h2{font-size:clamp(11px, 1.1vw, 12px);letter-spacing:.08em;color:#77d9f2;margin:clamp(10px, 1.5vh, 16px) 0 8px}
+h2:first-child{margin-top:0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(4px, 0.8vw, 7px)}
+button.m,button.c{border:1px solid #2a4b61;background:#0b2030;color:#eef6fb;border-radius:var(--radius);padding:clamp(6px, 1vh, 10px);font-size:clamp(12px, 1.2vw, 14px);cursor:pointer;text-align:left}
+button.m:hover,button.c:hover{background:#12364c}
+button.m.on{background:#07517c;border-color:#08bce9}
+button.c.on{background:#0a4a63;border-color:#08bce9}
+button.c{font-size:clamp(11px, 1vw, 12px)}
+.hint{font-size:clamp(11px, 1vw, 12px);color:#9bb1c1;line-height:1.5}
+.leg{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:clamp(11px, 1vw, 12px)}
+.sw{width:14px;height:14px;border-radius:3px;flex:none}
+.z{padding:clamp(6px, 1vh, 9px);border:1px solid #21445b;border-radius:8px;margin:6px 0;cursor:pointer;font-size:clamp(11px, 1vw, 12px)}
+.z:hover{background:#12364c}
+.z b{font-size:clamp(12px, 1.1vw, 13px)}
+.tag{display:inline-block;padding:1px 7px;border-radius:9px;font-size:clamp(9px, 0.9vw, 11px);font-weight:700;color:#04121b}
+
+/* ========== CONTENTOR DO GLOBO (CRÍTICO PARA CESIUM) ========== */
+main{
+  flex:1;
+  position:relative;
+  min-width:0; /* Evita overflow em flexbox */
+}
+#globe{
+  position:absolute;
+  inset:0;
+  /* Cesium ocupa todo o contentor */
+}
+/* Força o canvas do Cesium a não distorcer o layout flex */
+#globe canvas{
+  display:block;
+  width:100% !important;
+  height:100% !important;
+}
+#card{
+  position:absolute;
+  right:var(--gap);
+  top:var(--gap);
+  width:var(--card-w);
+  max-height:min(80%, 600px);
+  overflow:auto;
+  background:#071724f2;
+  border:1px solid #2b536b;
+  border-radius:var(--radius);
+  padding:var(--gap);
+  font-size:clamp(11px, 1vw, 13px);
+  line-height:1.5;
+  display:none;
+  backdrop-filter:blur(6px);
+}
+#card h3{margin:0 0 6px;font-size:clamp(14px, 1.5vw, 16px)}
+#card .x{float:right;background:none;border:0;color:#9bb1c1;font-size:18px;cursor:pointer}
+.foot{
+  position:absolute;
+  left:var(--gap);
+  bottom:var(--gap);
+  right:var(--gap);
+  font-size:clamp(9px, 0.9vw, 11px);
+  color:#b9cad6;
+  background:#06111bcc;
+  padding:6px 10px;
+  border-radius:8px;
+  backdrop-filter:blur(4px);
+}
+
+/* ========== BOTÃO HAMBÚRGUER (SÓ MOBILE) ========== */
+.menu-toggle{
+  display:none;
+  background:none;
+  border:1px solid #25465d;
+  color:#eef6fb;
+  font-size:1.4rem;
+  line-height:1;
+  padding:4px 10px;
+  border-radius:6px;
+  cursor:pointer;
+  margin-left:auto;
+  flex:none;
+}
+.menu-toggle:focus-visible{outline:2px solid #08bce9}
+
+/* ========== RESPONSIVIDADE ========== */
+
+/* --- Tablet grande / ecrãs médios --- */
+@media (max-width: 1100px) {
+  .brand small{display:none}
+  .search{width:clamp(160px, 20vw, 220px)}
+  #mins{grid-template-columns:repeat(auto-fit, minmax(var(--cell-min), 1fr))}
+  .strip .lab{display:none}
+  aside{width:clamp(240px, 22vw, 300px)}
+}
+
+/* --- Tablet / mobile: sidebar torna-se drawer --- */
+@media (max-width: 900px) {
+  html,body{overflow:auto}
+  .menu-toggle{display:block}
+
+  .wrap{flex-direction:column;min-height:auto}
+
+  aside{
+    position:fixed;
+    top:var(--header-h);
+    left:0;
+    bottom:0;
+    width:min(320px, 85vw);
+    z-index:30;
+    transform:translateX(-100%);
+    box-shadow:4px 0 20px #000a;
+    border-right:1px solid #21445b;
+    overflow-y:auto;
+  }
+  aside.drawer-open{
+    transform:translateX(0);
+  }
+  /* Backdrop para fechar o drawer */
+  .drawer-backdrop{
+    display:none;
+    position:fixed;
+    inset:0;
+    top:var(--header-h);
+    background:#000a;
+    z-index:29;
+  }
+  .drawer-backdrop.show{display:block}
+
+  main{
+    flex:none;
+    height:clamp(400px, 60vh, 70vh);
+    min-height:350px;
+    margin-top:0;
+  }
+
+  #card{
+    width:auto;
+    left:var(--gap);
+    right:var(--gap);
+    max-height:60%;
+  }
+
+  /* Esconde o strip de minerais original em mobile? Não, mantém mas scroll horizontal */
+  .strip{
+    overflow-x:auto;
+    flex-wrap:nowrap;
+  }
+  #mins{
+    grid-template-columns:repeat(auto-fit, minmax(clamp(64px, 12vw, 80px), 1fr));
+    flex-wrap:nowrap;
+  }
+}
+
+/* --- Telemóveis --- */
+@media (max-width: 480px) {
+  :root{
+    --header-h: 56px;
+    --gap: 6px;
+    --cell-min: 64px;
+  }
+  header{padding:0 8px;gap:6px}
+  .brand svg{width:30px;height:30px}
+  .brand b{font-size:15px}
+  .search{width:140px;height:32px;padding:0 8px}
+  #res{width:calc(100vw - 16px);right:-8px}
+  .strip{margin:6px 6px 0;padding:6px}
+  #mins{grid-template-columns:repeat(auto-fit, minmax(60px, 1fr));gap:4px}
+  button.resource{height:56px}
+  button.resource span.n{font-size:9px}
+
+  main{height:50vh;min-height:280px}
+  #card{padding:10px;font-size:11px}
+  .foot{font-size:8px;padding:4px 6px}
+
+  /* Ajustes de grid da sidebar */
+  .grid{grid-template-columns:1fr}
+  button.c, button.m{font-size:11px;padding:6px}
+}
+
+/* --- Modo paisagem em telemóvel --- */
+@media (max-height: 500px) and (orientation: landscape) {
+  html,body{overflow:hidden}
+  .wrap{flex-direction:row}
+  aside{
+    position:relative;
+    transform:none;
+    width:clamp(220px, 30vw, 280px);
+    height:100%;
+    box-shadow:none;
+  }
+  main{height:auto;flex:1}
+  .menu-toggle{display:none}
+  .drawer-backdrop{display:none !important}
+}
+
+/* ========== ACESSIBILIDADE E PREFERÊNCIAS ========== */
+@media (prefers-reduced-motion: reduce) {
+  *{transition-duration:0.01ms !important;animation-duration:0.01ms !important}
+}
+</style>
+</head>
+
+<body>
+<header>
+  <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu lateral" aria-expanded="false">☰</button>
+  <div class="brand">
+    <svg viewBox="0 0 64 64" fill="none">
+      <circle cx="32" cy="32" r="27" stroke="currentColor" stroke-width="2.3"/>
+      <ellipse cx="32" cy="32" rx="13" ry="27" stroke="currentColor" stroke-width="1.6"/>
+      <ellipse cx="32" cy="32" rx="25" ry="10" stroke="currentColor" stroke-width="1.4"/>
+      <path d="M7 32h50M32 5v54M12 17h40M12 47h40" stroke="currentColor" stroke-width="1.2"/>
+    </svg>
+    <b>UBUNTO SPACE</b>
+    <small>Inteligência Geoespacial<br>Minerais de Angola</small>
+  </div>
+  <div class="sw-wrap">
+    <div class="search">
+      <span>⌕</span>
+      <input id="q" placeholder="Pesquisar: ouro, Huíla, árido, indício, novo…" autocomplete="off">
+    </div>
+    <div id="res"></div>
+  </div>
+</header>
+
+<section class="strip">
+  <div class="lab">SELECIONE<br>UM MINERAL:<small>ou pesquise acima</small></div>
+  <div id="mins"></div>
+</section>
+
+<div class="wrap">
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+  <aside id="sidebar">
+    <h2>FILTRO DE CLIMA <span style="font-weight:400">(para procurar novas zonas)</span></h2>
+    <div class="grid" id="clim"></div>
+    <div class="hint" id="climHint"></div>
+
+    <h2>LEGENDA</h2>
+    <div class="leg"><span class="sw" style="background:#16c4ed"></span>Conhecido — registo ou actividade</div>
+    <div class="leg"><span class="sw" style="background:#f1a72c"></span>Indício regional — por validar</div>
+    <div class="leg"><span class="sw" style="background:#a779e8"></span>Zona nova a investigar (contexto favorável)</div>
+    <div class="leg"><span class="sw" style="background:#5d6d7a"></span>Fora do clima escolhido</div>
+
+    <h2>QUADRADOS NO MAPA (~55 km) — ÍNDICE DE PRIORIDADE</h2>
+    <div class="leg"><span class="sw" style="background:#ff5a5f"></span>75–100 · Prioritária</div>
+    <div class="leg"><span class="sw" style="background:#f1a72c"></span>60–74 · Interessante</div>
+    <div class="leg"><span class="sw" style="background:#ffd86b"></span>50–59 · Moderada</div>
+
+    <h2>ÁREAS ESPECÍFICAS E ZONAS</h2>
+    <div id="list"><div class="hint">Escolhe um mineral.</div></div>
+  </aside>
+
+  <main>
+    <div id="globe"></div>
+    <div id="card"></div>
+    <div class="foot">Estudo preliminar feito a partir de conhecimento geológico geral, <b>por validar</b>. Os quadrados são um índice de prioridade por regras (não é probabilidade). Geologia usada é simulada. Não confirma depósitos.</div>
+  </main>
+</div>
+
+<script src="data/dados.js"></script>
+
+<script>
+(()=>{
+"use strict";
+
+// ========== MENU HAMBÚRGUER ==========
+const menuToggle = document.getElementById('menuToggle');
+const sidebar = document.getElementById('sidebar');
+const backdrop = document.getElementById('drawerBackdrop');
+
+function toggleDrawer(open) {
+  const isOpen = open !== undefined ? open : !sidebar.classList.contains('drawer-open');
+  sidebar.classList.toggle('drawer-open', isOpen);
+  backdrop.classList.toggle('show', isOpen);
+  menuToggle.setAttribute('aria-expanded', isOpen);
+  menuToggle.textContent = isOpen ? '✕' : '☰';
+  // Impede scroll do body quando drawer está aberto
+  document.body.style.overflow = isOpen ? 'hidden' : '';
+}
+
+menuToggle.addEventListener('click', () => toggleDrawer());
+backdrop.addEventListener('click', () => toggleDrawer(false));
+window.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && sidebar.classList.contains('drawer-open')) toggleDrawer(false);
+});
+
+// Fecha drawer ao clicar num item (delegação)
+sidebar.addEventListener('click', e => {
+  if (e.target.closest('.z') && window.innerWidth <= 900) toggleDrawer(false);
+});
+
+// ========== RESTO DO CÓDIGO (lógica original) ==========
+const TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6ImloWk5oZjI0eEQzNmRHT2giLCJqdGkiOiIyZGM0NTUyZC00YTcwLTRkZTUtYjExYi0yODQ0MmIzMGE3ZjEiLCJpc3MiOiJodHRwczovL2FwaS5jZXNpdW0uY29tIiwiYXVkIjoidW5kZWZpbmVkX2RlZmF1bHQiLCJpYXQiOjE3OTQ2OTk0NTh9.qVzZ0W9pnjRY1ArVkTtq9le5GSnbqiGn-kxzdyN6VyY";
+
+const E=window.ESTUDO,$=s=>document.querySelector(s);
+
+const CORES={c:"#16c4ed",i:"#f1a72c",x:"#a779e8"};
+const NOME={c:"Conhecido",i:"Indício regional",x:"Zona nova a investigar"};
+const ORD={c:0,i:1,x:2};
+
+let AR={all:[],top:[]},CELLS=[],cellEnts=[],min=null;
+let clim=new Set(["A","S","SH","H"]),viewer,ds,ents={};
+
+const mObj=id=>E.minerais.find(m=>m.id===id);
+const pn=id=>E.provincias[id].nome;
+const rec=(m,p)=>(E.zonas[m]||[]).find(z=>z.p===p);
+
+const IMG={
+ouro:"recurso-ouro",
+diamante:"recurso-diamante",
+petroleo:"recurso-petroleo"
+};
+
+const IMG_EXTERNAS = {
+  "gas-natural": "https://upload.wikimedia.org/wikipedia/commons/6/6b/Natural_gas_separation_plants.jpg",
+  cobre: "https://upload.wikimedia.org/wikipedia/commons/e/e6/Copper_Ore.jpg",
+  ferro: "https://upload.wikimedia.org/wikipedia/commons/2/2e/HematitaEZ.jpg",
+  litio: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Spodumene_%28GeoDIL_number_-_401%29.jpg/960px-Spodumene_%28GeoDIL_number_-_401%29.jpg",
+  cobalto: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Cobalt_ore.jpg/1280px-Cobalt_ore.jpg",
+  niquel: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Garnierite.jpg/1280px-Garnierite.jpg",
+  uranio: "https://upload.wikimedia.org/wikipedia/commons/e/e6/Uraniumore.jpg"
+};
+
+const imgSrc=id=>{
+if(IMG[id])return `assets/images/${IMG[id]}.jpg`;
+return IMG_EXTERNAS[id]||null;
+};
+
+const SYM={
+"gas-natural":"CH₄",
+cobre:"Cu",
+ferro:"Fe",
+litio:"Li",
+cobalto:"Co",
+niquel:"Ni",
+uranio:"U"
+};
+
+$("#mins").innerHTML=E.minerais.map(m=>{
+const img=imgSrc(m.id);
+return `<button class="m resource ${img?"":"nopic"}" data-m="${m.id}">
+${img?`<img src="${img}" alt="${m.nome}" loading="lazy" onerror="this.remove()">`:`<div class="sym">${SYM[m.id]||""}</div>`}
+<span class="n">${m.nome.toUpperCase()}</span>
+</button>`;
+}).join("");
+
+$("#clim").innerHTML=Object.entries(E.clima).map(([k,v])=>
+`<button class="c on" data-c="${k}">${v}</button>`
+).join("");
+
+function pickMin(id){
+min=id;
+document.querySelectorAll(".m").forEach(x=>x.classList.toggle("on",x.dataset.m===id));
+$("#card").style.display="none";
+render(true);
+}
+
+document.querySelectorAll(".m").forEach(b=>b.onclick=()=>pickMin(b.dataset.m));
+
+function setClim(set){
+clim=new Set(set);
+document.querySelectorAll(".c").forEach(b=>b.classList.toggle("on",clim.has(b.dataset.c)));
+render();
+}
+
+document.querySelectorAll(".c").forEach(b=>b.onclick=()=>{
+const k=b.dataset.c;
+clim.has(k)?clim.delete(k):clim.add(k);
+b.classList.toggle("on",clim.has(k));
+render();
+});
+
+function render(fit){
+const m=min&&mObj(min);
+AR=m?compute(m):{all:[],top:[]};
+
+$("#climHint").innerHTML=m?
+`<b>Clima favorável a ${m.nome}:</b> ${m.favor.map(k=>E.clima[k].split(" (")[0]).join(", ")}. ${m.porque}`:
+"Liga ou desliga os climas para ver só as zonas nesse clima.";
+
+const zs=m?(E.zonas[min]||[]).filter(z=>clim.has(E.provincias[z.p].clima)).sort((a,b)=>ORD[a.n]-ORD[b.n]):[];
+
+$("#list").innerHTML=areaHTML(m)+(!m?
+'<div class="hint">Escolhe um mineral.</div>':
+zs.length?
+zs.map(z=>`<div class="z" data-p="${z.p}">
+<b>${pn(z.p)}</b>
+<span class="tag" style="background:${CORES[z.n]}">${NOME[z.n]}</span>
+<br>${z.t}
+</div>`).join(""):
+'<div class="hint">Nenhuma província neste clima.</div>');
+
+document.querySelectorAll(".z[data-p]").forEach(d=>d.onclick=()=>{
+show(d.dataset.p);
+fly(d.dataset.p);
+});
+
+document.querySelectorAll(".z[data-a]").forEach(d=>d.onclick=()=>{
+showCell(+d.dataset.a);
+flyCell(+d.dataset.a);
+});
+
+if(!viewer||!ds)return;
+
+for(const [p,e] of Object.entries(ents)){
+const r=m&&rec(min,p),ok=r&&clim.has(E.provincias[p].clima);
+e.polygon.material=Cesium.Color.fromCssColorString(ok?CORES[r.n]:r?"#5d6d7a":"#4a90b8").withAlpha(ok?.55:r?.2:.07);
+}
+
+drawCells();
+
+if(fit&&(zs.length||AR.top.length)){
+viewer.camera.flyTo({
+destination:Cesium.Cartesian3.fromDegrees(17.5,-12,3200000),
+duration:1.2
+});
+}
+}
+
+function show(p){
+const m=min&&mObj(min),r=m&&rec(min,p),cl=E.provincias[p].clima;
+
+const todos=E.minerais.filter(x=>rec(x.id,p)).map(x=>
+`${x.nome} (${NOME[rec(x.id,p).n]})`
+);
+
+const imagem=m&&imgSrc(m.id);
+
+$("#card").innerHTML=`
+<button class="x" onclick="this.parentNode.style.display='none'">×</button>
+${imagem?`<img src="${imagem}" alt="${m.nome}" loading="lazy" onerror="this.remove()">`:""}
+<h3>${pn(p)}</h3>
+<b>Clima:</b> ${E.clima[cl]}<br>
+`+
+(m?
+(r?
+`<b>${m.nome}:</b>
+<span class="tag" style="background:${CORES[r.n]}">${NOME[r.n]}</span>
+<br>${r.t}<br>`:
+`<b>${m.nome}:</b> sem registo nem contexto no estudo. Ausência de dados não é ausência de recurso.<br>`
+)+
+`<b>Clima ${m.favor.includes(cl)?"favorável ✔":"pouco favorável ✘"}</b> para ${m.nome}.<br>`
+:"")+
+`${provAreas(m,p)}
+<div class="hint" style="margin-top:8px">
+<b>Minerais neste estudo para esta província:</b>
+${todos.join("; ")||"nenhum"}
+</div>`;
+
+$("#card").style.display="block";
+}
+
+function fly(p){
+ents[p]&&viewer.flyTo(ents[p],{duration:1.4});
+}
+
+async function init(){
+if(!window.Cesium){
+$("#globe").innerHTML='<p style="padding:20px">Não foi possível carregar o CesiumJS. Verifica a internet.</p>';
+return;
+}
+
+const tok=TOKEN&&!TOKEN.includes("COLOQUE");
+if(tok)Cesium.Ion.defaultAccessToken=TOKEN;
+
+viewer=new Cesium.Viewer("globe",{
+animation:false,
+timeline:false,
+baseLayerPicker:false,
+geocoder:false,
+homeButton:false,
+sceneModePicker:false,
+navigationHelpButton:false,
+fullscreenButton:false,
+infoBox:false,
+selectionIndicator:false,
+baseLayer:false
+});
+
+viewer.scene.backgroundColor=Cesium.Color.fromCssColorString("#06111b");
+
+let ok=false;
+
+if(tok){
+try{
+viewer.imageryLayers.addImageryProvider(
+await Cesium.createWorldImageryAsync({
+style:Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
+})
+);
+ok=true;
+}catch(e){
+console.error(e);
+}
+}
+
+if(!ok){
+viewer.imageryLayers.addImageryProvider(
+new Cesium.OpenStreetMapImageryProvider({
+url:"https://tile.openstreetmap.org/"
+})
+);
+}
+
+viewer.camera.setView({
+destination:Cesium.Cartesian3.fromDegrees(17.5,-12,3200000)
+});
+
+ds=await Cesium.GeoJsonDataSource.load(window.PROVS,{
+clampToGround:true,
+stroke:Cesium.Color.fromCssColorString("#9fe3f5"),
+strokeWidth:2,
+fill:Cesium.Color.fromCssColorString("#4a90b8").withAlpha(.07)
+});
+
+viewer.dataSources.add(ds);
+
+ds.entities.values.forEach(e=>{
+const id=e.properties.id.getValue();
+ents[id]=e;
+
+const P=e.polygon.hierarchy.getValue().positions.map(c=>
+Cesium.Cartographic.fromCartesian(c)
+);
+
+const lo=P.reduce((a,c)=>a+c.longitude,0)/P.length;
+const la=P.reduce((a,c)=>a+c.latitude,0)/P.length;
+
+viewer.entities.add({
+position:Cesium.Cartesian3.fromRadians(lo,la,0),
+label:{
+text:E.provincias[id].nome.split(" (")[0],
+font:"12px sans-serif",
+fillColor:Cesium.Color.WHITE,
+outlineColor:Cesium.Color.BLACK,
+outlineWidth:3,
+style:Cesium.LabelStyle.FILL_AND_OUTLINE,
+heightReference:Cesium.HeightReference.CLAMP_TO_GROUND,
+disableDepthTestDistance:Number.POSITIVE_INFINITY,
+distanceDisplayCondition:new Cesium.DistanceDisplayCondition(0,5000000)
+}
+});
+});
+
+new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas).setInputAction(c=>{
+const o=viewer.scene.pick(c.position);
+
+if(Cesium.defined(o)&&o.id&&o.id.properties){
+if(o.id.properties.cell)showCell(o.id.properties.cell.getValue());
+else if(o.id.properties.id)show(o.id.properties.id.getValue());
+}
+},Cesium.ScreenSpaceEventType.LEFT_CLICK);
+
+render();
+}
+
+// ===== ALGORITMO DE ÁREAS ESPECÍFICAS =====
+
+const GS=window.GEOSIM.features;
+const AN=window.ANCORAS;
+const STEP=.5;
+const PB={};
+
+const rad=d=>d*Math.PI/180;
+
+const hav=(a,b,c,d)=>{
+const p=rad(c-a),q=rad(d-b);
+const k=Math.sin(p/2)**2+Math.cos(rad(a))*Math.cos(rad(c))*Math.sin(q/2)**2;
+return 12742*Math.asin(Math.sqrt(k));
+};
+
+const polysOf=g=>g.type==="Polygon"?[g.coordinates]:g.coordinates;
+
+const pip=(x,y,rings)=>{
+let in_=false;
+for(const r of rings){
+for(let i=0,j=r.length-1;i<r.length;j=i++){
+const[xi,yi]=r[i],[xj,yj]=r[j];
+if((yi>y)!==(yj>y)&&x<(xj-xi)*(y-yi)/(yj-yi)+xi)in_=!in_;
+}
+}
+return in_;
+};
+
+const inG=(x,y,g)=>polysOf(g).some(p=>pip(x,y,p));
+
+(function build(){
+const F=window.PROVS.features;
+
+F.forEach(f=>{
+const id=f.properties.id;
+const pts=polysOf(f.geometry).flat(2);
+
+PB[id]={
+w:Math.min(...pts.map(p=>p[0])),
+e:Math.max(...pts.map(p=>p[0])),
+s:Math.min(...pts.map(p=>p[1])),
+n:Math.max(...pts.map(p=>p[1]))
+};
+});
+
+for(let la=-18+STEP/2;la<-4.2;la+=STEP){
+for(let lo=11.5+STEP/2;lo<24.5;lo+=STEP){
+const f=F.find(f=>inG(lo,la,f.geometry));
+if(f){
+CELLS.push({
+lat:la,
+lon:lo,
+p:f.properties.id,
+geo:GS.filter(g=>inG(lo,la,g.geometry))
+});
+}
+}
+}
+})();
+
+function score(m,c){
+const z=rec(m.id,c.p);
+const cl=E.provincias[c.p].clima;
+
+const ev=z?{c:30,i:20,x:10}[z.n]:0;
+const gd=c.geo.length?
+(c.geo.some(f=>f.properties.minerals_context.includes(m.id))?30:5):0;
+const cm=m.favor.includes(cl)?20:5;
+
+const an=AN.filter(a=>a.m===m.id);
+let d=null,near=null;
+
+for(const a of an){
+const k=hav(c.lat,c.lon,a.lat,a.lon);
+if(d===null||k<d){
+d=k;
+near=a;
+}
+}
+
+const px=an.length?
+(d<30?20:d<80?15:d<150?10:d<250?5:0):0;
+
+const max=100;
+
+return{
+ev,gd,cm,px,d,near,max,
+tot:Math.round((ev+gd+cm+px)/max*100)
+};
+}
+
+function compute(m){
+const all=[];
+
+CELLS.forEach((c,i)=>{
+if(!clim.has(E.provincias[c.p].clima))return;
+const s=score(m,c);
+if(s.tot>=50)all.push({i,c,s});
+});
+
+all.sort((a,b)=>b.s.tot-a.s.tot||(a.s.d??9e9)-(b.s.d??9e9));
+
+const top=[];
+
+for(const a of all){
+if(top.length>=10)break;
+if(top.every(t=>hav(t.c.lat,t.c.lon,a.c.lat,a.c.lon)>=110)){
+top.push(a);
+}
+}
+
+return{all,top};
+}
+
+function quad(c){
+const b=PB[c.p];
+const r=(c.lat-b.s)/(b.n-b.s);
+const q=(c.lon-b.w)/(b.e-b.w);
+
+const ns=r>.66?"n":r<.34?"s":"";
+const ew=q>.66?"e":q<.34?"w":"";
+
+const N={
+nw:"noroeste",
+ne:"nordeste",
+sw:"sudoeste",
+se:"sudeste",
+n:"norte",
+s:"sul",
+e:"leste",
+w:"oeste",
+"":"centro"
+};
+
+return N[ns+ew];
+}
+
+const aName=c=>`${quad(c)[0].toUpperCase()+quad(c).slice(1)} de ${E.provincias[c.p].nome.split(" (")[0]}`;
+
+const lvl=t=>t>=75?
+["Prioritária","#ff5a5f"]:
+t>=60?
+["Interessante","#f1a72c"]:
+t>=50?
+["Moderada","#ffd86b"]:
+["Baixa","#8295a5"];
+
+function areaHTML(m){
+if(!m)return "";
+
+if(!AR.top.length){
+return '<div class="hint">Sem áreas com índice ≥ 50 neste clima.</div><h2>PROVÍNCIAS</h2>';
+}
+
+return '<div class="hint" style="margin-bottom:6px">Top áreas (índice de prioridade 0–100, não é probabilidade):</div>'+
+AR.top.map((a,k)=>{
+const[l,c]=lvl(a.s.tot);
+
+return `<div class="z" data-a="${a.i}">
+<b>${String(k+1).padStart(2,"0")} · ${aName(a.c)}</b>
+<span class="tag" style="background:${c}">${a.s.tot} · ${l}</span>
+<br>
+${a.s.near?`A ${Math.round(a.s.d)} km de ${a.s.near.nome}. `:""}
+${a.c.lat.toFixed(2)}°, ${a.c.lon.toFixed(2)}°
+</div>`;
+}).join("")+
+'<h2>PROVÍNCIAS</h2>';
+}
+
+function drawCells(){
+if(!viewer)return;
+
+cellEnts.forEach(e=>viewer.entities.remove(e));
+cellEnts=[];
+
+AR.all.forEach(a=>{
+const col=Cesium.Color.fromCssColorString(lvl(a.s.tot)[1]).withAlpha(.6);
+const h=STEP*.46;
+
+cellEnts.push(viewer.entities.add({
+rectangle:{
+coordinates:Cesium.Rectangle.fromDegrees(
+a.c.lon-h,
+a.c.lat-h,
+a.c.lon+h,
+a.c.lat+h
+),
+material:col,
+classificationType:Cesium.ClassificationType.TERRAIN
+},
+properties:{cell:a.i}
+}));
+});
+}
+
+function flyCell(i){
+const c=CELLS[i];
+
+viewer.camera.flyTo({
+destination:Cesium.Cartesian3.fromDegrees(c.lon,c.lat-.9,420000),
+orientation:{
+heading:0,
+pitch:Cesium.Math.toRadians(-55),
+roll:0
+},
+duration:1.4
+});
+}
+
+function bar(v,mx,t){
+return `<div style="display:flex;justify-content:space-between">
+<span>${t}</span><b>${v}/${mx}</b>
+</div>
+<div style="height:5px;background:#12364c;border-radius:3px;margin:2px 0 7px">
+<div style="height:5px;width:${mx?v/mx*100:0}%;background:#08bce9;border-radius:3px"></div>
+</div>`;
+}
+
+function showCell(i){
+const m=mObj(min),c=CELLS[i];
+if(!m||!c)return;
+
+const s=score(m,c);
+const[l,col]=lvl(s.tot);
+const z=rec(m.id,c.p);
+
+$("#card").innerHTML=`
+<button class="x" onclick="this.parentNode.style.display='none'">×</button>
+<h3>${aName(c)}</h3>
+<span class="tag" style="background:${col}">Índice ${s.tot}/100 · ${l}</span>
+<div class="hint" style="margin:6px 0">${m.nome} · centro ${c.lat.toFixed(2)}°, ${c.lon.toFixed(2)}° · quadrado de ~55 km</div>
+`+
+bar(s.ev,30,"Evidência na província ("+(z?NOME[z.n]:"sem registo")+")")+
+bar(s.gd,30,"Geologia (simulada): "+(c.geo.length?c.geo.map(f=>f.properties.name).join("; "):"sem domínio"))+
+bar(s.cm,20,"Clima: "+E.clima[E.provincias[c.p].clima].split(" (")[0])+
+(s.near?
+bar(s.px,20,`Proximidade a ${s.near.nome} (${Math.round(s.d)} km)`):
+'<div class="hint">Sem locais de referência para este mineral: esta componente vale 0 e o índice máximo é 80.</div>')+
+`<div class="hint" style="margin-top:8px">Índice por regras do estudo (evidência + geologia + clima + proximidade). Não é probabilidade nem confirma jazida. Locais de referência e geologia são aproximados/simulados.</div>`;
+
+$("#card").style.display="block";
+}
+
+function provAreas(m,p){
+if(!m)return "";
+
+const a=CELLS.map((c,i)=>({i,c,s:score(m,c)}))
+.filter(x=>x.c.p===p)
+.sort((u,v)=>v.s.tot-u.s.tot)
+.filter((x,k,arr)=>arr.slice(0,k).every(t=>hav(t.c.lat,t.c.lon,x.c.lat,x.c.lon)>=110))
+.slice(0,3);
+
+return a.length?
+`<div style="margin-top:8px">
+<b>Áreas específicas aqui:</b>
+${a.map(x=>`<div class="z" style="cursor:pointer" onclick="window.__cell(${x.i})">${aName(x.c)} — ${x.s.tot} (${lvl(x.s.tot)[0]})</div>`).join("")}
+</div>`:
+`<div class="hint" style="margin-top:8px">Sem áreas calculadas nesta província.</div>`;
+}
+
+window.__cell=i=>{
+showCell(i);
+flyCell(i);
+};
+
+const norm=t=>(t||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
+
+const CK={
+A:"arido seco deserto",
+S:"semiarido seco",
+SH:"sub humido subhumido",
+H:"humido chuvoso tropical"
+};
+
+const NK={
+c:"conhecido registo actividade",
+i:"indicio regional",
+x:"novo nova investigar contexto favoravel"
+};
+
+let items=[],fi=0;
+
+function search(){
+const q=norm($("#q").value);
+const box=$("#res");
+
+if(!q){
+box.style.display="none";
+return;
+}
+
+const tk=q.split(" ");
+const all=h=>tk.every(t=>h.includes(t));
+const out=[];
+
+E.minerais.filter(m=>all(norm(m.nome+" "+m.porque))&&tk.length<3).forEach(m=>{
+out.push({
+g:"MINERAIS",
+t:m.nome,
+s:"Mostrar zonas de "+m.nome,
+a:()=>pickMin(m.id)
+});
+});
+
+Object.entries(E.provincias).filter(([k,p])=>all(norm(p.nome))).forEach(([k,p])=>{
+out.push({
+g:"PROVÍNCIAS",
+t:p.nome.split(" (")[0],
+s:E.clima[p.clima],
+a:()=>{
+show(k);
+fly(k);
+}
+});
+});
+
+Object.entries(E.clima).filter(([k,v])=>all(norm(v+" "+CK[k]))).forEach(([k,v])=>{
+out.push({
+g:"CLIMAS",
+t:v,
+s:"Filtrar só este clima",
+a:()=>setClim([k])
+});
+});
+
+for(const m of E.minerais){
+for(const z of E.zonas[m.id]||[]){
+const h=norm(
+m.nome+" "+
+E.provincias[z.p].nome+" "+
+E.clima[E.provincias[z.p].clima]+" "+
+CK[E.provincias[z.p].clima]+" "+
+NOME[z.n]+" "+
+NK[z.n]+" "+
+z.t
+);
+
+if(all(h)){
+out.push({
+g:"ZONAS",
+t:m.nome+" · "+E.provincias[z.p].nome.split(" (")[0],
+s:NOME[z.n]+" — "+z.t,
+a:()=>{
+pickMin(m.id);
+setClim(["A","S","SH","H"]);
+show(z.p);
+fly(z.p);
+}
+});
+}
+}
+}
+
+items=out.slice(0,40);
+fi=0;
+let last="";
+
+box.innerHTML=items.length?
+items.map((x,i)=>
+(x.g!==last?(last=x.g,`<h4>${x.g}</h4>`):"")+
+`<button data-i="${i}">${x.t}<small>${x.s}</small></button>`
+).join("") :
+'<button>Sem resultados no estudo. Ausência de dados não é ausência de recurso.</button>';
+
+box.style.display="block";
+
+box.querySelectorAll("[data-i]").forEach(b=>{
+b.onclick=()=>go(+b.dataset.i);
+});
+}
+
+function go(i){
+const x=items[i];
+if(!x)return;
+x.a();
+$("#res").style.display="none";
+$("#q").blur();
+}
+
+$("#q").oninput=search;
+$("#q").onfocus=search;
+
+$("#q").onkeydown=e=>{
+if(e.key==="Enter")go(fi);
+if(e.key==="Escape")$("#res").style.display="none";
+};
+
+document.addEventListener("click",e=>{
+if(!e.target.closest(".sw-wrap"))$("#res").style.display="none";
+});
+
+init().catch(e=>console.error(e));
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="pt-AO">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#06111b">
+  <title>UBUNTO SPACE — Inteligência Geoespacial</title>
+  <style>
+    :root{
+      --bg:#06111b;--panel:rgba(8,24,38,.96);--panel2:#0b2031;--line:#1c3b51;
+      --cyan:#08bce9;--cyan2:#55d8f4;--text:#eef6fb;--muted:#93aabd;
+      --green:#35d39a;--amber:#f2aa2d;--red:#e36c63;--blue:#38b9e7;
+      --shadow:0 18px 50px rgba(0,0,0,.35)
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;overflow:hidden}
+    button,input{font:inherit}
+    button{cursor:pointer}
+    .app{height:100%;display:flex;flex-direction:column;background:radial-gradient(ellipse at 50% 45%,#0a2638 0,#06131e 50%,#040b12 100%)}
+    header{height:72px;flex:none;display:flex;align-items:center;gap:22px;padding:0 24px;border-bottom:1px solid #183246;background:rgba(4,13,21,.94);z-index:20}
+    .brand{display:flex;align-items:center;gap:12px;min-width:300px}
+    .brand-mark{width:48px;height:48px;color:var(--cyan);filter:drop-shadow(0 0 10px #00bce855)}
+    .brand-name{font-weight:800;letter-spacing:.035em;font-size:22px;white-space:nowrap}
+    .brand-sub{font-size:11px;color:#9ab0c1;border-left:1px solid #466174;padding-left:18px;margin-left:8px;line-height:1.4}
+    nav{display:flex;align-items:center;gap:5px;margin:auto}
+    nav button,.header-action{border:1px solid transparent;background:transparent;color:#c6d5e0;padding:10px 14px;border-radius:22px;font-size:13px;white-space:nowrap}
+    nav button.active{background:#07517c;border-color:#0876a8;color:white;box-shadow:inset 0 0 0 1px #138bc1}
+    nav button:hover,.header-action:hover{background:#102c40;border-color:#24516a}
+    .header-right{display:flex;align-items:center;gap:10px}
+    .search{height:38px;width:220px;display:flex;align-items:center;gap:8px;border:1px solid #25465d;border-radius:22px;padding:0 12px;background:#081a28}
+    .search input{width:100%;border:0;outline:0;background:transparent;color:white;font-size:12px}
+    .search input::placeholder{color:#7992a5}
+    .icon-btn{width:36px;height:36px;border:1px solid #24475d;border-radius:50%;background:#0b2030;color:#cfe4f0;display:grid;place-items:center}
+    .resource-strip{margin:10px 14px 0;min-height:104px;flex:none;border:1px solid #1b3b51;border-radius:13px;background:linear-gradient(100deg,rgba(8,25,39,.97),rgba(7,20,32,.9));display:flex;align-items:center;padding:10px 14px;gap:14px;z-index:10}
+    .resource-label{width:160px;flex:none;font-size:12px;line-height:1.45;font-weight:800;letter-spacing:.06em;color:#dceaf3}
+    .resource-label small{display:block;color:#718da2;font-size:10px;font-weight:500;letter-spacing:.02em;margin-top:3px}
+    .resources{display:grid;grid-template-columns:repeat(6,minmax(100px,1fr));gap:10px;width:100%}
+    .resource{position:relative;height:82px;border:1px solid #2a4b61;border-radius:9px;overflow:hidden;background:#102536;color:white;padding:0;isolation:isolate;transition:.18s}
+    .resource img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;filter:saturate(.8) brightness(.66);transition:.25s}
+    .resource:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(2,10,17,.92),rgba(3,13,22,.08) 75%);z-index:-1}
+    .resource span{position:absolute;bottom:8px;left:8px;right:8px;font-size:13px;font-weight:800;text-align:center;text-shadow:0 2px 4px #000}
+    .resource:hover img{transform:scale(1.07);filter:brightness(.85)}
+    .resource.selected{border:2px solid var(--cyan);box-shadow:0 0 0 2px #08bce933,0 0 22px #00b9ed44}
+    .resource.selected:before{content:"✓";position:absolute;right:7px;top:6px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--cyan);color:#002131;font-weight:900}
+    main{position:relative;flex:1;min-height:0;overflow:hidden}
+    #globeViz{position:absolute;inset:0;z-index:1}
+    #globeViz canvas{display:block;outline:none}
+    .map-vignette{position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse at 50% 48%,transparent 35%,rgba(1,8,14,.25) 75%,rgba(1,7,12,.55) 100%)}
+    .map-topline{position:absolute;top:16px;left:50%;transform:translateX(-50%);z-index:4;display:flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid #1d4057;border-radius:20px;background:#071724dd;backdrop-filter:blur(10px);font-size:11px;color:#a8bfce;white-space:nowrap}
+    .live-dot{width:7px;height:7px;border-radius:50%;background:#35d39a;box-shadow:0 0 10px #35d39a}
+    .map-coordinates{font-variant-numeric:tabular-nums;color:#d7e9f4}
+    .panel{position:absolute;z-index:6;background:linear-gradient(160deg,rgba(8,25,39,.97),rgba(5,18,29,.97));border:1px solid #25465c;border-radius:12px;box-shadow:var(--shadow);backdrop-filter:blur(14px)}
+    .left-panel{left:14px;top:18px;width:340px;max-height:calc(100% - 36px);display:flex;flex-direction:column}
+    .right-panel{right:14px;top:18px;width:330px;max-height:calc(100% - 36px);display:flex;flex-direction:column;overflow:auto;scrollbar-width:thin;scrollbar-color:#31536a transparent}
+    .panel-head{height:50px;display:flex;align-items:center;gap:11px;padding:0 16px;border-bottom:1px solid #244257;flex:none}
+    .panel-head svg{color:var(--cyan);flex:none}
+    .panel-head h2{font-size:14px;letter-spacing:.025em;margin:0;font-weight:800}
+    .panel-head .collapse{margin-left:auto;background:none;border:0;color:#a8bfce;font-size:20px}
+    .panel-body{padding:12px 14px}
+    .region-list{overflow:auto;scrollbar-width:thin;scrollbar-color:#31536a transparent}
+    .region{display:grid;grid-template-columns:104px 1fr;gap:12px;padding:10px 0;border-bottom:1px solid #1d394c}
+    .region-thumb{height:104px;border-radius:8px;overflow:hidden;border:1px solid #2b5068;position:relative;background:#132b3b}
+    .region-thumb img{width:100%;height:100%;object-fit:cover;filter:brightness(.8) saturate(.9)}
+    .region-thumb:after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,#03bde566,transparent 70%);mix-blend-mode:screen}
+    .region-info{min-width:0;padding-top:4px}
+    .region-info strong{display:block;font-size:13px;margin-bottom:8px}
+    .region-info p{font-size:12px;color:#b8cad6;margin:0 0 10px}
+    .level{display:inline-block;padding:3px 8px;border-radius:12px;font-size:10px;font-weight:800;margin-left:4px;color:#04121b;background:#25c8ed}
+    .level.moderate{background:#f2ae32}.level.low{background:#8395a5}
+    .locate{width:100%;border:1px solid #276187;border-radius:8px;background:#0a3555;color:#eaf7ff;padding:8px 9px;font-size:11px;text-align:center}
+    .locate:hover{background:#0b4c73}
+    .notice{display:flex;align-items:flex-start;gap:9px;padding:12px 0 2px;color:#9fb3c2;font-size:10px;line-height:1.45}
+    .group{padding:12px 15px;border-bottom:1px solid #1d394c}
+    .group:last-child{border-bottom:0}
+    .group-title{display:flex;align-items:center;justify-content:space-between;font-size:10px;letter-spacing:.08em;color:#77d9f2;font-weight:800;margin-bottom:10px}
+    .group-title small{font-size:9px;color:#7993a5;font-weight:500;letter-spacing:0}
+    .layer-row{display:flex;align-items:center;gap:9px;min-height:30px;font-size:11px;color:#d4e1e9}
+    .layer-row .swatch{width:10px;height:10px;border-radius:2px;flex:none}
+    .layer-row input{margin-left:auto;appearance:none;width:31px;height:17px;border-radius:20px;background:#294253;position:relative;cursor:pointer;transition:.2s}
+    .layer-row input:before{content:"";position:absolute;width:11px;height:11px;left:3px;top:3px;border-radius:50%;background:#b7c7d1;transition:.2s}
+    .layer-row input:checked{background:#087fa9}
+    .layer-row input:checked:before{left:17px;background:white}
+    .legend-item{display:flex;align-items:center;gap:9px;font-size:11px;color:#d4e1e9;margin:7px 0}
+    .legend-swatch{width:15px;height:15px;border-radius:3px;border:1px solid #ffffff33}
+    .selected-area{margin:12px 14px 14px;border:1px solid #25465c;border-radius:10px;background:#0a1d2c;padding:12px}
+    .selected-area-head{font-size:12px;font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:10px}
+    .selected-area-content{display:grid;grid-template-columns:100px 1fr;gap:12px}
+    .mineral-photo{width:100px;height:112px;border-radius:7px;object-fit:cover;border:1px solid #34536a}
+    .detail-lines{font-size:11px;color:#aebfca;line-height:1.85}
+    .detail-lines b{color:#f2f7fa;font-weight:600}
+    .detail-action{margin-top:10px;width:100%;padding:10px;border:0;border-radius:7px;background:linear-gradient(90deg,#04a9d9,#10c6ed);color:#00202d;font-size:11px;font-weight:900;letter-spacing:.02em}
+    .detail-action:hover{filter:brightness(1.1)}
+    .zoom-controls{position:absolute;right:360px;bottom:54px;z-index:5;display:flex;flex-direction:column;gap:2px}
+    .zoom-controls button{width:36px;height:36px;border:1px solid #b8d3e0;background:#f6fbff;color:#082031;font-size:21px;font-weight:700}
+    .zoom-controls button:first-child{border-radius:8px 8px 0 0}.zoom-controls button:last-child{border-radius:0 0 8px 8px}
+    .reset-view{position:absolute;right:360px;bottom:12px;z-index:5;width:36px;height:36px;border-radius:50%;border:1px solid #b7d5e4;background:#0a1e2d;color:#eaf8ff;font-size:17px}
+    .scale{position:absolute;left:24px;bottom:18px;z-index:4;color:#e4edf3;font-size:10px;text-shadow:0 1px 3px #000}
+    .scale-line{width:190px;height:7px;border-left:2px solid #dceaf1;border-right:2px solid #dceaf1;border-bottom:2px solid #dceaf1;margin-top:3px}
+    footer{height:40px;flex:none;z-index:12;border-top:1px solid #1c3d52;background:#061522;display:flex;align-items:center;gap:22px;padding:0 20px;color:#9eb3c2;font-size:10px}
+    footer span{display:flex;align-items:center;gap:7px;white-space:nowrap}
+    footer b{color:#dceaf2;font-weight:600}
+    .status{color:#39d59a;font-weight:700}
+    .toast{position:absolute;z-index:30;bottom:58px;left:50%;transform:translateX(-50%) translateY(15px);opacity:0;pointer-events:none;background:#0b2a3d;border:1px solid #28708f;color:#e9f8ff;border-radius:9px;padding:10px 15px;font-size:12px;transition:.25s;box-shadow:var(--shadow)}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    .search-results{position:absolute;top:47px;right:0;width:260px;background:#081b29;border:1px solid #2b536b;border-radius:9px;box-shadow:var(--shadow);display:none;overflow:hidden}
+    .search-results button{display:block;width:100%;padding:10px 12px;text-align:left;background:none;border:0;color:#dceaf2;font-size:12px}
+    .search-results button:hover{background:#12364c}
+    .search-wrap{position:relative}
+    @media(max-width:1100px){
+      .brand{min-width:230px}.brand-sub{display:none}nav button{padding:9px 8px}
+      .left-panel{width:290px}.right-panel{width:290px}.zoom-controls,.reset-view{right:310px}
+      .resource-label{width:125px}.region{grid-template-columns:86px 1fr}.region-thumb{height:90px}
+    }
+    @media(max-width:760px){
+      html,body{overflow:auto}.app{min-height:100%;height:auto;overflow:visible}
+      header{height:auto;min-height:64px;padding:9px 12px;flex-wrap:wrap;gap:8px}
+      .brand{min-width:0;flex:1}.brand-mark{width:38px;height:38px}.brand-name{font-size:17px}.brand-sub{display:none}
+      nav{order:3;width:100%;overflow:auto;justify-content:flex-start;margin:0}
+      nav button{font-size:11px;padding:7px 10px}
+      .header-right{margin-left:auto}.search{width:155px}
+      .resource-strip{margin:8px;display:block;padding:9px}
+      .resource-label{width:auto;margin-bottom:8px}.resource-label small{display:inline;margin-left:7px}
+      .resources{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+      .resource{height:64px}.resource span{font-size:10px}
+      main{height:1000px;min-height:1000px;flex:none}
+      #globeViz{inset:0}.map-topline{top:10px;font-size:9px}
+      .left-panel{left:8px;top:52px;width:min(44%,230px);max-height:390px}
+      .right-panel{right:8px;top:52px;width:min(48%,250px);max-height:620px}
+      .panel-head{height:42px;padding:0 9px}.panel-head h2{font-size:10px}
+      .panel-body{padding:7px}.region{grid-template-columns:1fr;gap:5px;padding:7px 0}
+      .region-thumb{height:58px}.region-info{padding:0}.region-info strong{font-size:10px;margin-bottom:3px}
+      .region-info p{font-size:9px;margin-bottom:5px}.locate{font-size:9px;padding:5px}
+      .notice{font-size:8px}.group{padding:8px}.group-title{font-size:8px}.layer-row,.legend-item{font-size:9px;min-height:25px}
+      .selected-area{margin:8px;padding:8px}.selected-area-head{font-size:9px}.selected-area-content{grid-template-columns:65px 1fr;gap:7px}
+      .mineral-photo{width:65px;height:75px}.detail-lines{font-size:9px}.detail-action{font-size:9px;padding:8px}
+      .zoom-controls{right:calc(50% - 18px);bottom:52px}.reset-view{right:calc(50% - 18px);bottom:12px}
+      .scale{left:10px;bottom:12px;font-size:8px}.scale-line{width:90px}
+      footer{overflow:auto;gap:14px;padding:0 10px;font-size:8px}
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+        <circle cx="32" cy="32" r="27" stroke="currentColor" stroke-width="2.3"/>
+        <ellipse cx="32" cy="32" rx="13" ry="27" stroke="currentColor" stroke-width="1.6"/>
+        <ellipse cx="32" cy="32" rx="25" ry="10" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M7 32h50M32 5v54M12 17h40M12 47h40" stroke="currentColor" stroke-width="1.2"/>
+      </svg>
+      <div class="brand-name">UBUNTO SPACE</div>
+      <div class="brand-sub">Inteligência Geoespacial<br>para um Futuro Sustentável</div>
+    </div>
+    <nav aria-label="Navegação principal">
+      <button class="active" data-nav="Início">⌂ &nbsp;Início</button>
+      <button data-nav="Exploração">Exploração</button>
+      <button data-nav="Análises">Análises</button>
+      <button data-nav="Relatórios">Relatórios</button>
+      <button data-nav="Sobre">Sobre</button>
+    </nav>
+    <div class="header-right">
+      <div class="search-wrap">
+        <div class="search"><span>⌕</span><input id="mapSearch" placeholder="Pesquisar no mapa..." autocomplete="off"><span>⌄</span></div>
+        <div class="search-results" id="searchResults"></div>
+      </div>
+      <button class="icon-btn" title="Idioma">◎</button>
+      <span style="font-size:12px;color:#c8d8e2">PT⌄</span>
+      <button class="icon-btn" title="Perfil">◉</button>
+    </div>
+  </header>
+
+  <section class="resource-strip" aria-label="Seleção de recursos naturais">
+    <div class="resource-label">SELECIONE<br>UM RECURSO: <small>Escolha o que pretende localizar</small></div>
+    <div class="resources" id="resourceCards">
+      <button class="resource" data-resource="Petróleo"><img src="https://images.unsplash.com/photo-1516937941344-00b4e0337589?auto=format&fit=crop&w=600&q=85" alt=""><span>PETRÓLEO</span></button>
+      <button class="resource selected" data-resource="Diamante"><img src="https://images.unsplash.com/photo-1615655096345-61a54750068d?auto=format&fit=crop&w=600&q=85" alt=""><span>DIAMANTE</span></button>
+      <button class="resource" data-resource="Ouro"><img src="https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&fit=crop&w=600&q=85" alt=""><span>OURO</span></button>
+      <button class="resource" data-resource="Cobre"><img src="https://images.unsplash.com/photo-1615811361523-6bd03d7748e7?auto=format&fit=crop&w=600&q=85" alt=""><span>COBRE</span></button>
+      <button class="resource" data-resource="Lítio"><img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=85" alt=""><span>LÍTIO</span></button>
+      <button class="resource" data-resource="Cobalto"><img src="https://images.unsplash.com/photo-1543007168-5fa9b3c5f1fb?auto=format&fit=crop&w=600&q=85" alt=""><span>COBALTO</span></button>
+    </div>
+  </section>
+
+  <main>
+    <div id="globeViz" aria-label="Globo terrestre 3D interativo"></div>
+    <div class="map-vignette"></div>
+    <div class="map-topline"><span class="live-dot"></span> GLOBO INTERATIVO <span style="opacity:.4">|</span> <span id="mapFocus">ÁFRICA · ANGOLA</span> <span style="opacity:.4">|</span> <span class="map-coordinates" id="coordinates">8.84° S, 13.23° E</span></div>
+
+    <aside class="panel left-panel" id="regionsPanel">
+      <div class="panel-head">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a8 8 0 0 0-8 8c0 5.7 8 12 8 12s8-6.3 8-12a8 8 0 0 0-8-8Zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/></svg>
+        <h2>REGIÕES PRIORITÁRIAS</h2><button class="collapse" aria-label="Recolher">⌃</button>
+      </div>
+      <div class="panel-body region-list" id="regionList">
+        <article class="region">
+          <div class="region-thumb"><img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=320&q=75" alt="Imagem de satélite ilustrativa"></div>
+          <div class="region-info"><strong>Área de análise 01</strong><p>Potencial: <span class="level">Elevado</span></p><button class="locate" data-region="0">⌖ &nbsp;Localizar no globo</button></div>
+        </article>
+        <article class="region">
+          <div class="region-thumb"><img src="https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=320&q=75" alt="Imagem de satélite ilustrativa"></div>
+          <div class="region-info"><strong>Área de análise 02</strong><p>Potencial: <span class="level">Elevado</span></p><button class="locate" data-region="1">⌖ &nbsp;Localizar no globo</button></div>
+        </article>
+        <article class="region">
+          <div class="region-thumb"><img src="https://images.unsplash.com/photo-1509316785289-025f5b846b35?auto=format&fit=crop&w=320&q=75" alt="Imagem de satélite ilustrativa"></div>
+          <div class="region-info"><strong>Área de análise 03</strong><p>Potencial: <span class="level moderate">Moderado</span></p><button class="locate" data-region="2">⌖ &nbsp;Localizar no globo</button></div>
+        </article>
+        <div class="notice">ⓘ &nbsp;Resultados demonstrativos — não representam depósitos confirmados nem resultados de prospecção validados.</div>
+      </div>
+    </aside>
+
+    <aside class="panel right-panel" id="layersPanel">
+      <div class="panel-head">
+        <svg width="23" height="23" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 10 5-10 5L2 7l10-5Zm-10 9 10 5 10-5v4l-10 5-10-5v-4Zm0 7 10 5 10-5v2l-10 5-10-5v-2Z"/></svg>
+        <h2>CAMADAS DO MAPA</h2><button class="collapse" aria-label="Recolher">⌃</button>
+      </div>
+      <div class="group">
+        <div class="group-title">POTENCIAL IDENTIFICADO <small>3 níveis</small></div>
+        <label class="layer-row"><span class="swatch" style="background:#16c4ed"></span>Potencial elevado<input type="checkbox" checked data-layer="high"></label>
+        <label class="layer-row"><span class="swatch" style="background:#f1a72c"></span>Potencial moderado<input type="checkbox" checked data-layer="medium"></label>
+        <label class="layer-row"><span class="swatch" style="background:#8295a5"></span>Potencial reduzido<input type="checkbox" checked data-layer="low"></label>
+        <label class="layer-row"><span class="swatch" style="background:transparent;border:1px solid #9db2c2"></span>Não analisado<input type="checkbox" data-layer="unclassified"></label>
+      </div>
+      <div class="group">
+        <div class="group-title">CAMADAS GEOLÓGICAS <small>Dados de contexto</small></div>
+        <label class="layer-row"><span class="swatch" style="background:#9a8bcb"></span>Formações geológicas<input type="checkbox" checked data-layer="geology"></label>
+        <label class="layer-row"><span class="swatch" style="background:#d57b75"></span>Falhas e estruturas tectónicas<input type="checkbox" checked data-layer="faults"></label>
+        <label class="layer-row"><span class="swatch" style="background:#f2d46d"></span>Ocorrências conhecidas<input type="checkbox" data-layer="occurrences"></label>
+      </div>
+      <div class="group">
+        <div class="group-title">SENSORIAMENTO REMOTO <small>Imagens e índices</small></div>
+        <label class="layer-row"><span class="swatch" style="background:#42a7b7"></span>Alterações superficiais<input type="checkbox" checked data-layer="surface"></label>
+        <label class="layer-row"><span class="swatch" style="background:#6aa2dc"></span>Dados de satélite<input type="checkbox" checked data-layer="satellite"></label>
+      </div>
+      <div class="group">
+        <div class="group-title">LEGENDA <small id="legendResource">Diamante</small></div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#16c4ed"></span>Potencial elevado</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#f1a72c"></span>Potencial moderado</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#8295a5"></span>Potencial reduzido</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:transparent;border:1px solid #9db2c2"></span>Não analisado</div>
+      </div>
+      <section class="selected-area">
+        <div class="selected-area-head"><span style="color:#21c7eb">◆</span> ÁREA DE ANÁLISE — <span id="selectedPlace">ANGOLA</span></div>
+        <div class="selected-area-content">
+          <img class="mineral-photo" id="mineralPhoto" src="https://images.unsplash.com/photo-1615655096345-61a54750068d?auto=format&fit=crop&w=320&q=85" alt="Amostra ilustrativa de diamante">
+          <div class="detail-lines">
+            Recurso: <b id="detailResource">Diamante</b><br>
+            Potencial: <span class="level" id="detailLevel">Elevado</span><br>
+            Localização: <b id="detailLocation">Angola</b><br>
+            Confiança do modelo: <b>Não disponível</b><br>
+            Estado: <b style="color:#f2ae32">◷ Em análise</b>
+          </div>
+        </div>
+        <button class="detail-action" id="detailsButton">⌕ &nbsp;VER DETALHES DA REGIÃO</button>
+      </section>
+    </aside>
+
+    <div class="zoom-controls"><button id="zoomIn" aria-label="Aumentar zoom">+</button><button id="zoomOut" aria-label="Diminuir zoom">−</button></div>
+    <button class="reset-view" id="resetView" title="Voltar ao globo">➤</button>
+    <div class="scale">0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.000 km<div class="scale-line"></div></div>
+    <div class="toast" id="toast"></div>
+  </main>
+  <footer>
+    <span>⌖ &nbsp;Lat: <b id="footerLat">-8.84°</b> &nbsp;Lon: <b id="footerLon">13.23°</b></span>
+    <span>▱ &nbsp;Zoom: <b id="zoomValue">1.0</b></span>
+    <span>◎ &nbsp;Vista: <b id="viewValue">África</b></span>
+    <span>▥ &nbsp;Camadas activas: <b id="layersCount">6</b></span>
+    <span>Estado: <b class="status">● Online · modo demonstração</b></span>
+    <span style="margin-left:auto">UBUNTO SPACE v1.0</span>
+  </footer>
+</div>
+
+<script src="https://unpkg.com/globe.gl"></script>
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const $$ = s => [...document.querySelectorAll(s)];
+  const resourceImages = {
+    'Petróleo':'https://images.unsplash.com/photo-1516937941344-00b4e0337589?auto=format&fit=crop&w=500&q=85',
+    'Diamante':'https://images.unsplash.com/photo-1615655096345-61a54750068d?auto=format&fit=crop&w=500&q=85',
+    'Ouro':'https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&fit=crop&w=500&q=85',
+    'Cobre':'https://images.unsplash.com/photo-1615811361523-6bd03d7748e7?auto=format&fit=crop&w=500&q=85',
+    'Lítio':'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=500&q=85',
+    'Cobalto':'https://images.unsplash.com/photo-1543007168-5fa9b3c5f1fb?auto=format&fit=crop&w=500&q=85'
+  };
+  const resourceZones = {
+    'Diamante':[
+      {name:'Área de análise 01',lat:-8.84,lng:13.23,level:'Elevado',color:'#16c4ed',radius:1.45},
+      {name:'Área de análise 02',lat:-12.4,lng:18.2,level:'Elevado',color:'#16c4ed',radius:1.15},
+      {name:'Área de análise 03',lat:-7.1,lng:20.1,level:'Moderado',color:'#f1a72c',radius:1.1}
+    ],
+    'Petróleo':[
+      {name:'Área de análise 01',lat:-6.1,lng:11.8,level:'Elevado',color:'#16c4ed',radius:1.3},
+      {name:'Área de análise 02',lat:-5.2,lng:12.3,level:'Moderado',color:'#f1a72c',radius:1.2},
+      {name:'Área de análise 03',lat:-9.2,lng:12.4,level:'Moderado',color:'#f1a72c',radius:1.1}
+    ],
+    'Ouro':[
+      {name:'Área de análise 01',lat:-11.5,lng:16.1,level:'Elevado',color:'#16c4ed',radius:1.25},
+      {name:'Área de análise 02',lat:-8.0,lng:18.7,level:'Moderado',color:'#f1a72c',radius:1.3},
+      {name:'Área de análise 03',lat:-14.0,lng:20.5,level:'Reduzido',color:'#8295a5',radius:1.0}
+    ],
+    'Cobre':[
+      {name:'Área de análise 01',lat:-12.2,lng:18.4,level:'Elevado',color:'#16c4ed',radius:1.4},
+      {name:'Área de análise 02',lat:-10.1,lng:21.0,level:'Moderado',color:'#f1a72c',radius:1.2},
+      {name:'Área de análise 03',lat:-15.0,lng:22.1,level:'Reduzido',color:'#8295a5',radius:1.0}
+    ],
+    'Lítio':[
+      {name:'Área de análise 01',lat:-12.8,lng:17.5,level:'Moderado',color:'#f1a72c',radius:1.3},
+      {name:'Área de análise 02',lat:-15.2,lng:19.0,level:'Elevado',color:'#16c4ed',radius:1.15},
+      {name:'Área de análise 03',lat:-9.8,lng:15.0,level:'Reduzido',color:'#8295a5',radius:1.0}
+    ],
+    'Cobalto':[
+      {name:'Área de análise 01',lat:-12.1,lng:18.8,level:'Elevado',color:'#16c4ed',radius:1.35},
+      {name:'Área de análise 02',lat:-10.8,lng:20.3,level:'Moderado',color:'#f1a72c',radius:1.1},
+      {name:'Área de análise 03',lat:-15.0,lng:22.0,level:'Reduzido',color:'#8295a5',radius:1.0}
+    ]
+  };
+  let currentResource='Diamante', selectedIndex=0, globe=null, currentZoom=1, toastTimer;
+  const activeLayers = {high:true,medium:true,low:true,unclassified:false,geology:true,faults:true,occurrences:false,surface:true,satellite:true};
+  const zones = () => resourceZones[currentResource];
+  const levelClass = l => l==='Moderado'?'moderate':l==='Reduzido'?'low':'';
+  function notify(msg){
+    const t=$('#toast');t.textContent=msg;t.classList.add('show');
+    clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2600);
+  }
+  function updateFooter(lat,lng){
+    $('#coordinates').textContent=`${Math.abs(lat).toFixed(2)}° ${lat<0?'S':'N'}, ${Math.abs(lng).toFixed(2)}° ${lng<0?'W':'E'}`;
+    $('#footerLat').textContent=`${lat.toFixed(2)}°`;$('#footerLon').textContent=`${lng.toFixed(2)}°`;
+  }
+  function makeHexes(){
+    const result=[];
+    zones().forEach((z,i)=>{
+      // Small deterministic hex-like sampling cluster around each illustrative focus point.
+      for(let r=0;r<4;r++) for(let c=0;c<5;c++){
+        const lat=z.lat+(r-1.5)*.52+(Math.random()-.5)*.12;
+        const lng=z.lng+(c-2)*.58+(Math.random()-.5)*.12;
+        result.push({lat,lng,color:z.color,alt:.008,size:.12,zone:i});
+      }
+    });
+    return result;
+  }
+  function refreshGlobe(){
+    if(!globe)return;
+    const hexes=makeHexes().filter(d=>{
+      if(d.color==='#16c4ed')return activeLayers.high;
+      if(d.color==='#f1a72c')return activeLayers.medium;
+      return activeLayers.low;
+    });
+    globe.pointsData(hexes)
+      .pointLat('lat').pointLng('lng').pointColor('color').pointAltitude('alt')
+      .pointRadius('size').pointsMerge(false).pointResolution(8)
+      .pointLabel(d=>`${zones()[d.zone].name} · ${zones()[d.zone].level} · ${currentResource}`);
+    const arcs = activeLayers.faults ? zones().map((z,i)=>({startLat:z.lat-1.3,startLng:z.lng-1.8,endLat:z.lat+1.1,endLng:z.lng+1.5,color:['#9b8bd0','#d57b75','#69b7c5'][i]})) : [];
+    globe.arcsData(arcs).arcColor('color').arcStroke(.35).arcAltitude(.012).arcDashLength(.35).arcDashGap(.15).arcDashAnimateTime(0);
+    globe.ringsData(zones().map((z,i)=>({...z,maxR:2.2,propagationSpeed:.35,repeatPeriod:1800})))
+      .ringLat('lat').ringLng('lng').ringColor(d=>d.color).ringMaxRadius('maxR')
+      .ringPropagationSpeed('propagationSpeed').ringRepeatPeriod('repeatPeriod');
+    updateSelectionUI();
+  }
+  function updateSelectionUI(){
+    const z=zones()[selectedIndex]||zones()[0];
+    $('#selectedPlace').textContent='ANGOLA';
+    $('#detailResource').textContent=currentResource;
+    $('#detailLevel').textContent=z.level;
+    $('#detailLevel').className='level '+levelClass(z.level);
+    $('#detailLocation').textContent='Angola · '+(selectedIndex===0?'Luanda / região de estudo':selectedIndex===1?'Interior de Angola':'Região centro-sul');
+    $('#mineralPhoto').src=resourceImages[currentResource];
+    $('#mineralPhoto').alt='Imagem ilustrativa de '+currentResource;
+    $('#legendResource').textContent=currentResource;
+    $$('.region').forEach((el,i)=>{
+      const p=el.querySelector('p');
+      p.innerHTML=`Potencial: <span class="level ${levelClass(zones()[i].level)}">${zones()[i].level}</span>`;
+      el.querySelector('strong').textContent=zones()[i].name;
+    });
+  }
+  function flyTo(index){
+    selectedIndex=index;const z=zones()[index];
+    if(globe)globe.pointOfView({lat:z.lat,lng:z.lng,altitude:.85},1200);
+    updateSelectionUI();updateFooter(z.lat,z.lng);
+    $('#mapFocus').textContent=`ANGOLA · ${z.name.toUpperCase()}`;
+    notify(`${z.name}: foco aproximado no globo.`);
+  }
+  function setResource(name){
+    currentResource=name;selectedIndex=0;
+    $$('.resource').forEach(b=>b.classList.toggle('selected',b.dataset.resource===name));
+    refreshGlobe();
+    $('#mapFocus').textContent='ÁFRICA · ANGOLA';
+    const z=zones()[0];if(globe)globe.pointOfView({lat:-9,lng:18,altitude:1.45},900);
+    updateFooter(z.lat,z.lng);
+    notify(`Camadas demonstrativas actualizadas: ${name}.`);
+  }
+
+  const host=$('#globeViz');
+  if(typeof Globe==='function'){
+    globe=Globe()(host)
+      .backgroundColor('rgba(0,0,0,0)')
+      .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
+      .bumpImageUrl('https://unpkg.com/three-globe/example/img/earth-topology.png')
+      .showAtmosphere(true).atmosphereColor('#3aaee8').atmosphereAltitude(.16)
+      .showGraticules(false)
+      .pointOfView({lat:-8.8,lng:17,altitude:1.45});
+    globe.controls().autoRotate=true;globe.controls().autoRotateSpeed=.22;
+    globe.controls().enableDamping=true;globe.controls().dampingFactor=.08;
+    globe.controls().minDistance=115;globe.controls().maxDistance=650;
+    globe.onGlobeClick(({lat,lng})=>{
+      updateFooter(lat,lng);
+      $('#mapFocus').textContent=`PONTO NO MAPA · ${lat.toFixed(2)}°, ${lng.toFixed(2)}°`;
+    });
+    globe.onPointClick(d=>{flyTo(d.zone);});
+    refreshGlobe();
+    const resize=()=>{globe.width(host.clientWidth).height(host.clientHeight)};
+    new ResizeObserver(resize).observe(host);resize();
+  } else {
+    host.innerHTML='<div style="position:absolute;inset:0;display:grid;place-items:center;color:#b8d0df;text-align:center;padding:30px">Não foi possível carregar o globo 3D. Verifique a ligação à internet e recarregue a página.</div>';
+  }
+
+  $$('.resource').forEach(b=>b.addEventListener('click',()=>setResource(b.dataset.resource)));
+  $$('.locate').forEach(b=>b.addEventListener('click',()=>flyTo(Number(b.dataset.region))));
+  $('#zoomIn').addEventListener('click',()=>{if(!globe)return;currentZoom=Math.max(.55,currentZoom-.18);globe.pointOfView({altitude:currentZoom},500);$('#zoomValue').textContent=(1.45/currentZoom).toFixed(1)});
+  $('#zoomOut').addEventListener('click',()=>{if(!globe)return;currentZoom=Math.min(2.7,currentZoom+.18);globe.pointOfView({altitude:currentZoom},500);$('#zoomValue').textContent=(1.45/currentZoom).toFixed(1)});
+  $('#resetView').addEventListener('click',()=>{currentZoom=1.45;if(globe)globe.pointOfView({lat:-8.8,lng:17,altitude:1.45},900);$('#zoomValue').textContent='1.0';$('#viewValue').textContent='África';$('#mapFocus').textContent='ÁFRICA · ANGOLA';updateFooter(-8.84,13.23);notify('Vista inicial restaurada.')});
+  $$('[data-layer]').forEach(input=>input.addEventListener('change',()=>{
+    activeLayers[input.dataset.layer]=input.checked;
+    refreshGlobe();
+    $('#layersCount').textContent=$$('[data-layer]:checked').length;
+  }));
+  $$('.collapse').forEach(btn=>btn.addEventListener('click',()=>{
+    const panel=btn.closest('.panel');const body=panel.querySelector('.panel-body')||panel.querySelectorAll('.group,.selected-area');
+    if(body instanceof Element){body.hidden=!body.hidden}
+    else body.forEach(el=>el.hidden=!el.hidden);
+    btn.textContent=btn.textContent==='⌃'?'⌄':'⌃';
+  }));
+  $('#detailsButton').addEventListener('click',()=>notify('Detalhes avançados: módulo de análise a integrar posteriormente.'));
+  $$('#'+'unused');
+  const searchInput=$('#mapSearch'), results=$('#searchResults');
+  const places=[
+    {label:'Angola',lat:-8.8,lng:17,alt:1.25},{label:'Luanda, Angola',lat:-8.84,lng:13.23,alt:.65},
+    {label:'Huíla, Angola',lat:-14.9,lng:13.5,alt:.65},{label:'Lunda Norte, Angola',lat:-8.2,lng:20.4,alt:.65},
+    {label:'África',lat:0,lng:20,alt:1.8},{label:'Namíbia',lat:-22,lng:17,alt:1.1},
+    {label:'República Democrática do Congo',lat:-3,lng:23,alt:1.0}
+  ];
+  function renderSearch(){
+    const q=searchInput.value.trim().toLocaleLowerCase('pt');
+    if(!q){results.style.display='none';return}
+    const found=places.filter(p=>p.label.toLocaleLowerCase('pt').includes(q));
+    results.innerHTML='';
+    found.forEach(p=>{const b=document.createElement('button');b.textContent='⌖  '+p.label;b.addEventListener('click',()=>{
+      if(globe)globe.pointOfView({lat:p.lat,lng:p.lng,altitude:p.alt},1100);
+      updateFooter(p.lat,p.lng);$('#mapFocus').textContent=p.label.toUpperCase();
+      $('#viewValue').textContent=p.label;results.style.display='none';searchInput.value=p.label;
+    });results.appendChild(b)});
+    if(!found.length){const b=document.createElement('button');b.textContent='Sem resultados locais. A pesquisa global será ligada numa fase posterior.';results.appendChild(b)}
+    results.style.display='block';
+  }
+  searchInput.addEventListener('input',renderSearch);
+  searchInput.addEventListener('keydown',e=>{if(e.key==='Enter'){const first=results.querySelector('button');if(first)first.click()}if(e.key==='Escape')results.style.display='none'});
+  document.addEventListener('click',e=>{if(!e.target.closest('.search-wrap'))results.style.display='none'});
+  $$('nav button').forEach(b=>b.addEventListener('click',()=>{
+    $$('nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+    if(b.dataset.nav!=='Início')notify(`${b.dataset.nav}: secção visual de demonstração.`);
+  }));
+  updateFooter(-8.84,13.23);
+})();
+</script>
+</body>
+</html>

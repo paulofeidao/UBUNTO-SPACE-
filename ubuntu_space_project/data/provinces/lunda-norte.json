@@ -1,0 +1,24 @@
+{
+ "id": "lunda-norte",
+ "name": "Lunda Norte",
+ "country": "Angola",
+ "administrative_level": "province",
+ "capital": "Dundo",
+ "capital_note": null,
+ "geometry_id": "province-lunda-norte",
+ "municipalities": [],
+ "geology_status": "Dados geológicos não carregados",
+ "last_updated": null,
+ "mineral_resources": [
+  "diamante"
+ ],
+ "known_occurrences": [
+  "occ-dia-ln"
+ ],
+ "geological_formations": [],
+ "tectonic_structures": [],
+ "prospectivity_areas": [],
+ "sources": [
+  "SRC-GERAL"
+ ]
+}

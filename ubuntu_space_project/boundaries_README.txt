@@ -1,0 +1,1 @@
+Fronteiras: coloque em data/boundaries/provinces.geojson (ou use 'Importar') um GeoJSON com properties.id = id da província (ex.: lunda-norte) ou properties.shapeName/name. Polígonos de potencial: properties.mineral (id), properties.class (high|medium|low|none|occ), name, area_km2, confidence, validation, source.

@@ -1,0 +1,22 @@
+UBUNTO SPACE — estrutura de imagens locais
+
+Coloque as imagens que descarregar dentro desta pasta: assets/images/
+
+Use exactamente estes nomes (respeite a extensão .jpg):
+- recurso-petroleo.jpg
+- recurso-diamante.jpg
+- recurso-ouro.jpg
+- recurso-cobre.jpg
+- recurso-litio.jpg
+- recurso-cobalto.jpg
+- regiao-analise-01.jpg
+- regiao-analise-02.jpg
+- regiao-analise-03.jpg
+
+Sugestões:
+- Cartões de recursos: fotografias horizontais, 1200x600 px ou superior.
+- Regiões de análise: imagens de satélite/terreno quadradas, 800x800 px ou superior.
+- Fotografia do recurso no painel: o mesmo ficheiro do recurso seleccionado.
+- Formato JPG/JPEG recomendado. Se usar PNG ou WEBP, actualize também o caminho no index.html.
+
+O globo NÃO depende destas fotografias locais: o CesiumJS carrega a superfície do planeta, imagens aéreas e terreno a partir dos serviços geoespaciais configurados.

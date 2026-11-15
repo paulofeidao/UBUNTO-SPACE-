@@ -1,0 +1,24 @@
+{
+ "id": "namibe",
+ "name": "Namibe",
+ "country": "Angola",
+ "administrative_level": "province",
+ "capital": "Moçâmedes",
+ "capital_note": null,
+ "geometry_id": "province-namibe",
+ "municipalities": [],
+ "geology_status": "Dados geológicos não carregados",
+ "last_updated": null,
+ "mineral_resources": [
+  "petroleo"
+ ],
+ "known_occurrences": [
+  "occ-pet-nam"
+ ],
+ "geological_formations": [],
+ "tectonic_structures": [],
+ "prospectivity_areas": [],
+ "sources": [
+  "SRC-GERAL"
+ ]
+}

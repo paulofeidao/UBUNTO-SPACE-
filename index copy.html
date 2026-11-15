@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt-AO">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sonangol – Produzir Para Transformar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Hind:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<!-- Paulo Feidão- Estilo css  -->
+ <link rel="stylesheet" href="style.css"> 
+
+ <!-- CONTROL Z  -->
+
+<
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER
+============================================================= -->
+<header class="site-header" id="site-header">
+  <div class="site-header__inner">
+    <a href="/" class="site-header__logo">
+      <img src="https://www.sonangol.co.ao/wp-content/uploads/2022/07/Sonangol_Logo_Horizontal_Branco.png" alt="Sonangol">
+    </a>
+
+    <nav class="site-nav">
+      <div class="site-nav__item has-dropdown">
+        <a href="https://www.sonangol.co.ao/sobre-a-sonangol/">A Empresa</a>
+        <div class="site-nav__dropdown">
+          <a href="https://www.sonangol.co.ao/breve-historial/">Breve Historial</a>
+          <a href="https://www.sonangol.co.ao/estrutura/">Estrutura</a>
+          <a href="https://www.sonangol.co.ao/objectivos_estrategicos/">Objectivos Estratégicos</a>
+          <a href="https://www.sonangol.co.ao/marca-sonangol/">Marca Sonangol</a>
+          <a href="https://www.sonangol.co.ao/etica/">Ética</a>
+          <a href="/relatorio-contas">Relatório &amp; Contas</a>
+        </div>
+      </div>
+      <div class="site-nav__item"><a href="https://sustentabilidade.sonangol.co.ao/">Sustentabilidade</a></div>
+      <div class="site-nav__item"><a href="https://www.sonangol.co.ao/investidor/">Investidor</a></div>
+      <div class="site-nav__item"><a href="https://sonangolangola.outsystemsenterprise.com/PortalFornecedores/Login">Fornecedores</a></div>
+      <div class="site-nav__item has-dropdown">
+        <a href="#">Imprensa</a>
+        <div class="site-nav__dropdown">
+          <a href="/noticias">Notícias</a>
+          <a href="/categoria/comunicado-de-imprensa/">Comunicados de Imprensa</a>
+          <a href="/categoria/concurso-publico/">Concursos Públicos</a>
+          <a href="/jornal-pacaca">Jornal Sonangol &ldquo;Pacaça&rdquo;</a>
+          <a href="https://www.youtube.com/playlist?list=PLCfP6JmnhjNGpm-RNP-KdnkO4MegKzYfH">Programa de Rádio &ldquo;NGOL&rdquo;</a>
+          <a href="https://www.youtube.com/channel/UC91pO0iSc2EGwH2O14G-OkQ">Vídeos</a>
+        </div>
+      </div>
+      <div class="site-nav__item"><a href="https://www.sonangol.co.ao/candidaturas-espontaneas/">Candidaturas Espontâneas</a></div>
+    </nav>
+
+    <button class="site-header__burger" id="burger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ============================================================
+     HERO — cinematic scrollytelling
+============================================================= -->
+<div id="hero-scrollytelling" class="hero-scrollytelling">
+  <div class="hero-scrollytelling__sticky">
+    <canvas id="hero-canvas" class="hero-scrollytelling__canvas"></canvas>
+
+    <div id="hero-loader" class="hero-loader">
+      <span class="hero-loader__mark">SNL</span>
+      <div class="hero-loader__bar"><div id="hero-loader__fill" class="hero-loader__fill"></div></div>
+      <span id="hero-loader__pct" class="hero-loader__pct">0%</span>
+    </div>
+
+    <div class="hero-scrollytelling__caption" id="hero-caption">
+      <span class="hero-scrollytelling__eyebrow">Produzir Para Transformar</span>
+      <h1 id="hero-title">Exploração e Produção</h1>
+      <p id="hero-desc">Ser líder regional no segmento de Exploração e Produção, com uma quota de produção operada interna não inferior a 10% até 2027.</p>
+    </div>
+
+    <div class="hero-scrollytelling__scrollcue">
+      <span></span>
+      <p>Scroll</p>
+    </div>
+
+    <button id="hero-scrolltop" class="hero-scrolltop" aria-label="Voltar ao topo">Topo ↑</button>
+  </div>
+</div>
+
+<!-- ============================================================
+     SOBRE A SONANGOL
+============================================================= -->
+<section class="about-section reveal">
+  <div class="about-section__grid">
+    <div class="about-section__text reveal-child">
+      <span class="section-kicker">Quem somos</span>
+      <h2>SOBRE A <span class="accent">SONANGOL</span></h2>
+      <p>A Sonangol — Sociedade Nacional de Combustíveis de Angola, E.P. — é a empresa estatal angolana do ramo petrolífero vocacionada para a exploração de hidrocarbonetos líquidos e gasosos no subsolo e na plataforma continental de Angola e responsável pela exploração, produção, fabricação, transporte e comercialização de hidrocarbonetos em Angola.</p>
+      <p>Operamos de maneira eficiente, segura, transparente e comprometida com a protecção ambiental, tendo por finalidade promover o desenvolvimento harmonioso do país e reforçando a utilização sustentável dos recursos nacionais de hidrocarbonetos.</p>
+      <a class="btn btn--primary" href="/sobre-nos">Saiba Mais <span>→</span></a>
+    </div>
+
+    <div class="about-section__media reveal-child" style="background-image:url('https://www.sonangol.co.ao/wp-content/uploads/2020/08/Edifício-Sonangol-EP-1-de-2.jpg')">
+      <button class="play-btn" id="video-trigger" aria-label="Reproduzir vídeo institucional">
+        <img src="https://www.sonangol.co.ao/wp-content/uploads/2022/07/youtube-play-button-circular-160471-removebg-preview.png" alt="">
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Video modal -->
+<div class="video-modal" id="video-modal">
+  <div class="video-modal__backdrop" data-close></div>
+  <div class="video-modal__box">
+    <button class="video-modal__close" data-close aria-label="Fechar">✕</button>
+    <div class="video-modal__frame">
+      <iframe id="video-modal__iframe" width="100%" height="100%" src="" title="Vídeo institucional Sonangol" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     NOTÍCIAS / COMUNICADOS / RELATÓRIO (tabs)
+============================================================= -->
+<section class="news-section reveal">
+  <div class="news-tabs">
+    <button class="news-tabs__btn is-active" data-tab="tudo">Tudo</button>
+    <button class="news-tabs__btn" data-tab="tudo">Notícias</button>
+    <button class="news-tabs__btn" data-tab="comunicados">Comunicados</button>
+    <button class="news-tabs__btn" data-tab="relatorio">Relatório &amp; Contas</button>
+  </div>
+
+  <!-- TUDO / NOTÍCIAS — 3D card carousel with the real articles -->
+  <div class="news-panel is-active" data-panel="tudo">
+    <div class="mzaCarousel" id="mzaCarousel" aria-roledescription="carousel" aria-label="Notícias Sonangol">
+      <div class="mzaCarousel-viewport" tabindex="0">
+        <div class="mzaCarousel-track">
+
+          <article class="mzaCarousel-slide" role="group" aria-roledescription="slide" aria-label="1 de 6">
+            <div class="mzaCard" style="--mzaCard-bg:url('https://www.sonangol.co.ao/wp-content/uploads/2026/08/Entrega-de-viaturas-Chamada_2-1170x694.jpg');">
+              <header class="mzaCard-head mzaPar-1">
+                <h2 class="mzaCard-title">Sonangol D&amp;C Entrega Viaturas aos Vencedores de Campanha Comemorativa</h2>
+                <p class="mzaCard-kicker">Distribuição &amp; Comercialização · 6 Ago</p>
+              </header>
+              <p class="mzaCard-text mzaPar-2">A Sonangol Distribuição e Comercialização (SNL D&amp;C) entregou,</p>
+              <footer class="mzaCard-actions mzaPar-3"><a class="mzaBtn" href="https://www.sonangol.co.ao/sonangol-dc-entrega-viaturas-aos-vencedores-de-campanha-comemorativa/">Ler Mais</a></footer>
+            </div>
+          </article>
+
+          <article class="mzaCarousel-slide" role="group" aria-roledescription="slide" aria-label="2 de 6">
+            <div class="mzaCard" style="--mzaCard-bg:url('https://www.sonangol.co.ao/wp-content/uploads/2026/08/Korea-Prog-de-Ronovacao-de-Frota_Chamada-1170x694.jpg');">
+              <header class="mzaCard-head mzaPar-1">
+                <h2 class="mzaCard-title">SNL Trading and Shipping Assinala Importante Marco no Programa de Renovação e Expansão da Frota</h2>
+                <p class="mzaCard-kicker">Trading &amp; Shipping · 6 Ago</p>
+              </header>
+              <p class="mzaCard-text mzaPar-2">A Sonangol Trading &amp; Shipping assinalou no dia 28 de Julho</p>
+              <footer class="mzaCard-actions mzaPar-3"><a class="mzaBtn" href="https://www.sonangol.co.ao/snl-trading-and-shipping-assinala-importante-marco-no-programa-de-renovacao-e-expansao-da-frota/">Ler Mais</a></footer>
+            </div>
+          </article>
+
+          <article class="mzaCarousel-slide" role="group" aria-roledescription="slide" aria-label="3 de 6">
+            <div class="mzaCard" style="--mzaCard-bg:url('https://www.sonangol.co.ao/wp-content/uploads/2026/08/SonAir-Global-Aviacao-1170x694.jpg');">
+              <header class="mzaCard-head mzaPar-1">
+                <h2 class="mzaCard-title">SonAir Participa em Cimeira Global de Aviação</h2>
+                <p class="mzaCard-kicker">SonAir · 6 Ago</p>
+              </header>
+              <p class="mzaCard-text mzaPar-2">A SonAir participou na 3.ª Cimeira Global de Género na Aviação,</p>
+              <footer class="mzaCard-actions mzaPar-3"><a class="mzaBtn" href="https://www.sonangol.co.ao/sonair-participa-em-cimeira-global-de-aviacao/">Ler Mais</a></footer>
+            </div>
+          </article>
+
+          <article class="mzaCarousel-slide" role="group" aria-roledescription="slide" aria-label="4 de 6">
+            <div class="mzaCard" style="--mzaCard-bg:url('https://www.sonangol.co.ao/wp-content/uploads/2026/08/SPE-Visit-Flash-136-1170x694.jpg');">
+              <header class="mzaCard-head mzaPar-1">
+                <h2 class="mzaCard-title">ISPTEC Oficializa Núcleo Estudantil da Sociedade de Engenheiros de Petróleo</h2>
+                <p class="mzaCard-kicker">ISPTEC · 31 Jul</p>
+              </header>
+              <p class="mzaCard-text mzaPar-2">O Instituto Superior Politécnico de Tecnologias e Ciências (ISPTEC)</p>
+              <footer class="mzaCard-actions mzaPar-3"><a class="mzaBtn" href="https://www.sonangol.co.ao/isptec-oficializa-nucleo-estudantil-da-sociedade-de-engenheiros-de-petroleo/">Ler Mais</a></footer>
+            </div>
+          </article>
+
+          <article class="mzaCarousel-slide" role="group" aria-roledescription="slide" aria-label="5 de 6">
+            <div class="mzaCard" style="--mzaCard-bg:url('https://www.sonangol.co.ao/wp-content/uploads/2026/08/E-sep-2026-1170x694.jpeg');">
+              <header class="mzaCard-head mzaPar-1">
+                <h2 class="mzaCard-title">Sonangol Conquista Título de Melhor Empresa Pública de 2025</h2>
+                <p class="mzaCard-kicker">Sonangol · 29 Jul</p>
+              </header>
+              <p class="mzaCard-text mzaPar-2">A Sonangol conquistou o Grande Prémio de Melhor Empresa Pública</p>
+              <footer class="mzaCard-actions mzaPar-3"><a class="mzaBtn" href="https://www.sonangol.co.ao/sonangol-conquista-titulo-de-melhor-empresa-publica-de-2025/">Ler Mais</a></footer>
+            </div>
+          </article>
+
+          <article class="mzaCarousel-slide" role="group" aria-roledescription="slide" aria-label="6 de 6">
+            <div class="mzaCard" style="--mzaCard-bg:url('https://www.sonangol.co.ao/wp-content/uploads/2026/07/WhatsApp-Image-2026-08-03-at-09.48.03-1-768x456.jpeg');">
+              <header class="mzaCard-head mzaPar-1">
+                <h2 class="mzaCard-title">Sonangol Distinguida com o Grande Prémio Leão de Ouro na FILDA 2026</h2>
+                <p class="mzaCard-kicker">Sonangol · 26 Jul</p>
+              </header>
+              <p class="mzaCard-text mzaPar-2">A Sonangol conquistou, pelo terceiro ano consecutivo, o Grande Prémio</p>
+              <footer class="mzaCard-actions mzaPar-3"><a class="mzaBtn" href="https://www.sonangol.co.ao/sonangol-distinguida-com-o-grande-premio-leao-de-ouro-na-filda-2026/">Ler Mais</a></footer>
+            </div>
+          </article>
+
+        </div>
+      </div>
+      <div class="mzaCarousel-controls" aria-label="Controlos">
+        <button class="mzaCarousel-prev" aria-label="Slide anterior" type="button">‹</button>
+        <button class="mzaCarousel-next" aria-label="Slide seguinte" type="button">›</button>
+      </div>
+      <div class="mzaCarousel-pagination" role="tablist" aria-label="Navegação de slides"></div>
+      <div class="mzaCarousel-progress" aria-hidden="true"><span class="mzaCarousel-progressBar"></span></div>
+    </div>
+    <div class="news-panel__cta"><a class="btn btn--outline" href="/noticias">Ver Mais</a></div>
+  </div>
+
+  <div class="news-panel" data-panel="comunicados">
+    <div class="news-grid">
+      <article class="news-card reveal-child">
+        <a href="https://www.sonangol.co.ao/sonangol-tranquiliza-populacao-quanto-ao-abastecimento-de-combustiveis/">
+          <div class="news-card__thumb" style="background-image:url('https://www.sonangol.co.ao/wp-content/uploads/2026/05/PA-SNL-440x260.jpeg')"></div>
+          <h3>Sonangol Tranquiliza População Quanto ao Abastecimento de Combustíveis</h3>
+          <p>A Sonangol Distribuição e Comercialização informa os automobilistas e a população em geral que se registou, desde o início da presente semana, um aumento significativo da procura de combustíveis em várias regiões do País, com maior incidência na província de Luanda.</p>
+        </a>
+      </article>
+      <article class="news-card reveal-child">
+        <a href="https://www.sonangol.co.ao/comunicado-de-imprensa-ocorrencia-com-o-navio-sonangol-namibe/">
+          <div class="news-card__thumb" style="background-image:url('https://www.sonangol.co.ao/wp-content/uploads/2026/03/HCpmoJSbwAAQ2zx-440x260.jpeg')"></div>
+          <h3>Comunicado de Imprensa: Ocorrência Com o Navio Sonangol Namibe</h3>
+          <p>A Sonangol Trading &amp; Shipping torna público o registo de um incidente pontual, verificado no</p>
+        </a>
+      </article>
+      <article class="news-card reveal-child">
+        <a href="https://www.sonangol.co.ao/comunicado-sonangol-apresenta-os-150-selecionados-no-projecto-sonajovem-5-0/">
+          <div class="news-card__thumb" style="background-image:url('https://www.sonangol.co.ao/wp-content/uploads/2024/12/SONAJOVEM2_Page_4-1-440x260.png')"></div>
+          <h3>COMUNICADO: Sonangol Apresenta os 150 Selecionados no Projecto SonaJovem 5.0</h3>
+        </a>
+      </article>
+    </div>
+    <div class="news-panel__cta"><a class="btn btn--outline" href="/comunicados-de-imprensa">Ver Mais</a></div>
+  </div>
+
+  <!-- RELATÓRIO E CONTAS — Three.js 3D carousel -->
+  <div class="news-panel" data-panel="relatorio">
+    <div id="reports-3d" class="reports-3d">
+      <canvas id="reports-canvas"></canvas>
+      <div class="reports-3d__hint">Arraste para girar</div>
+    </div>
+    <div class="news-panel__cta"><a class="btn btn--outline" href="/relatorio-contas/">Ver Mais</a></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     JORNAL SONANGOL "PACAÇA" — CARROSSEL 3D INTERATIVO
+============================================================= -->
+<section class="jornal-section reveal">
+  <span class="section-kicker section-kicker--center">Publicação Bimestral</span>
+  <h2 class="jornal-section__title">JORNAL SONANGOL &ldquo;PACAÇA&rdquo;</h2>
+
+  <div class="jornalRing-wrap">
+    <div class="jornalRing-container">
+      <div id="jornalRing" class="jornalRing">
+        <!-- As imagens serão inseridas via JavaScript -->
+      </div>
+    </div>
+    <div class="jornalRing-vignette"></div>
+    <div id="jornalDragger" class="jornalRing-dragger"></div>
+    <p class="jornalRing-hint">Arraste para explorar as edições · clique para abrir</p>
+  </div>
+
+  <div class="jornal-section__cta"><a class="btn btn--outline" href="/jornal-pacaca">Mais Edições</a></div>
+</section>
+
+<!-- ============================================================
+     IMAGEM INSTITUCIONAL + WIDGET DE MERCADOS
+============================================================= -->
+<section class="markets-section reveal">
+  <div class="markets-section__media reveal-child">
+    <img src="https://www.sonangol.co.ao/wp-content/uploads/2022/07/PeP_DSC_9788.jpg" alt="Sonangol — Petróleo e Petroquímica">
+  </div>
+  <div class="markets-section__widget reveal-child">
+    <iframe title="Widget de mercados Investing.com" src="https://ssltsw.forexprostools.com?lang=1&forex=1,2,3,5,7,9,10&commodities=8833,8849,8862,8830,8836,8831,8832&indices=175,166,172,27,179,170,174&stocks=334,345,346,347,348,349,350&tabs=2,1,3,4" width="300" height="467"></iframe>
+    <div class="markets-section__credit">Technical Summary Widget Powered by <a href="https://www.investing.com/" rel="nofollow" target="_blank">Investing.com</a></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+============================================================= -->
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <p class="site-footer__copy">&copy; Copyright 2026 — Todos os direitos reservados — Sonangol, E.P.</p>
+    <nav class="site-footer__menu">
+      <a href="https://www.sonangol.co.ao/politica-privacidade/">Política de Privacidade</a>
+      <a href="#">Termos e Condições</a>
+      <a href="#">Imprensa</a>
+      <a href="#">Contactos</a>
+    </nav>
+    <ul class="site-footer__social">
+      <li><a href="https://facebook.com/sonangoloficial" target="_blank" rel="noopener" aria-label="Facebook">f</a></li>
+      <li><a href="https://twitter.com/sonangoloficial" target="_blank" rel="noopener" aria-label="Twitter">t</a></li>
+      <li><a href="https://instagram.com/sonangoloficial" target="_blank" rel="noopener" aria-label="Instagram">ig</a></li>
+      <li><a href="https://www.linkedin.com/company/sonangoloficial" target="_blank" rel="noopener" aria-label="LinkedIn">in</a></li>
+      <li><a href="https://www.youtube.com/user/gruposonangol" target="_blank" rel="noopener" aria-label="YouTube">yt</a></li>
+    </ul>
+  </div>
+</footer>
+
+<!-- CDN libs -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

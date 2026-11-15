@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pt-AO">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Jornal Pacaça - Carrossel 3D (TESTE)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0d0d0d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+        }
+
+        .jornal-section {
+            width: 100%;
+            padding: 40px 6%;
+            text-align: center;
+        }
+
+        .jornal-section__title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            color: #fec905;
+            font-size: 32px;
+            margin-bottom: 40px;
+        }
+
+        .section-kicker {
+            display: block;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: #c99f00;
+            margin-bottom: 14px;
+        }
+
+        .jornalRing-wrap {
+            position: relative;
+            width: 100%;
+            height: 480px;
+            margin: 0 auto 10px;
+        }
+
+        .jornalRing-container {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 260px;
+            height: 360px;
+            perspective: 2000px;
+        }
+
+        .jornalRing {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            transform-style: preserve-3d;
+        }
+
+        .jornalRing-img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 6px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55);
+            backface-visibility: hidden;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            border: 2px solid rgba(254, 201, 5, 0.2);
+        }
+
+        .jornalRing-vignette {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to left, #0d0d0d 4%, transparent 22%, transparent 78%, #0d0d0d 96%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .jornalRing-dragger {
+            position: absolute;
+            inset: 0;
+            cursor: grab;
+            touch-action: none;
+            z-index: 10;
+            background: transparent;
+        }
+
+        .jornalRing-dragger:active {
+            cursor: grabbing;
+        }
+
+        .jornalRing-hint {
+            position: relative;
+            text-align: center;
+            margin: 18px 0 0;
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.35);
+            z-index: 3;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            text-decoration: none;
+            padding: 15px 32px;
+            border-radius: 999px;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .btn--outline {
+            border: 1.5px solid #fec905;
+            color: #fec905;
+            background: transparent;
+        }
+
+        .btn--outline:hover {
+            background: #fec905;
+            color: #191300;
+            transform: translateY(-3px);
+        }
+
+        .debug-info {
+            color: rgba(255,255,255,0.5);
+            font-size: 12px;
+            margin-top: 20px;
+            padding: 10px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 4px;
+            font-family: monospace;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media (max-width: 620px) {
+            .jornalRing-wrap {
+                height: 380px;
+            }
+            .jornalRing-container {
+                width: 210px;
+                height: 290px;
+            }
+            .jornal-section__title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="jornal-section">
+        <span class="section-kicker">Publicação Bimestral</span>
+        <h2 class="jornal-section__title">JORNAL SONANGOL &ldquo;PACAÇA&rdquo;</h2>
+
+        <div class="jornalRing-wrap">
+            <div class="jornalRing-container">
+                <div id="jornalRing" class="jornalRing">
+                    <!-- As imagens serão inseridas via JavaScript -->
+                </div>
+            </div>
+            <div class="jornalRing-vignette"></div>
+            <div id="jornalDragger" class="jornalRing-dragger"></div>
+            <p class="jornalRing-hint">Arraste para explorar as edições · clique para abrir</p>
+        </div>
+
+        <a class="btn btn--outline" href="/jornal-pacaca">Mais Edições</a>
+        
+        <div id="debugInfo" class="debug-info">Inicializando...</div>
+    </section>
+
+    <!-- CDN libs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js">
+    </script>
+
+    <script>
+        (function jornalRing() {
+            var debug = document.getElementById('debugInfo');
+            
+            function log(msg) {
+                console.log(msg);
+                if (debug) {
+                    debug.textContent = msg;
+                }
+            }
+
+            log('🚀 Iniciando Jornal Pacaça...');
+
+            var ring = document.getElementById("jornalRing");
+            var dragger = document.getElementById("jornalDragger");
+
+            if (!ring || !dragger) {
+                log('❌ Elementos não encontrados!');
+                return;
+            }
+
+            if (typeof gsap === "undefined") {
+                log('❌ GSAP não carregado!');
+                return;
+            }
+
+            if (typeof Draggable === "undefined") {
+                log('❌ Draggable não carregado!');
+                return;
+            }
+
+            log('✅ GSAP e Draggable carregados');
+
+            // Usando imagens do picsum.photos para teste (vão funcionar com certeza)
+            var edicoes = [];
+            
+            // Gerar 10 imagens aleatórias do picsum
+            for (var i = 0; i < 10; i++) {
+                var id = 100 + i;
+                edicoes.push({
+                    url: "#",
+                    img: "https://picsum.photos/id/" + id + "/600/800",
+                    titulo: "Edição " + (i + 1)
+                });
+            }
+
+            var n = edicoes.length;
+            var step = 360 / n;
+            var depth = 500;
+            var xPos = 0;
+            var dragDistance = 0;
+
+            log('📸 Criando ' + n + ' imagens...');
+
+            // Criar os elementos img
+            edicoes.forEach(function(edicao, index) {
+                var img = document.createElement('div');
+                img.className = 'jornalRing-img';
+                img.setAttribute('data-url', edicao.url);
+                img.setAttribute('data-index', index);
+                img.setAttribute('data-titulo', edicao.titulo);
+                
+                // Aplicar estilo diretamente
+                img.style.backgroundImage = 'url(' + edicao.img + ')';
+                img.style.backgroundSize = 'cover';
+                img.style.backgroundPosition = 'center';
+                img.style.backgroundRepeat = 'no-repeat';
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.position = 'absolute';
+                img.style.top = '0';
+                img.style.left = '0';
+                
+                // Adicionar um texto de fallback
+                img.innerHTML = '<div style="color:white;text-align:center;padding:20px;background:rgba(0,0,0,0.3);border-radius:6px;position:absolute;bottom:20px;left:20px;right:20px;font-size:12px;">' + edicao.titulo + '</div>';
+                
+                ring.appendChild(img);
+                log('✅ Imagem ' + index + ' criada: ' + edicao.titulo);
+            });
+
+            var imgs = Array.prototype.slice.call(ring.querySelectorAll(".jornalRing-img"));
+            log('📊 Total de imagens: ' + imgs.length);
+
+            // Função para obter a posição do background (parallax)
+            function getBgPos(i) {
+                try {
+                    var rot = gsap.getProperty(ring, "rotationY");
+                    return (-gsap.utils.wrap(0, 360, rot - 180 - i * step) / 360 * 400) + 'px 0px';
+                } catch(e) {
+                    return 'center center';
+                }
+            }
+
+            // Função para abrir a imagem frontal
+            function openFrontImage() {
+                try {
+                    var rot = gsap.getProperty(ring, 'rotationY');
+                    var bestIdx = 0;
+                    var bestDelta = Infinity;
+
+                    imgs.forEach(function(img, i) {
+                        var angle = ((i * -step + rot) % 360 + 360) % 360;
+                        var delta = Math.min(angle, 360 - angle);
+                        if (delta < bestDelta) {
+                            bestDelta = delta;
+                            bestIdx = i;
+                        }
+                    });
+
+                    var titulo = imgs[bestIdx].getAttribute('data-titulo');
+                    log('📖 Clicou na: ' + titulo);
+                    alert('Você clicou na: ' + titulo);
+                } catch(e) {
+                    log('❌ Erro ao abrir: ' + e.message);
+                }
+            }
+
+            log('🎬 Configurando animação GSAP...');
+
+            try {
+                // Configuração inicial
+                gsap.set(dragger, { opacity: 0 });
+                gsap.set(ring, { rotationY: 180 });
+
+                // Configurar cada imagem
+                imgs.forEach(function(img, i) {
+                    gsap.set(img, {
+                        rotateY: i * -step,
+                        transformOrigin: '50% 50% ' + depth + 'px',
+                        z: -depth,
+                        backfaceVisibility: 'hidden',
+                        opacity: 0
+                    });
+                });
+
+                log('✅ Configuração inicial aplicada');
+
+                // Animação de entrada
+                gsap.to(imgs, {
+                    duration: 1.5,
+                    y: 0,
+                    opacity: 1,
+                    stagger: 0.1,
+                    ease: 'expo',
+                    onComplete: function() {
+                        log('✅ Animação concluída!');
+                        imgs.forEach(function(img) {
+                            img.style.opacity = '1';
+                        });
+                    }
+                });
+
+            } catch(e) {
+                log('❌ Erro na configuração GSAP: ' + e.message);
+            }
+
+            // Criar o Draggable
+            log('🖱️ Criando Draggable...');
+
+            try {
+                Draggable.create(dragger, {
+                    type: 'x',
+                    edgeResistance: 0.85,
+                    onDragStart: function(e) {
+                        if (e.touches) e.clientX = e.touches[0].clientX;
+                        xPos = Math.round(e.clientX);
+                        dragDistance = 0;
+                        log('🔄 Arrastando...');
+                    },
+
+                    onDrag: function(e) {
+                        if (e.touches) e.clientX = e.touches[0].clientX;
+
+                        var delta = Math.round(e.clientX) - xPos;
+                        dragDistance += Math.abs(delta);
+
+                        try {
+                            gsap.to(ring, {
+                                rotationY: '-=' + (delta % 360),
+                                duration: 0.3,
+                                ease: 'power1.out',
+                                onUpdate: function() {
+                                    imgs.forEach(function(img, i) {
+                                        try {
+                                            img.style.backgroundPosition = getBgPos(i);
+                                        } catch(e) {}
+                                    });
+                                }
+                            });
+                        } catch(e) {
+                            log('❌ Erro no drag: ' + e.message);
+                        }
+
+                        xPos = Math.round(e.clientX);
+                    },
+
+                    onDragEnd: function() {
+                        gsap.set(dragger, { x: 0, y: 0 });
+                        log('🛑 Arraste finalizado - distância: ' + dragDistance + 'px');
+
+                        if (dragDistance < 10) {
+                            openFrontImage();
+                        }
+                        dragDistance = 0;
+                    }
+                });
+
+                log('✅ Draggable criado com sucesso!');
+
+            } catch(e) {
+                log('❌ Erro ao criar Draggable: ' + e.message);
+            }
+
+            log('✅ Jornal Pacaça inicializado!');
+
+        })();
+    </script>
+
+</body>
+</html>

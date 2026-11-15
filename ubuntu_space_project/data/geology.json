@@ -1,0 +1,143 @@
+{
+ "status": "SIMULAÇÃO DEMONSTRATIVA — geometria esquemática, não é cartografia geológica oficial",
+ "formations": [
+  {
+   "id": "GEO-SIM-01",
+   "name": "Bacia do Congo (Cabinda–Zaire)",
+   "litologia": "Sedimentares marinhas e continentais",
+   "idade": "Cretácico–Cenozóico (indicativa)",
+   "minerals_context": [
+    "petroleo",
+    "gas-natural"
+   ],
+   "provinces": [
+    "cabinda",
+    "zaire"
+   ]
+  },
+  {
+   "id": "GEO-SIM-02",
+   "name": "Bacia do Kwanza",
+   "litologia": "Sedimentares (carbonatos, arenitos, evaporitos)",
+   "idade": "Cretácico–Cenozóico (indicativa)",
+   "minerals_context": [
+    "petroleo",
+    "gas-natural"
+   ],
+   "provinces": [
+    "luanda",
+    "bengo",
+    "icolo-e-bengo",
+    "kwanza-norte",
+    "kwanza-sul"
+   ]
+  },
+  {
+   "id": "GEO-SIM-03",
+   "name": "Bacia de Benguela",
+   "litologia": "Sedimentares",
+   "idade": "Cretácico–Cenozóico (indicativa)",
+   "minerals_context": [
+    "petroleo",
+    "gas-natural"
+   ],
+   "provinces": [
+    "benguela"
+   ]
+  },
+  {
+   "id": "GEO-SIM-04",
+   "name": "Bacia do Namibe",
+   "litologia": "Sedimentares",
+   "idade": "Cretácico–Cenozóico (indicativa)",
+   "minerals_context": [
+    "petroleo",
+    "gas-natural"
+   ],
+   "provinces": [
+    "namibe"
+   ]
+  },
+  {
+   "id": "GEO-SIM-05",
+   "name": "Cobertura sedimentar da Lunda",
+   "litologia": "Sedimentos continentais, kimberlitos e aluviões associados",
+   "idade": "Cretácico–Cenozóico (indicativa)",
+   "minerals_context": [
+    "diamante"
+   ],
+   "provinces": [
+    "lunda-norte",
+    "lunda-sul",
+    "malanje"
+   ]
+  },
+  {
+   "id": "GEO-SIM-06",
+   "name": "Domínio cratónico do Congo",
+   "litologia": "Gnaisses, granitóides e xistos",
+   "idade": "Arcaico–Paleoproterozóico (indicativa)",
+   "minerals_context": [
+    "ouro",
+    "cobre",
+    "ferro"
+   ],
+   "provinces": [
+    "malanje",
+    "kwanza-norte",
+    "kwanza-sul",
+    "uige"
+   ]
+  },
+  {
+   "id": "GEO-SIM-07",
+   "name": "Planalto Central (complexo ígneo-metamórfico)",
+   "litologia": "Rochas ígneas e metamórficas, pegmatitos",
+   "idade": "Paleoproterozóico–Mesoproterozóico (indicativa)",
+   "minerals_context": [
+    "ouro",
+    "litio",
+    "cobre",
+    "ferro",
+    "uranio"
+   ],
+   "provinces": [
+    "huambo",
+    "bie",
+    "huila",
+    "moxico",
+    "moxico-leste"
+   ]
+  },
+  {
+   "id": "GEO-SIM-08",
+   "name": "Complexo do Cunene (máfico-ultramáfico)",
+   "litologia": "Anortositos e rochas máficas-ultramáficas",
+   "idade": "Mesoproterozóico (indicativa)",
+   "minerals_context": [
+    "niquel",
+    "cobalto",
+    "cobre"
+   ],
+   "provinces": [
+    "huila",
+    "cunene",
+    "namibe"
+   ]
+  },
+  {
+   "id": "GEO-SIM-09",
+   "name": "Cobertura do Kalahari",
+   "litologia": "Areias e sedimentos continentais",
+   "idade": "Cenozóico (indicativa)",
+   "minerals_context": [],
+   "provinces": [
+    "cubango",
+    "cuando",
+    "cunene"
+   ]
+  }
+ ],
+ "faults": [],
+ "note": "Falhas: informação indisponível."
+}
